@@ -7,12 +7,15 @@ public class Shooter extends SubsystemBase {
   private final ShooterIO m_io;
 
   public Shooter(ShooterIO io) {
-    System.out.println("Constructor");
     m_io = io;
   }
 
-  public Command shoot() {
+  public Command shootL2() {
     return this.run(() -> m_io.setSpeed(-0.3));
+  }
+
+  public Command shootTrough() {
+    return this.run(() -> m_io.setSpeed(-0.1));
   }
 
   public Command stop() {
