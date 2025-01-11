@@ -10,7 +10,7 @@ public class ShooterIOTalonFX implements ShooterIO {
   private final TalonFX m_shootermotor;
 
   public ShooterIOTalonFX() {
-    m_shootermotor = new TalonFX(20, "CANivore1");
+    m_shootermotor = new TalonFX(20, "CANivore2");
 
     final TalonFXConfiguration shooterMotorConfig = new TalonFXConfiguration();
     shooterMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;

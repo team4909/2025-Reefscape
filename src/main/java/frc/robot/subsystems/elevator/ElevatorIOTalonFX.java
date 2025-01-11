@@ -12,8 +12,8 @@ public class ElevatorIOTalonFX implements ElevatorIO {
 
     public ElevatorIOTalonFX() {
     
-        m_left = new TalonFX(24, "CANivore1");
-        m_right = new TalonFX(25, "CANivore1");
+        m_left = new TalonFX(21, "CANivore2");
+        m_right = new TalonFX(22, "CANivore2");
 
         final TalonFXConfiguration elevatorMotorConfig = new TalonFXConfiguration();
         elevatorMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
