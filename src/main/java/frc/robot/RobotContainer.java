@@ -9,12 +9,17 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Vision.Vision;
+import frc.robot.subsystems.Vision.VisionIOPhotonVision;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
@@ -45,11 +50,20 @@ public class RobotContainer {
 
   private final Shooter s_Shooter;
   private final Elevator s_Elevator;
+//   private final Vision m_vision;
+
   public RobotContainer() {
     s_Shooter = new Shooter(new ShooterIOTalonFX());
     s_Elevator = new Elevator(new ElevatorIOTalonFX());
     configureBindings();
+
+    // if (RobotBase.isReal()){
+    // m_vision = new Vision(drivetrain::addVisionMeasurement, new VisionIOPhotonVision("testCamera", new Transform3d(0.2, 0.0, 0.2, new Rotation3d(0.0, -0.4, 0.0))));
+    // }
   }
+
+
+
 
   private void configureBindings() {
     // Note that X is defined as forward according to WPILib convention,
