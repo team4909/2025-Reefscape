@@ -1,5 +1,7 @@
 package frc.robot.subsystems.elevator;
 
+import edu.wpi.first.wpilibj2.command.Command;
+
 public interface ElevatorIO {
 
     public static class ElevatorIOInputs { 
@@ -10,5 +12,5 @@ public interface ElevatorIO {
     
     public default void setBrakeMode(boolean enableBrakeMode) {}
 
-    public abstract void gotosetpoint(double setpoint);
+    public abstract Command gotosetpoint(double setpoint, double gearRatio);
 }

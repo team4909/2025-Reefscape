@@ -5,10 +5,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
     private final ElevatorIO m_io;
-    private final double L1Setpoint = 1;
+    private final double L1Setpoint = 100;
     private final double L2Setpoint = 5;
     private final double L3Setpoint = 0;
     private final double L4Setpoint = 0;
+
+    final double m_gearRatio = 5/1 * 5/1 * 48/72;
 
     public Elevator(ElevatorIO io) {
         m_io = io;
@@ -28,7 +30,11 @@ public class Elevator extends SubsystemBase {
       }
 
       public Command goToL1(){
-        return  this.run(() -> m_io.gotosetpoint(L1Setpoint));
+        // return  this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
+        return this.run(() -> {
+           // System.out.println("L1");
+            m_io.gotosetpoint(L1Setpoint, m_gearRatio);
+        });
       }
     
 }

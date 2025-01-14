@@ -69,18 +69,18 @@ public class RobotContainer {
             ));
 
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-    joystick
-        .b()
-        .whileTrue(
-            drivetrain.applyRequest(
-                () ->
-                    point.withModuleDirection(
-                        new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+    // joystick
+    //     .b()
+    //     .whileTrue(
+    //         drivetrain.applyRequest(
+    //             () ->
+    //                 point.withModuleDirection(
+    //                     new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
     joystick.x().whileTrue(s_Shooter.shootL2()).onFalse(s_Shooter.stop());
     joystick.y().whileTrue(s_Shooter.intake()).onFalse(s_Shooter.stop());
     joystick.a().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
-
+    joystick.b().whileTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
 
     joystick.povUp().whileTrue(s_Elevator.moveUp()).onFalse(s_Elevator.stop());
     joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
