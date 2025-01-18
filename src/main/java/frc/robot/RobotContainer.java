@@ -8,18 +8,28 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.subsystems.drivetrain.DriveToPose;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Vision.Vision;
-import frc.robot.subsystems.Vision.VisionIOPhotonVision;
+import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.vision.VisionIOPhotonVision;
+import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
@@ -48,18 +58,39 @@ public class RobotContainer {
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-  private final Shooter s_Shooter;
-  private final Elevator s_Elevator;
-//   private final Vision m_vision;
+//   private final Shooter s_Shooter;
+//   private final Elevator s_Elevator;
+  private final Vision m_vision1;
+  private final Vision m_vision2;
+  public static AprilTagFieldLayout aprilTagLayout =
+      AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
-  public RobotContainer() {
-    s_Shooter = new Shooter(new ShooterIOTalonFX());
-    s_Elevator = new Elevator(new ElevatorIOTalonFX());
+  public RobotContainer(){
+    // s_Shooter = new Shooter(new ShooterIOTalonFX());
+    // s_Elevator = new Elevator(new ElevatorIOTalonFX());
     configureBindings();
 
     // if (RobotBase.isReal()){
-    // m_vision = new Vision(drivetrain::addVisionMeasurement, new VisionIOPhotonVision("testCamera", new Transform3d(0.2, 0.0, 0.2, new Rotation3d(0.0, -0.4, 0.0))));
+    m_vision1 = new Vision(drivetrain::addVisionMeasurement, new VisionIOPhotonVision("back-left-cam", new Transform3d(new Translation3d(
+        Units.inchesToMeters(-9.124 + 2.5),
+        Units.inchesToMeters(10.646),
+        Units.inchesToMeters(8.25)),
+        new Rotation3d(
+        Units.degreesToRadians(0.0),
+        Units.degreesToRadians(-28.125),
+        Units.degreesToRadians(150.0)))));
+
+    m_vision2 = new Vision(drivetrain::addVisionMeasurement, new VisionIOPhotonVision("front-right-cam", new Transform3d(new Translation3d(
+        Units.inchesToMeters(9.124 - 2.5),
+        Units.inchesToMeters(-10.646),
+        Units.inchesToMeters(-8.25)),
+        new Rotation3d(
+        Units.degreesToRadians(0.0),
+        Units.degreesToRadians(-28.125),
+        Units.degreesToRadians(-30)))));
     // }
+
+    // drivetrain.resetPose(new Pose2d(new Translation2d(Units.feetToMeters(12) - Units.inchesToMeters(57),4.026), new Rotation2d()));
   }
 
 
@@ -91,13 +122,15 @@ public class RobotContainer {
                     point.withModuleDirection(
                         new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-    joystick.x().whileTrue(s_Shooter.shootL2()).onFalse(s_Shooter.stop());
-    joystick.y().whileTrue(s_Shooter.intake()).onFalse(s_Shooter.stop());
-    joystick.a().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
+    joystick.x().whileTrue(new DriveToPose(new Pose2d(1,1,Rotation2d.k180deg), drivetrain));
+
+    // joystick.x().whileTrue(s_Shooter.shootL2()).onFalse(s_Shooter.stop());
+    // joystick.y().whileTrue(s_Shooter.intake()).onFalse(s_Shooter.stop());
+    // joystick.a().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
 
 
-    joystick.povUp().whileTrue(s_Elevator.moveUp()).onFalse(s_Elevator.stop());
-    joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
+    // joystick.povUp().whileTrue(s_Elevator.moveUp()).onFalse(s_Elevator.stop());
+    // joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
 
     // Run SysId routines when holding back/start and X/Y.
     // Note that each routine should be run exactly once in a single log.
