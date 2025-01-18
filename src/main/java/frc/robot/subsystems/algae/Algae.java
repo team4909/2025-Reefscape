@@ -12,15 +12,15 @@ public class Algae extends SubsystemBase {
       }
 
     public Command shootAlgae() {
-        return this.run(() -> m_io.setSpeed(-0.1));
+        return this.runOnce(() -> m_io.setSpeed(1));
   }
 
     public Command stop() {
-        return this.run(() -> m_io.setSpeed(0));
+        return this.runOnce(() -> m_io.setSpeed(0));
   }
 
     public Command intake() {
-        return this.run(() -> m_io.setSpeed(1));
+        return this.runOnce(() -> m_io.setSpeed(-1));
   }
 }
 

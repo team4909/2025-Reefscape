@@ -42,6 +42,7 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         final TalonFXConfiguration elevatorMotorConfig = new TalonFXConfiguration();
         final MotorOutputConfigs outputConfigs = new MotorOutputConfigs();
         outputConfigs.Inverted = InvertedValue.Clockwise_Positive;
+        outputConfigs.NeutralMode = NeutralModeValue.Brake;
         elevatorMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
         elevatorMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
         // in init function, set slot 0 gains

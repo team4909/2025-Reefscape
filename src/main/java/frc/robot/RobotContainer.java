@@ -96,7 +96,10 @@ public class RobotContainer {
     joystick.rightBumper().onTrue(s_Elevator.goToL3()).onFalse(s_Elevator.stop());
     joystick.leftTrigger().onTrue(s_Elevator.goToL4()).onFalse(s_Elevator.stop());
 
-    joystick.povUp().whileTrue(s_Algae.shootAlgae()).onFalse(s_Algae.stop());
+    joystick.povUp().whileTrue(s_Algae.shootAlgae
+    
+    
+    ()).onFalse(s_Algae.stop());
     joystick.povDown().whileTrue(s_Algae.intake()).onFalse(s_Algae.stop());
 
     // joystick.povUp().whileTrue(s_Elevator.moveUp()).onFalse(s_Elevator.stop());
