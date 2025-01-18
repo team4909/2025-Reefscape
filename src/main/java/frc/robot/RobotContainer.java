@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.algae.Algae;
+import frc.robot.subsystems.algae.AlgaeIOTalonFX;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
@@ -45,9 +47,12 @@ public class RobotContainer {
 
   private final Shooter s_Shooter;
   private final Elevator s_Elevator;
+  private final Algae s_Algae;
+
   public RobotContainer() {
     s_Shooter = new Shooter(new ShooterIOTalonFX());
     s_Elevator = new Elevator(new ElevatorIOTalonFX());
+    s_Algae = new Algae(new AlgaeIOTalonFX());
     configureBindings();
   }
   
@@ -87,12 +92,16 @@ public class RobotContainer {
     joystick.a().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
 
     joystick.b().onTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
-    joystick.leftBumper().onTrue(s_Elevator.goToL2
-    ()).onFalse(s_Elevator.stop());
+    joystick.leftBumper().onTrue(s_Elevator.goToL2()).onFalse(s_Elevator.stop());
     joystick.rightBumper().onTrue(s_Elevator.goToL3()).onFalse(s_Elevator.stop());
     joystick.leftTrigger().onTrue(s_Elevator.goToL4()).onFalse(s_Elevator.stop());
-    joystick.povUp().whileTrue(s_Elevator.moveUp()).onFalse(s_Elevator.stop());
-    joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
+
+    joystick.povUp().whileTrue(s_Algae.shootAlgae()).onFalse(s_Algae.stop());
+    joystick.povDown().whileTrue(s_Algae.intake()).onFalse(s_Algae.stop());
+
+    // joystick.povUp().whileTrue(s_Elevator.moveUp()).onFalse(s_Elevator.stop());
+    // joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
+
 
     // Run SysId routines when holding back/start and X/Y.
     // Note that each routine should be run exactly once in a single log.
