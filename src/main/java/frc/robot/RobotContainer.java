@@ -50,7 +50,12 @@ public class RobotContainer {
     s_Elevator = new Elevator(new ElevatorIOTalonFX());
     configureBindings();
   }
+  
+  
 
+  public void periodic() {
+    System.out.println("Elevator Command"+s_Elevator.getCurrentCommand());
+  }
   private void configureBindings() {
     // Note that X is defined as forward according to WPILib convention,
     // and Y is defined as to the left according to WPILib convention.
@@ -77,11 +82,15 @@ public class RobotContainer {
     //                 point.withModuleDirection(
     //                     new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-    joystick.x().whileTrue(s_Shooter.shootL2()).onFalse(s_Shooter.stop());
+    joystick.rightTrigger().whileTrue(s_Shooter.shootL2()).onFalse(s_Shooter.stop());
     joystick.y().whileTrue(s_Shooter.intake()).onFalse(s_Shooter.stop());
     joystick.a().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
-    joystick.b().whileTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
 
+    joystick.b().onTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
+    joystick.leftBumper().onTrue(s_Elevator.goToL2
+    ()).onFalse(s_Elevator.stop());
+    joystick.rightBumper().onTrue(s_Elevator.goToL3()).onFalse(s_Elevator.stop());
+    joystick.leftTrigger().onTrue(s_Elevator.goToL4()).onFalse(s_Elevator.stop());
     joystick.povUp().whileTrue(s_Elevator.moveUp()).onFalse(s_Elevator.stop());
     joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
 
