@@ -18,6 +18,8 @@ public interface ElevatorIO {
 
     public default void gotosetpoint(double setpoint, double gearRatio) {}
 
+    public default void setPosition(double position) {}
+
     public default double getVelocity() { return 0; }
 
     public default double getVoltage() { return 0; }
