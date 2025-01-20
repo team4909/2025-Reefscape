@@ -23,9 +23,13 @@ import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 public class RobotContainer {
   private double MaxSpeed =
       TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+  private double SlowSpeed = 
+      TunerConstants.kSlowSpeed.in(MetersPerSecond);
   private double MaxAngularRate =
       RotationsPerSecond.of(0.75)
           .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+  private double SlowAngularRate =
+      RotationsPerSecond.of(0.5).in(RadiansPerSecond);
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   private final SwerveRequest.FieldCentric drive =
@@ -74,6 +78,16 @@ public class RobotContainer {
             ));
 
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    joystick.rightStick().whileTrue(
+      drivetrain.applyRequest(() ->
+         drive
+          .withVelocityX(
+            -joystick.getLeftX() * SlowSpeed)
+          .withVelocityY(
+            -joystick.getLeftY() * SlowSpeed)
+          .withRotationalRate(
+            -joystick.getRightX() * SlowAngularRate)
+      ));
     // joystick
     //     .b()
     //     .whileTrue(
@@ -82,9 +96,9 @@ public class RobotContainer {
     //                 point.withModuleDirection(
     //                     new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-    joystick.rightTrigger().whileTrue(s_Shooter.shootL2()).onFalse(s_Shooter.stop());
+    joystick.rightTrigger().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
     joystick.y().whileTrue(s_Shooter.intake()).onFalse(s_Shooter.stop());
-    joystick.a().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
+    // joystick.a().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
 
     joystick.b().onTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
     joystick.leftBumper().onTrue(s_Elevator.goToL2

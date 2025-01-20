@@ -96,6 +96,7 @@ public class TunerConstants {
     // Theoretical free speed (m/s) at 12 V applied output;
     // This needs to be tuned to your individual robot
     public static final LinearVelocity kSpeedAt12Volts = MetersPerSecond.of(5.21); //∞
+    public static final LinearVelocity kSlowSpeed = MetersPerSecond.of(3);
 
     // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
     // This may need to be tuned to your individual robot
@@ -134,6 +135,7 @@ public class TunerConstants {
             .withDriveMotorClosedLoopOutput(kDriveClosedLoopOutput)
             .withSlipCurrent(kSlipCurrent)
             .withSpeedAt12Volts(kSpeedAt12Volts)
+            .withSpeedAt12Volts(kSlowSpeed)
             .withDriveMotorType(kDriveMotorType)
             .withSteerMotorType(kSteerMotorType)
             .withFeedbackSource(kSteerFeedbackType)
