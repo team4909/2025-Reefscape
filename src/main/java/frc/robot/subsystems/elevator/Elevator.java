@@ -19,8 +19,10 @@ public class Elevator extends SubsystemBase {
     private final ElevatorIO m_io;
     private final double L1Setpoint = 29;
     private final double L2Setpoint = 32.5;
-    private final double L3Setpoint = 51.5;
-    private final double L4Setpoint = 75;
+    private final double L3Setpoint = 48.5;
+    private final double L4Setpoint = 74.5;
+    private final double L2ASetpoint = 37.5; 
+    private final double L3ASetpoint = 54;
     //inch to rotations of the motor
     final double m_gearRatio = 0.5 * (1d / (1.75100 * Math.PI)) * ( 2d / 3d ) * 25;
 
@@ -64,6 +66,18 @@ public class Elevator extends SubsystemBase {
         return this.runOnce(() -> {
             m_io.gotosetpoint(L4Setpoint, m_gearRatio);
         }).withName("L4");
+      }
+      public Command goToL3A(){
+        // return  this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
+        return this.runOnce(() -> {
+            m_io.gotosetpoint(L3ASetpoint, m_gearRatio);
+        }).withName("L3A");
+      }
+      public Command goToL2A(){
+        // return  this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
+        return this.runOnce(() -> {
+            m_io.gotosetpoint(L2ASetpoint, m_gearRatio);
+        }).withName("L2A");
       }
       public Command reZero(){
         return this.runOnce(() -> {
