@@ -30,6 +30,8 @@ import java.util.LinkedList;
 import java.util.List;
 import org.littletonrobotics.junction.Logger;
 
+import com.ctre.phoenix6.Utils;
+
 public class Vision extends SubsystemBase {
   private final VisionConsumer consumer;
   private final VisionIO[] io;
@@ -142,7 +144,7 @@ public class Vision extends SubsystemBase {
         // Send vision observation
         consumer.accept(
             observation.pose().toPose2d(),
-            observation.timestamp(),
+            Utils.fpgaToCurrentTime(observation.timestamp()),
             VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
       }
 
