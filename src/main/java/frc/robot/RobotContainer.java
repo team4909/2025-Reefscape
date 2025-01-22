@@ -23,9 +23,13 @@ import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 public class RobotContainer {
   private double MaxSpeed =
       TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+  private double SlowSpeed = 
+      TunerConstants.kSlowSpeed.in(MetersPerSecond);
   private double MaxAngularRate =
       RotationsPerSecond.of(0.75)
           .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+  private double SlowAngularRate =
+      RotationsPerSecond.of(0.5).in(RadiansPerSecond);
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   private final SwerveRequest.FieldCentric drive =
@@ -73,7 +77,17 @@ public class RobotContainer {
                             * MaxAngularRate) // Drive counterclockwise with negative X (left)
             ));
 
-    //joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    joystick.rightStick().whileTrue(
+      drivetrain.applyRequest(() ->
+         drive
+          .withVelocityX(
+            -joystick.getLeftX() * SlowSpeed)
+          .withVelocityY(
+            -joystick.getLeftY() * SlowSpeed)
+          .withRotationalRate(
+            -joystick.getRightX() * SlowAngularRate)
+      ));
     // joystick
     //     .b()
     //     .whileTrue(
