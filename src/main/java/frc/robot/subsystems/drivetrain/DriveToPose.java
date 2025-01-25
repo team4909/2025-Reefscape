@@ -31,13 +31,13 @@ public class DriveToPose extends Command {
   private Pose2d m_goalPose;
   private SwerveRequest.ApplyFieldSpeeds m_drive;
 
-  public DriveToPose(Pose2d pose, CommandSwerveDrivetrain drivetrain) {
-    m_pose = pose;
+
+  public DriveToPose(CommandSwerveDrivetrain drivetrain) {
     m_translationController =
-        new ProfiledPIDController(2.0, 0.0, 0.0, new TrapezoidProfile.Constraints(3.5, 2.2));
+        new ProfiledPIDController(2.0, 0.0, 0.0, new TrapezoidProfile.Constraints(1.2, 0.5));
     m_thetaController =
         new ProfiledPIDController(
-            5.0, 0.0, 0.0, new TrapezoidProfile.Constraints(2 * Math.PI, 4 * Math.PI));
+            5.0, 0.0, 0.0, new TrapezoidProfile.Constraints(1 * Math.PI, 1 * Math.PI));
     this.m_drivetrain = drivetrain;
 
     m_drive = new SwerveRequest.ApplyFieldSpeeds()
@@ -49,6 +49,7 @@ public class DriveToPose extends Command {
 
   @Override
   public void initialize() {
+    m_pose = m_drivetrain.findClosestNode().transformBy(new Transform2d(0,Units.inchesToMeters(6),new Rotation2d()));
     m_goalPose = m_pose;
     // m_goalPose =
     //     Constants.onRedAllianceSupplier.getAsBoolean()
@@ -56,7 +57,7 @@ public class DriveToPose extends Command {
     //         : m_pose;
     Pose2d initialPose = m_drivetrain.getState().Pose;
 
-    m_translationController.setTolerance(0.1);
+    m_translationController.setTolerance(0.05);
     m_thetaController.setTolerance(Units.degreesToRadians(1.0));
 
     m_thetaController.enableContinuousInput(-Math.PI, Math.PI);

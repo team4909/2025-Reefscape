@@ -22,13 +22,19 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.vision.VisionIO.PoseObservationType;
+import frc.robot.FieldConstants;
+import frc.robot.subsystems.vision.VisionIOInputsAutoLogged;
+
 import java.util.LinkedList;
 import java.util.List;
 import org.littletonrobotics.junction.Logger;
+
+import com.ctre.phoenix6.Utils;
 
 public class Vision extends SubsystemBase {
   private final VisionConsumer consumer;
@@ -53,6 +59,12 @@ public class Vision extends SubsystemBase {
           new Alert(
               "Vision camera " + Integer.toString(i) + " is disconnected.", AlertType.kWarning);
     }
+
+    // List<Pose2d> alignPositions = FieldConstants.Reef.AlignPositions;
+    // for(int i = 0; i<alignPositions.size(); i++){
+    //   Logger.recordOutput("AlignPoses", alignPositions.get(i));
+    // }
+
   }
 
   /**
@@ -142,7 +154,7 @@ public class Vision extends SubsystemBase {
         // Send vision observation
         consumer.accept(
             observation.pose().toPose2d(),
-            observation.timestamp(),
+            Utils.fpgaToCurrentTime(observation.timestamp()),
             VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
       }
 
@@ -176,6 +188,11 @@ public class Vision extends SubsystemBase {
     Logger.recordOutput(
         "Vision/Summary/RobotPosesRejected",
         allRobotPosesRejected.toArray(new Pose3d[allRobotPosesRejected.size()]));
+
+    Logger.recordOutput("Vision/reefpose", new Pose2d(
+      Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
+      Units.inchesToMeters(158.500),
+      Rotation2d.fromDegrees(0)));
   }
 
   @FunctionalInterface

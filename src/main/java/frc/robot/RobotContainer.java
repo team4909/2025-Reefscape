@@ -20,6 +20,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -60,8 +61,7 @@ public class RobotContainer {
 
 //   private final Shooter s_Shooter;
 //   private final Elevator s_Elevator;
-  private final Vision m_vision1;
-  private final Vision m_vision2;
+  private final Vision m_vision;
   public static AprilTagFieldLayout aprilTagLayout =
       AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
@@ -71,7 +71,14 @@ public class RobotContainer {
     configureBindings();
 
     // if (RobotBase.isReal()){
-    m_vision1 = new Vision(drivetrain::addVisionMeasurement, new VisionIOPhotonVision("back-left-cam", new Transform3d(new Translation3d(
+    m_vision = new Vision(drivetrain::addVisionMeasurement, new VisionIOPhotonVision("front-cam", new Transform3d(new Translation3d(
+        Units.inchesToMeters(11.094),
+        Units.inchesToMeters(-4.925),
+        Units.inchesToMeters(11.5)),
+        new Rotation3d(
+        Units.degreesToRadians(0.0),
+        Units.degreesToRadians(0),
+        Units.degreesToRadians(0)))), new VisionIOPhotonVision("back-left-cam", new Transform3d(new Translation3d(
         Units.inchesToMeters(-9.124 + 2.5),
         Units.inchesToMeters(10.646),
         Units.inchesToMeters(8.25)),
@@ -79,19 +86,7 @@ public class RobotContainer {
         Units.degreesToRadians(0.0),
         Units.degreesToRadians(-28.125),
         Units.degreesToRadians(150.0)))));
-
-    m_vision2 = new Vision(drivetrain::addVisionMeasurement, new VisionIOPhotonVision("front-right-cam", new Transform3d(new Translation3d(
-        Units.inchesToMeters(9.124 - 2.5),
-        Units.inchesToMeters(-10.646),
-        Units.inchesToMeters(-8.25)),
-        new Rotation3d(
-        Units.degreesToRadians(0.0),
-        Units.degreesToRadians(-28.125),
-        Units.degreesToRadians(-30)))));
-    // }
-
-    // drivetrain.resetPose(new Pose2d(new Translation2d(Units.feetToMeters(12) - Units.inchesToMeters(57),4.026), new Rotation2d()));
-  }
+}
 
 
 
@@ -121,8 +116,13 @@ public class RobotContainer {
                 () ->
                     point.withModuleDirection(
                         new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
-
-    joystick.x().whileTrue(new DriveToPose(new Pose2d(1,1,Rotation2d.k180deg), drivetrain));
+                        
+    joystick.x().whileTrue(new DriveToPose(drivetrain));
+    
+    // joystick.x().whileTrue(new DriveToPose( new Pose2d(
+    //   Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
+    //   Units.inchesToMeters(158.500),
+    //   Rotation2d.fromDegrees(0)), drivetrain));
 
     // joystick.x().whileTrue(s_Shooter.shootL2()).onFalse(s_Shooter.stop());
     // joystick.y().whileTrue(s_Shooter.intake()).onFalse(s_Shooter.stop());

@@ -11,11 +11,13 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
@@ -23,8 +25,15 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.FieldConstants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Supplier;
+
+import org.littletonrobotics.junction.Logger;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements Subsystem so it can easily
@@ -35,6 +44,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   private Notifier m_simNotifier = null;
   private double m_lastSimTime;
 
+  // private List<Pose2d> scoringPoses = new ArrayList<>(12);
+  // scoringPoses.add()
+  
   /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
   private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
   /* Red alliance sees forward as 180 degrees (toward blue alliance wall) */
@@ -50,7 +62,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization =
       new SwerveRequest.SysIdSwerveRotation();
 
-  /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
+  private final List<Pose2d> alignPositions;
+  private Pose2d[] centerFaces = new Pose2d[6];
+
   private final SysIdRoutine m_sysIdRoutineTranslation =
       new SysIdRoutine(
           new SysIdRoutine.Config(
@@ -119,6 +133,38 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     if (Utils.isSimulation()) {
       startSimThread();
     }
+    centerFaces[0] =
+          new Pose2d(
+              Units.inchesToMeters(144.003),
+              Units.inchesToMeters(158.500),
+              Rotation2d.fromDegrees(0)).transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13),0), new Rotation2d()));
+      centerFaces[1] =
+          new Pose2d(
+              Units.inchesToMeters(160.373),
+              Units.inchesToMeters(186.857),
+              Rotation2d.fromDegrees(-60)).transformBy(new Transform2d(new Translation2d(Units.inchesToMeters(13),0), new Rotation2d()));
+      centerFaces[2] =
+          new Pose2d(
+              Units.inchesToMeters(193.116),
+              Units.inchesToMeters(186.858),
+              Rotation2d.fromDegrees(-120)).transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13),0), new Rotation2d()));
+      centerFaces[3] =
+          new Pose2d(
+              Units.inchesToMeters(209.489),
+              Units.inchesToMeters(158.502),
+              Rotation2d.fromDegrees(180)).transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13),0), new Rotation2d()));
+      centerFaces[4] =
+          new Pose2d(
+              Units.inchesToMeters(193.118),
+              Units.inchesToMeters(130.145),
+              Rotation2d.fromDegrees(120)).transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13),0), new Rotation2d()));
+      centerFaces[5] =
+          new Pose2d(
+              Units.inchesToMeters(160.375),
+              Units.inchesToMeters(130.144),
+              Rotation2d.fromDegrees(60)).transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13),0), new Rotation2d()));
+
+      alignPositions = Arrays.asList(centerFaces);
   }
 
   /**
@@ -140,6 +186,38 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     if (Utils.isSimulation()) {
       startSimThread();
     }
+    centerFaces[0] =
+          new Pose2d(
+              Units.inchesToMeters(144.003),
+              Units.inchesToMeters(158.500),
+              Rotation2d.fromDegrees(0)).transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13),0), new Rotation2d()));
+      centerFaces[1] =
+          new Pose2d(
+              Units.inchesToMeters(160.373),
+              Units.inchesToMeters(186.857),
+              Rotation2d.fromDegrees(-60)).transformBy(new Transform2d(new Translation2d(Units.inchesToMeters(13),0), new Rotation2d()));
+      centerFaces[2] =
+          new Pose2d(
+              Units.inchesToMeters(193.116),
+              Units.inchesToMeters(186.858),
+              Rotation2d.fromDegrees(-120)).transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13),0), new Rotation2d()));
+      centerFaces[3] =
+          new Pose2d(
+              Units.inchesToMeters(209.489),
+              Units.inchesToMeters(158.502),
+              Rotation2d.fromDegrees(180)).transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13),0), new Rotation2d()));
+      centerFaces[4] =
+          new Pose2d(
+              Units.inchesToMeters(193.118),
+              Units.inchesToMeters(130.145),
+              Rotation2d.fromDegrees(120)).transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13),0), new Rotation2d()));
+      centerFaces[5] =
+          new Pose2d(
+              Units.inchesToMeters(160.375),
+              Units.inchesToMeters(130.144),
+              Rotation2d.fromDegrees(60)).transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13),0), new Rotation2d()));
+
+      alignPositions = Arrays.asList(centerFaces);
   }
 
   /**
@@ -172,6 +250,38 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     if (Utils.isSimulation()) {
       startSimThread();
     }
+    centerFaces[0] =
+          new Pose2d(
+              Units.inchesToMeters(144.003),
+              Units.inchesToMeters(158.500),
+              Rotation2d.fromDegrees(0)).transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13),0), new Rotation2d()));
+      centerFaces[1] =
+          new Pose2d(
+              Units.inchesToMeters(160.373),
+              Units.inchesToMeters(186.857),
+              Rotation2d.fromDegrees(-60)).transformBy(new Transform2d(new Translation2d(Units.inchesToMeters(13),0), new Rotation2d()));
+      centerFaces[2] =
+          new Pose2d(
+              Units.inchesToMeters(193.116),
+              Units.inchesToMeters(186.858),
+              Rotation2d.fromDegrees(-120)).transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13),0), new Rotation2d()));
+      centerFaces[3] =
+          new Pose2d(
+              Units.inchesToMeters(209.489),
+              Units.inchesToMeters(158.502),
+              Rotation2d.fromDegrees(180)).transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13),0), new Rotation2d()));
+      centerFaces[4] =
+          new Pose2d(
+              Units.inchesToMeters(193.118),
+              Units.inchesToMeters(130.145),
+              Rotation2d.fromDegrees(120)).transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13),0), new Rotation2d()));
+      centerFaces[5] =
+          new Pose2d(
+              Units.inchesToMeters(160.375),
+              Units.inchesToMeters(130.144),
+              Rotation2d.fromDegrees(60)).transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13),0), new Rotation2d()));
+
+      alignPositions = Arrays.asList(centerFaces);
   }
 
   /**
@@ -245,9 +355,15 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     m_simNotifier.startPeriodic(kSimLoopPeriod);
   }
 
-  @Override
-  public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds,
-      Matrix<N3, N1> visionMeasurementStdDevs) {
-    super.addVisionMeasurement(visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
+  public Pose2d findClosestNode(){
+    System.out.println("X");
+    for(int i = alignPositions.size(); i<6; i++){
+      Logger.recordOutput("Vision/ReefFaces"+i, alignPositions.get(i));
+    }
+
+    Pose2d currentPose = this.getState().Pose;
+    Pose2d goal = currentPose.nearest(alignPositions);
+    Logger.recordOutput("Vision/GoalPose", goal);
+    return goal;
   }
 }
