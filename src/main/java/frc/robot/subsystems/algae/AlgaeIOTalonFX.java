@@ -23,7 +23,7 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO{
     
     
 
-    private final TalonFX m_right;
+    private final TalonFX m_algaemotor;
     private double m_rotations;
     final PositionVoltage m_request;
     //final VelocityVoltage m_request = new VelocityVoltage(0).withSlot(0);
@@ -33,7 +33,7 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO{
         
         
 
-        m_right = new TalonFX(23, "CANivore2");
+        m_algaemotor = new TalonFX(23, "CANivore2");
         
         m_request = new PositionVoltage(0).withSlot(0);
 
@@ -50,43 +50,43 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO{
         slot0Configs.kD = 0; // A velocity of 1 rps results in 0.1 V output
         slot0Configs.kG = 0.5;
      
-        m_right.setPosition(0);
-        m_right.getConfigurator().apply(algaeMotorConfig);
-        m_right.getConfigurator().apply(outputConfigs);
-        m_right.getConfigurator().apply(slot0Configs);
+        m_algaemotor.setPosition(0);
+        m_algaemotor.getConfigurator().apply(algaeMotorConfig);
+        m_algaemotor.getConfigurator().apply(outputConfigs);
+        m_algaemotor.getConfigurator().apply(slot0Configs);
     }
 
     public void setVoltage(double voltage) {
         // return this.runOnce(()->{
             final VoltageOut request = new VoltageOut(0);
-            m_right.setControl(request.withOutput(voltage));
+            m_algaemotor.setControl(request.withOutput(voltage));
         // });
-        System.out.println("volts:" + m_right.getMotorVoltage());
+        System.out.println("volts:" + m_algaemotor.getMotorVoltage());
     }
     
     public void setBrakeMode(boolean enableBrakeMode) {
         final NeutralModeValue neutralModeValue =
             enableBrakeMode ? NeutralModeValue.Brake : NeutralModeValue.Coast;
-        m_right.setNeutralMode(neutralModeValue);
+        m_algaemotor.setNeutralMode(neutralModeValue);
     }
     @Override
     public void gotosetpoint(double setpoint, double gearRatio) {
         double rotations = setpoint * gearRatio;
         m_rotations = rotations;
         System.out.println("rotations:" + rotations);
-        m_right.setControl(m_request.withPosition(rotations));
+        m_algaemotor.setControl(m_request.withPosition(rotations));
 
     }
 
     public double getVelocity(){
-        return m_right.getVelocity().getValueAsDouble();
+        return m_algaemotor.getVelocity().getValueAsDouble();
     }
     public double getVoltage(){
-        return m_right.getMotorVoltage().getValueAsDouble();
+        return m_algaemotor.getMotorVoltage().getValueAsDouble();
     }
     @Override
     public double getPosition() {
-        return m_right.getPosition().getValueAsDouble();
+        return m_algaemotor.getPosition().getValueAsDouble();
     }
 
     public double getSetpoint(){
@@ -94,7 +94,7 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO{
     }
 
     public void setPosition(double position){
-        m_right.setPosition(position);
+        m_algaemotor.setPosition(position);
     }
  
 }

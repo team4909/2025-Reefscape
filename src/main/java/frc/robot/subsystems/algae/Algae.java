@@ -17,8 +17,8 @@ public class Algae extends SubsystemBase {
     private final DoublePublisher  setPub= algaeTable.getDoubleTopic("Setpoint").publish();
 
     private final AlgaeIO m_io;
-    private final double L1Setpoint = 0;
-    private final double L2Setpoint = -1.5;//32.5
+    private final double DownPosition = 0;
+    private final double ExtendedPosition = -1.5;//32.5
     //inch to rotations of the motor
     final double m_gearRatio = 1d;
 
@@ -42,18 +42,18 @@ public class Algae extends SubsystemBase {
       public Command down(){
         // return  this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
         return this.runOnce(() -> {
-            m_io.gotosetpoint(L1Setpoint, m_gearRatio);
+            m_io.gotosetpoint(DownPosition, m_gearRatio);
         }).withName("L1");
       }
       public Command extend(){
         // return  this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
         return this.runOnce(() -> {
-            m_io.gotosetpoint(L2Setpoint, m_gearRatio);
+            m_io.gotosetpoint(ExtendedPosition, m_gearRatio);
         }).withName("L2");
       }
       public Command reZero(){
         return this.runOnce(() -> {
-            m_io.setPosition(L1Setpoint*m_gearRatio);
+            m_io.setPosition(DownPosition*m_gearRatio);
         }).withName("ReZero");
       }
 
