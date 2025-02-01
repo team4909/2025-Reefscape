@@ -30,6 +30,8 @@ import frc.robot.subsystems.drivetrain.DriveToPose;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
+import frc.robot.subsystems.algae.Algae;
+import frc.robot.subsystems.algae.AlgaeIOTalonFX;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
@@ -66,12 +68,14 @@ public class RobotContainer {
   private final Shooter s_Shooter;
   private final Elevator s_Elevator;
   private final Vision m_vision;
+  private final Algae s_Algae;
   public static AprilTagFieldLayout aprilTagLayout =
       AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
   public RobotContainer(){
     s_Shooter = new Shooter(new ShooterIOTalonFX());
     s_Elevator = new Elevator(new ElevatorIOTalonFX());
+    s_Algae = new Algae(new AlgaeIOTalonFX());
     configureBindings();
 
     m_vision = new Vision(drivetrain::addVisionMeasurement, new VisionIOPhotonVision("front-cam", new Transform3d(new Translation3d(
@@ -114,6 +118,8 @@ public class RobotContainer {
                             * MaxAngularRate) // Drive counterclockwise with negative X (left)
             ));
 
+            
+
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.rightStick().whileTrue(
       drivetrain.applyRequest(() ->
@@ -146,6 +152,9 @@ public class RobotContainer {
     joystick.back().onTrue(s_Elevator.reZero());
     // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
     joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
+    joystick.povLeft().onTrue(s_Algae.extend());
+    joystick.povRight().onTrue(s_Algae.down());
+
 
 
 
