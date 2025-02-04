@@ -55,7 +55,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
-    private SwerveRequest.ApplyFieldSpeeds m_drive;
+    private SwerveRequest.ApplyRobotSpeeds m_drive;
 
     // private List<Pose2d> scoringPoses = new ArrayList<>(12);
     // scoringPoses.add()
@@ -145,7 +145,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public CommandSwerveDrivetrain(
             SwerveDrivetrainConstants drivetrainConstants, SwerveModuleConstants<?, ?, ?>... modules) {
         super(drivetrainConstants, modules);
-        m_drive = new SwerveRequest.ApplyFieldSpeeds();
+        m_drive = new SwerveRequest.ApplyRobotSpeeds();
         if (Utils.isSimulation()) {
             startSimThread();
         }
@@ -156,8 +156,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             config = RobotConfig.fromGUISettings();
 			System.out.println("here 2");
             AutoBuilder.configure(
-                    () -> this.getState().Pose, this::resetPose,
-                    () -> this.getState().Speeds,
+                    () -> this.getState().Pose, 
+                    this::resetPose,
+                    this::getRobotRelativeSpeeds,
                     (speeds, feedforwards) -> setControl(m_drive.withSpeeds(speeds)),
                     // this.ChassisSpeeds(Translation2d.driveVelocity.getX(),
                     // Translation2d.driveVelocity.getY(), thetaVelocity),
@@ -210,6 +211,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         alignPositions = Arrays.asList(centerFaces);
         System.out.println("Con 1");
+    }
+
+
+    public ChassisSpeeds getRobotRelativeSpeeds() {
+        return this.getKinematics().toChassisSpeeds(this.getState().ModuleStates);
     }
 
     /**
@@ -435,6 +441,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     public void resetPose(Pose2d pose) {
-        this.getState().Pose = pose;
+        System.out.println("Resetting Pose" + pose.toString());
+        super.resetPose(pose);
+        System.out.println("Resetting Pose after" + this.getState().Pose.toString());
     }
 }

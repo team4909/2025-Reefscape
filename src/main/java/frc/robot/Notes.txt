@@ -1,0 +1,10 @@
+CLEARING ROBORIO CACHE FOR AUTOS
+    - ssh admin@10.49.9.2
+    - ls //list files
+    - pwd //where am i
+    - //your code is stored in /home/lvuser
+    - cd /home/lvuser //go to that folder
+    - rm *.auto //clears autos within folder
+
+How do we check if code is called
+ - print ln

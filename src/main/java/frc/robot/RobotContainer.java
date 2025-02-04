@@ -72,7 +72,7 @@ public class RobotContainer {
   private final SendableChooser<Command> m_chooser;
   private final Shooter s_Shooter;
   private final Elevator s_Elevator;
-  private final Vision m_vision;
+  // private final Vision m_vision;
   public static AprilTagFieldLayout aprilTagLayout =
       AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
@@ -94,21 +94,21 @@ public class RobotContainer {
     
     configureBindings();
 
-    m_vision = new Vision(drivetrain::addVisionMeasurement, new VisionIOPhotonVision("front-cam", new Transform3d(new Translation3d(
-        Units.inchesToMeters(11.094),
-        Units.inchesToMeters(-4.925),
-        Units.inchesToMeters(11.5)),
-        new Rotation3d(
-        Units.degreesToRadians(0.0),
-        Units.degreesToRadians(0),
-        Units.degreesToRadians(0)))), new VisionIOPhotonVision("back-left-cam", new Transform3d(new Translation3d(
-        Units.inchesToMeters(-9.124 + 2.5),
-        Units.inchesToMeters(10.646),
-        Units.inchesToMeters(8.25)),
-        new Rotation3d(
-        Units.degreesToRadians(0.0),
-        Units.degreesToRadians(-28.125),
-        Units.degreesToRadians(150.0)))));
+    // m_vision = new Vision(drivetrain::addVisionMeasurement, new VisionIOPhotonVision("front-cam", new Transform3d(new Translation3d(
+    //     Units.inchesToMeters(11.094),
+    //     Units.inchesToMeters(-4.925),
+    //     Units.inchesToMeters(11.5)),
+    //     new Rotation3d(
+    //     Units.degreesToRadians(0.0),
+    //     Units.degreesToRadians(0),
+    //     Units.degreesToRadians(0)))), new VisionIOPhotonVision("back-left-cam", new Transform3d(new Translation3d(
+    //     Units.inchesToMeters(-9.124 + 2.5),
+    //     Units.inchesToMeters(10.646),
+    //     Units.inchesToMeters(8.25)),
+    //     new Rotation3d(
+    //     Units.degreesToRadians(0.0),
+    //     Units.degreesToRadians(-28.125),
+    //     Units.degreesToRadians(150.0)))));
 }
 
 
@@ -206,6 +206,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return m_chooser.getSelected();
+    return new PathPlannerAuto("Taxi");//m_chooser.getSelected();
   }
 }
