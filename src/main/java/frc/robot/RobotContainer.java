@@ -6,7 +6,12 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -22,6 +27,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -62,33 +69,47 @@ public class RobotContainer {
   private final CommandXboxController joystick = new CommandXboxController(0);
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-
+  private final SendableChooser<Command> m_chooser;
   private final Shooter s_Shooter;
   private final Elevator s_Elevator;
-  private final Vision m_vision;
+  // private final Vision m_vision;
   public static AprilTagFieldLayout aprilTagLayout =
       AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
   public RobotContainer(){
     s_Shooter = new Shooter(new ShooterIOTalonFX());
     s_Elevator = new Elevator(new ElevatorIOTalonFX());
+
+    //Auto Named Commands
+    NamedCommands.registerCommand("score", s_Shooter.shootTrough());
+    NamedCommands.registerCommand("L4", s_Elevator.goToL4());
+    NamedCommands.registerCommand("L3", s_Elevator.goToL3());
+    NamedCommands.registerCommand("L2", s_Elevator.goToL2());
+    NamedCommands.registerCommand("L1", s_Elevator.goToL1());
+    NamedCommands.registerCommand("test", s_Elevator.testPrint());
+
+    
+
+    m_chooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", m_chooser);
+    
     configureBindings();
 
-    m_vision = new Vision(drivetrain::addVisionMeasurement, new VisionIOPhotonVision("front-cam", new Transform3d(new Translation3d(
-        Units.inchesToMeters(11.094),
-        Units.inchesToMeters(-4.925),
-        Units.inchesToMeters(11.5)),
-        new Rotation3d(
-        Units.degreesToRadians(0.0),
-        Units.degreesToRadians(0),
-        Units.degreesToRadians(0)))), new VisionIOPhotonVision("back-left-cam", new Transform3d(new Translation3d(
-        Units.inchesToMeters(-9.124 + 2.5),
-        Units.inchesToMeters(10.646),
-        Units.inchesToMeters(8.25)),
-        new Rotation3d(
-        Units.degreesToRadians(0.0),
-        Units.degreesToRadians(-28.125),
-        Units.degreesToRadians(150.0)))));
+    // m_vision = new Vision(drivetrain::addVisionMeasurement, new VisionIOPhotonVision("front-cam", new Transform3d(new Translation3d(
+    //     Units.inchesToMeters(11.094),
+    //     Units.inchesToMeters(-4.925),
+    //     Units.inchesToMeters(11.5)),
+    //     new Rotation3d(
+    //     Units.degreesToRadians(0.0),
+    //     Units.degreesToRadians(0),
+    //     Units.degreesToRadians(0)))), new VisionIOPhotonVision("back-left-cam", new Transform3d(new Translation3d(
+    //     Units.inchesToMeters(-9.124 + 2.5),
+    //     Units.inchesToMeters(10.646),
+    //     Units.inchesToMeters(8.25)),
+    //     new Rotation3d(
+    //     Units.degreesToRadians(0.0),
+    //     Units.degreesToRadians(-28.125),
+    //     Units.degreesToRadians(150.0)))));
 }
 
 
@@ -186,6 +207,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return new PathPlannerAuto("Score far L4");//m_chooser.getSelected();
   }
 }
