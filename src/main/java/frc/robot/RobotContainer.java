@@ -86,6 +86,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("L3", s_Elevator.goToL3());
     NamedCommands.registerCommand("L2", s_Elevator.goToL2());
     NamedCommands.registerCommand("L1", s_Elevator.goToL1());
+    NamedCommands.registerCommand("test", s_Elevator.testPrint());
 
     
 
@@ -206,6 +207,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto("Taxi");//m_chooser.getSelected();
+    return new PathPlannerAuto("Score far L4");//m_chooser.getSelected();
   }
 }

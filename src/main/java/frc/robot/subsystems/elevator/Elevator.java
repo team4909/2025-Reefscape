@@ -20,8 +20,8 @@ public class Elevator extends SubsystemBase {
     private final double L1Setpoint = 29;
     private final double L2Setpoint = 38.5;//32.5
     private final double L3Setpoint = 54.5;
-    private final double L4Setpoint = 78
-    ; // 74.5
+    private final double L4Setpoint = 80
+    ; // 74.5 and 78 dp on feb 1
     private final double L2ASetpoint = 37.5; 
     private final double L3ASetpoint = 54;
     //inch to rotations of the motor
@@ -86,6 +86,11 @@ public class Elevator extends SubsystemBase {
         }).withName("ReZero");
       }
 
+      public Command testPrint(){
+        return this.runOnce(() -> {
+            System.out.println("Test");
+        }).withName("Test");
+      }
       @Override
       public void periodic() {
         super.periodic();
