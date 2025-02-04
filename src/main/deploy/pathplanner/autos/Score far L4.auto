@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "far Reef"
+            "pathName": "TAXI"
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.3
+            "waitTime": 1.0
           }
         },
         {
