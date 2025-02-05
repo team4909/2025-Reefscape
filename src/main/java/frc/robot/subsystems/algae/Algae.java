@@ -27,29 +27,41 @@ public class Algae extends SubsystemBase {
         // setDefaultCommand(stop());
       }
     
-      public Command moveUp() {
-        return this.runOnce(() -> m_io.setVoltage(1)).withName("UP");
+      public Command shoot() {
+        return this.runOnce(() -> m_io.setShootVoltage(1)).withName("Shoot");
       }
     
-      public Command stop() {
-        return this.runOnce(() -> m_io.setVoltage(0)).withName("Stop");
+      public Command stopShooter() {
+        return this.runOnce(() -> m_io.setShootVoltage(0)).withName("Stop");
+      }
+    
+      public Command intake() {
+        return this.runOnce(() -> m_io.setShootVoltage(-1)).withName("Intake");
+      }
+
+      public Command moveUp() {
+        return this.runOnce(() -> m_io.setPivotVoltage(1)).withName("Move Up");
+      }
+    
+      public Command stopPivot() {
+        return this.runOnce(() -> m_io.setPivotVoltage(0)).withName("Stop");
       }
     
       public Command moveDown() {
-        return this.runOnce(() -> m_io.setVoltage(-1)).withName("Move Down");
+        return this.runOnce(() -> m_io.setPivotVoltage(-1)).withName("Move Down");
       }
 
       public Command down(){
         // return  this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
         return this.runOnce(() -> {
             m_io.gotosetpoint(DownPosition, m_gearRatio);
-        }).withName("L1");
+        }).withName("Down");
       }
       public Command extend(){
         // return  this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
         return this.runOnce(() -> {
             m_io.gotosetpoint(ExtendedPosition, m_gearRatio);
-        }).withName("L2");
+        }).withName("Extend");
       }
       public Command reZero(){
         return this.runOnce(() -> {

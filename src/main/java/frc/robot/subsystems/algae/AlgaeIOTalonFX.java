@@ -23,7 +23,8 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO{
     
     
 
-    private final TalonFX m_algaemotor;
+    private final TalonFX m_algaeshootmotor;
+    private final TalonFX m_algaepivotmotor;
     private double m_rotations;
     final PositionVoltage m_request;
     //final VelocityVoltage m_request = new VelocityVoltage(0).withSlot(0);
@@ -33,7 +34,8 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO{
         
         
 
-        m_algaemotor = new TalonFX(23, "CANivore2");
+        m_algaeshootmotor = new TalonFX(23, "CANivore2");
+        m_algaepivotmotor = new TalonFX(24, "CANivore2");
         
         m_request = new PositionVoltage(0).withSlot(0);
 
@@ -50,43 +52,54 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO{
         slot0Configs.kD = 0; // A velocity of 1 rps results in 0.1 V output
         slot0Configs.kG = 0.5;
      
-        m_algaemotor.setPosition(0);
-        m_algaemotor.getConfigurator().apply(algaeMotorConfig);
-        m_algaemotor.getConfigurator().apply(outputConfigs);
-        m_algaemotor.getConfigurator().apply(slot0Configs);
+        m_algaepivotmotor.setPosition(0);
+        m_algaeshootmotor.getConfigurator().apply(algaeMotorConfig);
+        m_algaepivotmotor.getConfigurator().apply(algaeMotorConfig);
+        m_algaeshootmotor.getConfigurator().apply(outputConfigs);
+        m_algaepivotmotor.getConfigurator().apply(outputConfigs);
+        m_algaeshootmotor.getConfigurator().apply(slot0Configs);
+        m_algaepivotmotor.getConfigurator().apply(slot0Configs);
     }
 
-    public void setVoltage(double voltage) {
+    public void setShootVoltage(double voltage) {
         // return this.runOnce(()->{
             final VoltageOut request = new VoltageOut(0);
-            m_algaemotor.setControl(request.withOutput(voltage));
+            m_algaeshootmotor.setControl(request.withOutput(voltage));
         // });
-        System.out.println("volts:" + m_algaemotor.getMotorVoltage());
+        System.out.println("volts:" + m_algaeshootmotor.getMotorVoltage());
+    }
+
+    public void setPivotVoltage(double voltage) {
+        // return this.runOnce(()->{
+            final VoltageOut request = new VoltageOut(0);
+            m_algaepivotmotor.setControl(request.withOutput(voltage));
+        // });
+        System.out.println("volts:" + m_algaepivotmotor.getMotorVoltage());
     }
     
     public void setBrakeMode(boolean enableBrakeMode) {
         final NeutralModeValue neutralModeValue =
             enableBrakeMode ? NeutralModeValue.Brake : NeutralModeValue.Coast;
-        m_algaemotor.setNeutralMode(neutralModeValue);
+        m_algaeshootmotor.setNeutralMode(neutralModeValue);
     }
     @Override
     public void gotosetpoint(double setpoint, double gearRatio) {
         double rotations = setpoint * gearRatio;
         m_rotations = rotations;
         System.out.println("rotations:" + rotations);
-        m_algaemotor.setControl(m_request.withPosition(rotations));
+        m_algaepivotmotor.setControl(m_request.withPosition(rotations));
 
     }
 
     public double getVelocity(){
-        return m_algaemotor.getVelocity().getValueAsDouble();
+        return m_algaeshootmotor.getVelocity().getValueAsDouble();
     }
     public double getVoltage(){
-        return m_algaemotor.getMotorVoltage().getValueAsDouble();
+        return m_algaeshootmotor.getMotorVoltage().getValueAsDouble();
     }
     @Override
     public double getPosition() {
-        return m_algaemotor.getPosition().getValueAsDouble();
+        return m_algaeshootmotor.getPosition().getValueAsDouble();
     }
 
     public double getSetpoint(){
@@ -94,7 +107,7 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO{
     }
 
     public void setPosition(double position){
-        m_algaemotor.setPosition(position);
+        m_algaeshootmotor.setPosition(position);
     }
  
 }

@@ -147,13 +147,15 @@ public class RobotContainer {
     joystick.leftBumper().onTrue(s_Elevator.goToL2()).onFalse(s_Elevator.goToL1());
     joystick.rightBumper().onTrue(s_Elevator.goToL3()).onFalse(s_Elevator.goToL1());
     joystick.leftTrigger().onTrue(s_Elevator.goToL4()).onFalse(s_Elevator.goToL1());
-    joystick.povUp().whileTrue(s_Elevator.moveUp()).onFalse(s_Elevator.stop());
-    joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
+    joystick.povUp().whileTrue(s_Algae.moveUp()).onFalse(s_Algae.stopPivot());
+    joystick.povDown().whileTrue(s_Algae.moveDown()).onFalse(s_Algae.stopPivot());
     joystick.back().onTrue(s_Elevator.reZero());
     // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
     joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
     joystick.povLeft().onTrue(s_Algae.extend());
     joystick.povRight().onTrue(s_Algae.down());
+    joystick.rightStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
+    joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
 
 
 

@@ -12,7 +12,9 @@ public interface AlgaeIO {
         public double voltage = 0d;
     }
 
-    public default void setVoltage(double voltage) {}
+    public default void setShootVoltage(double voltage) {}
+
+    public default void setPivotVoltage(double voltage) {}
     
     public default void setBrakeMode(boolean enableBrakeMode) {}
 
