@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 
-import static frc.robot.subsystems.vision.VisionConstants.robotToCamera0;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -29,15 +28,15 @@ public class DriveToPose extends Command {
   private final CommandSwerveDrivetrain m_drivetrain;
   private final ProfiledPIDController m_translationController, m_thetaController;
   private Translation2d m_lastSetpointTranslation;
-  private Pose2d m_pose;
   private Pose2d m_goalPose;
   private SwerveRequest.ApplyFieldSpeeds m_drive;
+  Transform2d m_shift;
 
 
   public DriveToPose(CommandSwerveDrivetrain drivetrain, Transform2d shift) {
-    m_pose = drivetrain.findClosestNode().transformBy(shift);
+    m_shift = shift;
     m_translationController =
-        new ProfiledPIDController(2.0, 0.0, 0.0, new TrapezoidProfile.Constraints(2, 2));
+        new ProfiledPIDController(4.0, 0.0, 0.0, new TrapezoidProfile.Constraints(2, 2));
     m_thetaController =
         new ProfiledPIDController(
             5.0, 0.0, 0.0, new TrapezoidProfile.Constraints(1 * Math.PI, 1 * Math.PI));
@@ -52,7 +51,7 @@ public class DriveToPose extends Command {
 
   @Override
   public void initialize() {
-    m_goalPose = m_pose;
+    m_goalPose = m_drivetrain.findClosestNode().transformBy(m_shift);
     Pose2d initialPose = m_drivetrain.getState().Pose;
 
     m_translationController.setTolerance(0.05);
