@@ -37,6 +37,8 @@ import frc.robot.subsystems.drivetrain.DriveToPose;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
+import frc.robot.subsystems.Climber.Climber;
+import frc.robot.subsystems.Climber.ClimberIOTalonFX;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
@@ -72,6 +74,7 @@ public class RobotContainer {
   private final SendableChooser<Command> m_chooser;
   private final Shooter s_Shooter;
   private final Elevator s_Elevator;
+  private final Climber s_Climber;
   // private final Vision m_vision;
   public static AprilTagFieldLayout aprilTagLayout =
       AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
@@ -79,6 +82,7 @@ public class RobotContainer {
   public RobotContainer(){
     s_Shooter = new Shooter(new ShooterIOTalonFX());
     s_Elevator = new Elevator(new ElevatorIOTalonFX());
+    s_Climber = new Climber(new ClimberIOTalonFX());
 
     //Auto Named Commands
     NamedCommands.registerCommand("score", s_Shooter.shootTrough());
@@ -167,7 +171,8 @@ public class RobotContainer {
     joystick.back().onTrue(s_Elevator.reZero());
     // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
     joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
-
+    joystick.povLeft().onTrue(s_Climber.climb()).onFalse(s_Climber.stop());
+    joystick.povRight().onTrue(s_Climber.climb()).onFalse(s_Climber.stop());
 
 
     joystick
