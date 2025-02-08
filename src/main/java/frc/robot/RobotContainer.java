@@ -73,7 +73,7 @@ public class RobotContainer {
   private final SendableChooser<Command> m_chooser;
   private final Shooter s_Shooter;
   private final Elevator s_Elevator;
-  // private final Vision m_vision;
+  private final Vision m_vision;
   public static AprilTagFieldLayout aprilTagLayout =
       AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
