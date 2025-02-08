@@ -2,6 +2,7 @@ package frc.robot.subsystems.drivetrain;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveModule.SteerRequestType;
+import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.util.GeometryUtil;
 import edu.wpi.first.math.MathUtil;
@@ -14,11 +15,11 @@ import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 
-import static frc.robot.subsystems.vision.VisionConstants.robotToCamera0;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -27,14 +28,15 @@ public class DriveToPose extends Command {
   private final CommandSwerveDrivetrain m_drivetrain;
   private final ProfiledPIDController m_translationController, m_thetaController;
   private Translation2d m_lastSetpointTranslation;
-  private Pose2d m_pose;
   private Pose2d m_goalPose;
   private SwerveRequest.ApplyFieldSpeeds m_drive;
+  Transform2d m_shift;
 
 
-  public DriveToPose(CommandSwerveDrivetrain drivetrain) {
+  public DriveToPose(CommandSwerveDrivetrain drivetrain, Transform2d shift) {
+    m_shift = shift;
     m_translationController =
-        new ProfiledPIDController(2.0, 0.0, 0.0, new TrapezoidProfile.Constraints(1.2, 0.5));
+        new ProfiledPIDController(4.0, 0.0, 0.0, new TrapezoidProfile.Constraints(2, 2));
     m_thetaController =
         new ProfiledPIDController(
             5.0, 0.0, 0.0, new TrapezoidProfile.Constraints(1 * Math.PI, 1 * Math.PI));
@@ -49,12 +51,7 @@ public class DriveToPose extends Command {
 
   @Override
   public void initialize() {
-    m_pose = m_drivetrain.findClosestNode().transformBy(new Transform2d(0,Units.inchesToMeters(6),new Rotation2d()));
-    m_goalPose = m_pose;
-    // m_goalPose =
-    //     Constants.onRedAllianceSupplier.getAsBoolean()
-    //         ? GeometryUtil.flipFieldPose(m_pose)
-    //         : m_pose;
+    m_goalPose = m_drivetrain.findClosestNode().transformBy(m_shift);
     Pose2d initialPose = m_drivetrain.getState().Pose;
 
     m_translationController.setTolerance(0.05);

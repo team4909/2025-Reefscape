@@ -20,6 +20,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -95,28 +96,32 @@ public class RobotContainer {
     
     configureBindings();
 
-    // m_vision = new Vision(drivetrain::addVisionMeasurement, new VisionIOPhotonVision("front-cam", new Transform3d(new Translation3d(
-    //     Units.inchesToMeters(11.094),
-    //     Units.inchesToMeters(-4.925),
-    //     Units.inchesToMeters(11.5)),
-    //     new Rotation3d(
-    //     Units.degreesToRadians(0.0),
-    //     Units.degreesToRadians(0),
-    //     Units.degreesToRadians(0)))), new VisionIOPhotonVision("back-left-cam", new Transform3d(new Translation3d(
-    //     Units.inchesToMeters(-9.124 + 2.5),
-    //     Units.inchesToMeters(10.646),
-    //     Units.inchesToMeters(8.25)),
-    //     new Rotation3d(
-    //     Units.degreesToRadians(0.0),
-    //     Units.degreesToRadians(-28.125),
-    //     Units.degreesToRadians(150.0)))));
+    m_vision = new Vision(drivetrain::addVisionMeasurement, 
+    
+    new VisionIOPhotonVision("front-right-cam", new Transform3d(new Translation3d(
+        Units.inchesToMeters(7.16),
+        Units.inchesToMeters(-10.92),
+        Units.inchesToMeters(9.39)),
+        new Rotation3d(
+        Units.degreesToRadians(0.0),
+        Units.degreesToRadians(-21.173),
+        Units.degreesToRadians(-20)))),
+
+    new VisionIOPhotonVision("front-left-cam", new Transform3d(new Translation3d(
+        Units.inchesToMeters(7.211),
+        Units.inchesToMeters(10.607),
+        Units.inchesToMeters(9.411)),
+        new Rotation3d(
+        Units.degreesToRadians(0.0),
+        Units.degreesToRadians(-25.414),
+        Units.degreesToRadians(-20)))));
 }
 
 
 
 
   public void periodic() {
-    System.out.println("Elevator Command"+s_Elevator.getCurrentCommand());
+    // System.out.println("Elevator Command"+s_Elevator.getCurrentCommand());
   }
   private void configureBindings() {
     // Note that X is defined as forward according to WPILib convention,
@@ -156,7 +161,7 @@ public class RobotContainer {
 
     joystick.rightTrigger().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
     joystick.y().whileTrue(s_Shooter.intake()).onFalse(s_Shooter.stop());
-    // joystick.a().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
+    joystick.a().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
 
     joystick.b().onTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
     joystick.leftBumper().onTrue(s_Elevator.goToL2()).onFalse(s_Elevator.goToL1());
@@ -170,15 +175,17 @@ public class RobotContainer {
 
 
 
-    joystick
-        .b()
-        .whileTrue(
-            drivetrain.applyRequest(
-                () ->
-                    point.withModuleDirection(
-                        new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+    // joystick
+    //     .b()
+    //     .whileTrue(
+    //         drivetrain.applyRequest(
+    //             () ->
+    //                 point.withModuleDirection(
+    //                     new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
                         
-    joystick.x().whileTrue(new DriveToPose(drivetrain));
+    joystick.b().whileTrue(new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-3),Units.inchesToMeters(4),new Rotation2d())));
+    joystick.x().whileTrue(new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-3),Units.inchesToMeters(17),new Rotation2d())));
+
     
     // joystick.x().whileTrue(new DriveToPose( new Pose2d(
     //   Units.inchesToMeters(144.003)-Units.inchesToMeters(13),

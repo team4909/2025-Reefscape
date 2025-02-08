@@ -152,7 +152,7 @@ public class TunerConstants {
     private static final int kFrontLeftDriveMotorId = 4;
     private static final int kFrontLeftSteerMotorId = 3;
     private static final int kFrontLeftEncoderId = 12;
-    private static final Angle kFrontLeftEncoderOffsetRobot1 = Rotations.of(0.375); //0.375 green robot drive rail offset V2
+    private static final Angle kFrontLeftEncoderOffsetRobot1 = Rotations.of(-0.12451171875); //0.375 green robot drive rail offset V2
     private static final Angle kFrontLeftEncoderOffsetRobot2 = Rotations.of(0.27880859375); //0.375 green robot drive rail offset V2
     private static final boolean kFrontLeftSteerMotorInverted = true;
     private static final boolean kFrontLeftEncoderInverted = false;
@@ -164,7 +164,7 @@ public class TunerConstants {
     private static final int kFrontRightDriveMotorId = 6;
     private static final int kFrontRightSteerMotorId = 5;
     private static final int kFrontRightEncoderId = 13;
-    private static final Angle kFrontRightEncoderOffsetRobot1 = Rotations.of(0.39453125); //0.39453125 green robot drive rail offset V2
+    private static final Angle kFrontRightEncoderOffsetRobot1 = Rotations.of(-0.37255859375); //0.39453125 green robot drive rail offset V2
     private static final Angle kFrontRightEncoderOffsetRobot2 = Rotations.of(0.05419921875); //0.39453125 green robot drive rail offset V2
     private static final boolean kFrontRightSteerMotorInverted = true;
     private static final boolean kFrontRightEncoderInverted = false;
@@ -176,7 +176,7 @@ public class TunerConstants {
     private static final int kBackLeftDriveMotorId = 2;
     private static final int kBackLeftSteerMotorId = 1;
     private static final int kBackLeftEncoderId = 11;
-    private static final Angle kBackLeftEncoderOffsetRobot1 = Rotations.of(0.27490234375); //0.375 green robot drive rail offset V2
+    private static final Angle kBackLeftEncoderOffsetRobot1 = Rotations.of(0.409912109375); //0.375 green robot drive rail offset V2
     private static final Angle kBackLeftEncoderOffsetRobot2 = Rotations.of(0.34765625); //0.27490234375 green robot drive rail offset V2
     private static final boolean kBackLeftSteerMotorInverted = true;
     private static final boolean kBackLeftEncoderInverted = false;
@@ -188,7 +188,7 @@ public class TunerConstants {
     private static final int kBackRightDriveMotorId = 7;
     private static final int kBackRightSteerMotorId = 8;
     private static final int kBackRightEncoderId = 14;
-    private static final Angle kBackRightEncoderOffsetRobot1 = Rotations.of(-0.206298828125); //-0.206298828125 green robot drive rail offset V2
+    private static final Angle kBackRightEncoderOffsetRobot1 = Rotations.of(-0.039794921875); //-0.206298828125 green robot drive rail offset V2
     private static final Angle kBackRightEncoderOffsetRobot2 = Rotations.of(0.0888671875); //-0.206298828125 green robot drive rail offset V2
     private static final boolean kBackRightSteerMotorInverted = true;
     private static final boolean kBackRightEncoderInverted = false;
@@ -197,7 +197,7 @@ public class TunerConstants {
     private static final Distance kBackRightYPos = Inches.of(-10.5);
 
     
-    private final static String ROBOT1 = "UNKNOWN";
+    private final static String ROBOT1 = "032380FD";
     private final static String ROBOT2 = "032243C9";
     
 
