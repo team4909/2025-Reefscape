@@ -1,8 +1,10 @@
 package frc.robot.subsystems.Climber;
 
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class ClimberIOTalonFX implements ClimberIO {
@@ -12,10 +14,14 @@ public class ClimberIOTalonFX implements ClimberIO {
     m_Climbermotor = new TalonFX(20, "CANivore2");
 
     final TalonFXConfiguration climberMotorConfig = new TalonFXConfiguration();
+    final MotorOutputConfigs outputConfigs = new MotorOutputConfigs();
+
+    outputConfigs.NeutralMode = NeutralModeValue.Brake;
     climberMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
     climberMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
     m_Climbermotor.getConfigurator().apply(climberMotorConfig);
+    m_Climbermotor.getConfigurator().apply(outputConfigs);dfcv 
   }
 
   @Override
