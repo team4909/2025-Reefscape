@@ -79,16 +79,16 @@ public class RobotContainer {
     
     new VisionIOPhotonVision("front-right-cam", new Transform3d(new Translation3d(
         Units.inchesToMeters(7.16),
-        Units.inchesToMeters(10.92),
+        Units.inchesToMeters(-10.92),
         Units.inchesToMeters(9.39)),
         new Rotation3d(
         Units.degreesToRadians(0.0),
         Units.degreesToRadians(-21.173),
-        Units.degreesToRadians(-40)))),
+        Units.degreesToRadians(-20)))),
 
     new VisionIOPhotonVision("front-left-cam", new Transform3d(new Translation3d(
         Units.inchesToMeters(7.211),
-        Units.inchesToMeters(-10.60),
+        Units.inchesToMeters(10.607),
         Units.inchesToMeters(9.411)),
         new Rotation3d(
         Units.degreesToRadians(0.0),
@@ -162,8 +162,8 @@ public class RobotContainer {
     //                 point.withModuleDirection(
     //                     new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
                         
-    joystick.b().whileTrue(new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-3),Units.inchesToMeters(6),new Rotation2d())));
-    joystick.x().whileTrue(new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-3),Units.inchesToMeters(19),new Rotation2d())));
+    joystick.b().whileTrue(new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-3),Units.inchesToMeters(4),new Rotation2d())));
+    joystick.x().whileTrue(new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-3),Units.inchesToMeters(17),new Rotation2d())));
 
     
     // joystick.x().whileTrue(new DriveToPose( new Pose2d(
