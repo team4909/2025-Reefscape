@@ -197,8 +197,8 @@ public class TunerConstants {
     private static final Distance kBackRightYPos = Inches.of(-10.5);
 
     
-    private final static String ROBOT1 = "032380FD";
-    private final static String ROBOT2 = "032243C9";
+    public final static String ROBOT1 = "032380FD";
+    public final static String ROBOT2 = "032243C9";
     
 
    
@@ -228,12 +228,8 @@ public class TunerConstants {
             kFrontRightEncoderOffset = kFrontRightEncoderOffsetRobot2;
             
         } else {
-            kFrontLeftEncoderOffset = kFrontLeftEncoderOffsetRobot1;
-            kFrontRightEncoderOffset = kFrontRightEncoderOffsetRobot1;
-            kBackLeftEncoderOffset = kBackLeftEncoderOffsetRobot1;
-            kBackRightEncoderOffset = kBackRightEncoderOffsetRobot1;
-            // System.out.println("Unknown Robot");
-            // throw new RuntimeException("Unknown Robot Serial Number");
+            System.out.println("Unknown Robot");
+            throw new RuntimeException("Unknown Robot Serial Number");
         }
     
         SwerveModuleConstants<TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration> FrontLeft  =
