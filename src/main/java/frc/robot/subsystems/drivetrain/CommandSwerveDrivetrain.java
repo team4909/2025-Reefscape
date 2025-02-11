@@ -151,14 +151,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         if (Utils.isSimulation()) {
             startSimThread();
         }
-		System.out.println("here 1");
 
         RobotConfig config;
         try {
             config = RobotConfig.fromGUISettings();
-			System.out.println("here 2");
             AutoBuilder.configure(
-                    () -> this.getState().Pose, 
+                    () -> this.getState().Pose,
                     this::resetPose,
                     this::getRobotRelativeSpeeds,
                     (speeds, feedforwards) -> setControl(m_drive.withSpeeds(speeds)),
@@ -212,9 +210,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0), new Rotation2d()));
 
         alignPositions = Arrays.asList(centerFaces);
-        System.out.println("Con 1");
     }
-
 
     public ChassisSpeeds getRobotRelativeSpeeds() {
         return this.getKinematics().toChassisSpeeds(this.getState().ModuleStates);
@@ -237,46 +233,52 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      * @param modules                 Constants for each specific module
      */
     // public CommandSwerveDrivetrain(
-    //         SwerveDrivetrainConstants drivetrainConstants,
-    //         double odometryUpdateFrequency,
-    //         SwerveModuleConstants<?, ?, ?>... modules) {
-    //     super(drivetrainConstants, odometryUpdateFrequency, modules);
-    //     if (Utils.isSimulation()) {
-    //         startSimThread();
-    //     }
-    //     centerFaces[0] = new Pose2d(
-    //             Units.inchesToMeters(144.003),
-    //             Units.inchesToMeters(158.500),
-    //             Rotation2d.fromDegrees(0))
-    //             .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0), new Rotation2d()));
-    //     centerFaces[1] = new Pose2d(
-    //             Units.inchesToMeters(160.373),
-    //             Units.inchesToMeters(186.857),
-    //             Rotation2d.fromDegrees(-60))
-    //             .transformBy(new Transform2d(new Translation2d(Units.inchesToMeters(13), 0), new Rotation2d()));
-    //     centerFaces[2] = new Pose2d(
-    //             Units.inchesToMeters(193.116),
-    //             Units.inchesToMeters(186.858),
-    //             Rotation2d.fromDegrees(-120))
-    //             .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0), new Rotation2d()));
-    //     centerFaces[3] = new Pose2d(
-    //             Units.inchesToMeters(209.489),
-    //             Units.inchesToMeters(158.502),
-    //             Rotation2d.fromDegrees(180))
-    //             .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0), new Rotation2d()));
-    //     centerFaces[4] = new Pose2d(
-    //             Units.inchesToMeters(193.118),
-    //             Units.inchesToMeters(130.145),
-    //             Rotation2d.fromDegrees(120))
-    //             .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0), new Rotation2d()));
-    //     centerFaces[5] = new Pose2d(
-    //             Units.inchesToMeters(160.375),
-    //             Units.inchesToMeters(130.144),
-    //             Rotation2d.fromDegrees(60))
-    //             .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0), new Rotation2d()));
+    // SwerveDrivetrainConstants drivetrainConstants,
+    // double odometryUpdateFrequency,
+    // SwerveModuleConstants<?, ?, ?>... modules) {
+    // super(drivetrainConstants, odometryUpdateFrequency, modules);
+    // if (Utils.isSimulation()) {
+    // startSimThread();
+    // }
+    // centerFaces[0] = new Pose2d(
+    // Units.inchesToMeters(144.003),
+    // Units.inchesToMeters(158.500),
+    // Rotation2d.fromDegrees(0))
+    // .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0),
+    // new Rotation2d()));
+    // centerFaces[1] = new Pose2d(
+    // Units.inchesToMeters(160.373),
+    // Units.inchesToMeters(186.857),
+    // Rotation2d.fromDegrees(-60))
+    // .transformBy(new Transform2d(new Translation2d(Units.inchesToMeters(13), 0),
+    // new Rotation2d()));
+    // centerFaces[2] = new Pose2d(
+    // Units.inchesToMeters(193.116),
+    // Units.inchesToMeters(186.858),
+    // Rotation2d.fromDegrees(-120))
+    // .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0),
+    // new Rotation2d()));
+    // centerFaces[3] = new Pose2d(
+    // Units.inchesToMeters(209.489),
+    // Units.inchesToMeters(158.502),
+    // Rotation2d.fromDegrees(180))
+    // .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0),
+    // new Rotation2d()));
+    // centerFaces[4] = new Pose2d(
+    // Units.inchesToMeters(193.118),
+    // Units.inchesToMeters(130.145),
+    // Rotation2d.fromDegrees(120))
+    // .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0),
+    // new Rotation2d()));
+    // centerFaces[5] = new Pose2d(
+    // Units.inchesToMeters(160.375),
+    // Units.inchesToMeters(130.144),
+    // Rotation2d.fromDegrees(60))
+    // .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0),
+    // new Rotation2d()));
 
-    //     alignPositions = Arrays.asList(centerFaces);
-    //     System.out.println("Con 2");
+    // alignPositions = Arrays.asList(centerFaces);
+    // System.out.println("Con 2");
     // }
 
     /**
@@ -303,55 +305,61 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      *                                  theta]ᵀ, with units in meters and radians
      * @param modules                   Constants for each specific module
      */
-//     public CommandSwerveDrivetrain(
-//             SwerveDrivetrainConstants drivetrainConstants,
-//             double odometryUpdateFrequency,
-//             Matrix<N3, N1> odometryStandardDeviation,
-//             Matrix<N3, N1> visionStandardDeviation,
-//             SwerveModuleConstants<?, ?, ?>... modules) {
-//         super(
-//                 drivetrainConstants,
-//                 odometryUpdateFrequency,
-//                 odometryStandardDeviation,
-//                 visionStandardDeviation,
-//                 modules);
-//         if (Utils.isSimulation()) {
-//             startSimThread();
-//         }
-//         centerFaces[0] = new Pose2d(
-//                 Units.inchesToMeters(144.003),
-//                 Units.inchesToMeters(158.500),
-//                 Rotation2d.fromDegrees(0))
-//                 .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0), new Rotation2d()));
-//         centerFaces[1] = new Pose2d(
-//                 Units.inchesToMeters(160.373),
-//                 Units.inchesToMeters(186.857),
-//                 Rotation2d.fromDegrees(-60))
-//                 .transformBy(new Transform2d(new Translation2d(Units.inchesToMeters(13), 0), new Rotation2d()));
-//         centerFaces[2] = new Pose2d(
-//                 Units.inchesToMeters(193.116),
-//                 Units.inchesToMeters(186.858),
-//                 Rotation2d.fromDegrees(-120))
-//                 .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0), new Rotation2d()));
-//         centerFaces[3] = new Pose2d(
-//                 Units.inchesToMeters(209.489),
-//                 Units.inchesToMeters(158.502),
-//                 Rotation2d.fromDegrees(180))
-//                 .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0), new Rotation2d()));
-//         centerFaces[4] = new Pose2d(
-//                 Units.inchesToMeters(193.118),
-//                 Units.inchesToMeters(130.145),
-//                 Rotation2d.fromDegrees(120))
-//                 .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0), new Rotation2d()));
-//         centerFaces[5] = new Pose2d(
-//                 Units.inchesToMeters(160.375),
-//                 Units.inchesToMeters(130.144),
-//                 Rotation2d.fromDegrees(60))
-//                 .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0), new Rotation2d()));
+    // public CommandSwerveDrivetrain(
+    // SwerveDrivetrainConstants drivetrainConstants,
+    // double odometryUpdateFrequency,
+    // Matrix<N3, N1> odometryStandardDeviation,
+    // Matrix<N3, N1> visionStandardDeviation,
+    // SwerveModuleConstants<?, ?, ?>... modules) {
+    // super(
+    // drivetrainConstants,
+    // odometryUpdateFrequency,
+    // odometryStandardDeviation,
+    // visionStandardDeviation,
+    // modules);
+    // if (Utils.isSimulation()) {
+    // startSimThread();
+    // }
+    // centerFaces[0] = new Pose2d(
+    // Units.inchesToMeters(144.003),
+    // Units.inchesToMeters(158.500),
+    // Rotation2d.fromDegrees(0))
+    // .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0),
+    // new Rotation2d()));
+    // centerFaces[1] = new Pose2d(
+    // Units.inchesToMeters(160.373),
+    // Units.inchesToMeters(186.857),
+    // Rotation2d.fromDegrees(-60))
+    // .transformBy(new Transform2d(new Translation2d(Units.inchesToMeters(13), 0),
+    // new Rotation2d()));
+    // centerFaces[2] = new Pose2d(
+    // Units.inchesToMeters(193.116),
+    // Units.inchesToMeters(186.858),
+    // Rotation2d.fromDegrees(-120))
+    // .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0),
+    // new Rotation2d()));
+    // centerFaces[3] = new Pose2d(
+    // Units.inchesToMeters(209.489),
+    // Units.inchesToMeters(158.502),
+    // Rotation2d.fromDegrees(180))
+    // .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0),
+    // new Rotation2d()));
+    // centerFaces[4] = new Pose2d(
+    // Units.inchesToMeters(193.118),
+    // Units.inchesToMeters(130.145),
+    // Rotation2d.fromDegrees(120))
+    // .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0),
+    // new Rotation2d()));
+    // centerFaces[5] = new Pose2d(
+    // Units.inchesToMeters(160.375),
+    // Units.inchesToMeters(130.144),
+    // Rotation2d.fromDegrees(60))
+    // .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0),
+    // new Rotation2d()));
 
-//         alignPositions = Arrays.asList(centerFaces);
-//         System.out.println("Con 3");
-//     }
+    // alignPositions = Arrays.asList(centerFaces);
+    // System.out.println("Con 3");
+    // }
 
     /**
      * Returns a command that applies the specified control request to this swerve

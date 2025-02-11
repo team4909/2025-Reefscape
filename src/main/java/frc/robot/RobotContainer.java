@@ -36,8 +36,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.subsystems.drivetrain.DriveToPose;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.vision.Vision;
-import frc.robot.subsystems.vision.VisionIOPhotonVision;
+import frc.robot.subsystems.Vision.Vision;
+import frc.robot.subsystems.Vision.VisionIOPhotonVision;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
@@ -45,23 +45,18 @@ import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 
 public class RobotContainer {
-  private double MaxSpeed =
-      TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-  private double SlowSpeed = 
-      TunerConstants.kSlowSpeed.in(MetersPerSecond);
-  private double MaxAngularRate =
-      RotationsPerSecond.of(0.75)
-          .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
-  private double SlowAngularRate =
-      RotationsPerSecond.of(0.5).in(RadiansPerSecond);
+  private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+  private double SlowSpeed = TunerConstants.kSlowSpeed.in(MetersPerSecond);
+  private double MaxAngularRate = RotationsPerSecond.of(0.75)
+      .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+  private double SlowAngularRate = RotationsPerSecond.of(0.5).in(RadiansPerSecond);
 
   /* Setting up bindings for necessary control of the swerve drive platform */
-  private final SwerveRequest.FieldCentric drive =
-      new SwerveRequest.FieldCentric()
-          .withDeadband(MaxSpeed * 0.1)
-          .withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-          .withDriveRequestType(
-              DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+  private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+      .withDeadband(MaxSpeed * 0.1)
+      .withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+      .withDriveRequestType(
+          DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
@@ -73,15 +68,14 @@ public class RobotContainer {
   private final SendableChooser<Command> m_chooser;
   private final Shooter s_Shooter;
   private final Elevator s_Elevator;
-  // private final Vision m_vision;
-  public static AprilTagFieldLayout aprilTagLayout =
-      AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+  private final Vision m_vision;
+  public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
-  public RobotContainer(){
+  public RobotContainer() {
     s_Shooter = new Shooter(new ShooterIOTalonFX());
     s_Elevator = new Elevator(new ElevatorIOTalonFX());
 
-    //Auto Named Commands
+    // Auto Named Commands
     NamedCommands.registerCommand("score", s_Shooter.shootTrough());
     NamedCommands.registerCommand("L4", s_Elevator.goToL4());
     NamedCommands.registerCommand("L3", s_Elevator.goToL3());
@@ -89,75 +83,68 @@ public class RobotContainer {
     NamedCommands.registerCommand("L1", s_Elevator.goToL1());
     NamedCommands.registerCommand("test", s_Elevator.testPrint());
 
-    
-
     m_chooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", m_chooser);
-    
+
     configureBindings();
 
-    m_vision = new Vision(drivetrain::addVisionMeasurement, 
-    
-    new VisionIOPhotonVision("front-right-cam", new Transform3d(new Translation3d(
-        Units.inchesToMeters(7.16),
-        Units.inchesToMeters(-10.92),
-        Units.inchesToMeters(9.39)),
-        new Rotation3d(
-        Units.degreesToRadians(0.0),
-        Units.degreesToRadians(-21.173),
-        Units.degreesToRadians(-20)))),
+    m_vision = new Vision(drivetrain::addVisionMeasurement,
 
-    new VisionIOPhotonVision("front-left-cam", new Transform3d(new Translation3d(
-        Units.inchesToMeters(7.211),
-        Units.inchesToMeters(10.607),
-        Units.inchesToMeters(9.411)),
-        new Rotation3d(
-        Units.degreesToRadians(0.0),
-        Units.degreesToRadians(-25.414),
-        Units.degreesToRadians(-20)))));
-}
+        new VisionIOPhotonVision("front-right-cam", new Transform3d(new Translation3d(
+            Units.inchesToMeters(7.16),
+            Units.inchesToMeters(-10.92),
+            Units.inchesToMeters(9.39)),
+            new Rotation3d(
+                Units.degreesToRadians(0.0),
+                Units.degreesToRadians(-21.173),
+                Units.degreesToRadians(-20)))),
 
-
-
+        new VisionIOPhotonVision("front-left-cam", new Transform3d(new Translation3d(
+            Units.inchesToMeters(7.211),
+            Units.inchesToMeters(10.607),
+            Units.inchesToMeters(9.411)),
+            new Rotation3d(
+                Units.degreesToRadians(0.0),
+                Units.degreesToRadians(-25.414),
+                Units.degreesToRadians(-20)))));
+  }
 
   public void periodic() {
     // System.out.println("Elevator Command"+s_Elevator.getCurrentCommand());
   }
+
   private void configureBindings() {
     // Note that X is defined as forward according to WPILib convention,
     // and Y is defined as to the left according to WPILib convention.
     drivetrain.setDefaultCommand(
         // Drivetrain will execute this command periodically
         drivetrain.applyRequest(
-            () ->
-                drive
-                    .withVelocityX(
-                        -joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(
-                        -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(
-                        -joystick.getRightX()
-                            * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            ));
+            () -> drive
+                .withVelocityX(
+                    -joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                .withVelocityY(
+                    -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                .withRotationalRate(
+                    -joystick.getRightX()
+                        * MaxAngularRate) // Drive counterclockwise with negative X (left)
+        ));
 
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.rightStick().whileTrue(
-      drivetrain.applyRequest(() ->
-         drive
-          .withVelocityX(
-            -joystick.getLeftX() * SlowSpeed)
-          .withVelocityY(
-            -joystick.getLeftY() * SlowSpeed)
-          .withRotationalRate(
-            -joystick.getRightX() * SlowAngularRate)
-      ));
+        drivetrain.applyRequest(() -> drive
+            .withVelocityX(
+                -joystick.getLeftX() * SlowSpeed)
+            .withVelocityY(
+                -joystick.getLeftY() * SlowSpeed)
+            .withRotationalRate(
+                -joystick.getRightX() * SlowAngularRate)));
     // joystick
-    //     .b()
-    //     .whileTrue(
-    //         drivetrain.applyRequest(
-    //             () ->
-    //                 point.withModuleDirection(
-    //                     new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+    // .b()
+    // .whileTrue(
+    // drivetrain.applyRequest(
+    // () ->
+    // point.withModuleDirection(
+    // new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
     joystick.rightTrigger().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
     joystick.y().whileTrue(s_Shooter.intake()).onFalse(s_Shooter.stop());
@@ -173,29 +160,27 @@ public class RobotContainer {
     // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
     joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
 
-
-
     // joystick
-    //     .b()
-    //     .whileTrue(
-    //         drivetrain.applyRequest(
-    //             () ->
-    //                 point.withModuleDirection(
-    //                     new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
-                        
-    joystick.b().whileTrue(new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-3),Units.inchesToMeters(4),new Rotation2d())));
-    joystick.x().whileTrue(new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-3),Units.inchesToMeters(17),new Rotation2d())));
+    // .b()
+    // .whileTrue(
+    // drivetrain.applyRequest(
+    // () ->
+    // point.withModuleDirection(
+    // new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-    
+    joystick.b().whileTrue(new DriveToPose(drivetrain,
+        new Transform2d(Units.inchesToMeters(-3), Units.inchesToMeters(4), new Rotation2d())));
+    joystick.x().whileTrue(new DriveToPose(drivetrain,
+        new Transform2d(Units.inchesToMeters(-3), Units.inchesToMeters(17), new Rotation2d())));
+
     // joystick.x().whileTrue(new DriveToPose( new Pose2d(
-    //   Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
-    //   Units.inchesToMeters(158.500),
-    //   Rotation2d.fromDegrees(0)), drivetrain));
+    // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
+    // Units.inchesToMeters(158.500),
+    // Rotation2d.fromDegrees(0)), drivetrain));
 
     // joystick.x().whileTrue(s_Shooter.shootL2()).onFalse(s_Shooter.stop());
     // joystick.y().whileTrue(s_Shooter.intake()).onFalse(s_Shooter.stop());
     // joystick.a().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
-
 
     // joystick.povUp().whileTrue(s_Elevator.moveUp()).onFalse(s_Elevator.stop());
     // joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
@@ -214,6 +199,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto("Score far L4");//m_chooser.getSelected();
+    return new PathPlannerAuto("Score far L4");// m_chooser.getSelected();
   }
 }
