@@ -2,21 +2,6 @@
   "NetworkTables": {
     "transitory": {
       "SmartDashboard": {
-        "Alerts": {
-          "open": true
-        },
-        "Auto Chooser": {
-          "open": true,
-          "string[]##v_/SmartDashboard/Auto Chooser/options": {
-            "open": true
-          }
-        },
-        "Auto mode": {
-          "open": true,
-          "string[]##v_/SmartDashboard/Auto mode/options": {
-            "open": true
-          }
-        },
         "open": true
       }
     },
@@ -26,19 +11,10 @@
       "/Pose": "Field2d",
       "/SmartDashboard/Alerts": "Alerts",
       "/SmartDashboard/Auto Chooser": "String Chooser",
-      "/SmartDashboard/Auto mode": "String Chooser",
-      "/SmartDashboard/AutoChooser": "String Chooser",
       "/SmartDashboard/Module 0": "Mechanism2d",
       "/SmartDashboard/Module 1": "Mechanism2d",
       "/SmartDashboard/Module 2": "Mechanism2d",
       "/SmartDashboard/Module 3": "Mechanism2d"
-    },
-    "windows": {
-      "/SmartDashboard/Auto Chooser": {
-        "window": {
-          "visible": true
-        }
-      }
     }
   },
   "NetworkTables Info": {

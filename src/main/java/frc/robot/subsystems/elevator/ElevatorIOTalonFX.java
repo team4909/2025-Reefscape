@@ -47,10 +47,10 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         elevatorMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
         // in init function, set slot 0 gains
         var slot0Configs = new Slot0Configs();
-        slot0Configs.kP = 1; // An error of 1 rotation results in 2.4 V output
+        slot0Configs.kP = 0.8; // An error of 1 rotation results in 2.4 V output
         slot0Configs.kI = 0; // no output for integrated error
-        slot0Configs.kD = 0; // A velocity of 1 rps results in 0.1 V output
-        slot0Configs.kG = 0;;
+        slot0Configs.kD = 0.1; // A velocity of 1 rps results in 0.1 V output
+        slot0Configs.kG = 0.5;
      
         m_right.setPosition(29 * (0.5 * (1d / (1.75100 * Math.PI)) * ( 2d / 3d ) * 25));
         m_left.getConfigurator().apply(elevatorMotorConfig);
