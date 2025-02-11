@@ -83,12 +83,14 @@ public class RobotContainer {
 
     //Auto Named Commands
     NamedCommands.registerCommand("score", s_Shooter.shootTrough());
+    NamedCommands.registerCommand("stop shooter", s_Shooter.stop());
     NamedCommands.registerCommand("L4", s_Elevator.goToL4());
     NamedCommands.registerCommand("L3", s_Elevator.goToL3());
     NamedCommands.registerCommand("L2", s_Elevator.goToL2());
     NamedCommands.registerCommand("L1", s_Elevator.goToL1());
     NamedCommands.registerCommand("test", s_Elevator.testPrint());
-
+    NamedCommands.registerCommand("autoalign left", new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-3),Units.inchesToMeters(17),new Rotation2d())));
+    NamedCommands.registerCommand("autoalign right", new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-3),Units.inchesToMeters(6),new Rotation2d())));
     
 
     m_chooser = AutoBuilder.buildAutoChooser();
@@ -114,7 +116,7 @@ public class RobotContainer {
         new Rotation3d(
         Units.degreesToRadians(0.0),
         Units.degreesToRadians(-25.414),
-        Units.degreesToRadians(-20)))));
+        Units.degreesToRadians(-50)))));
 }
 
 
@@ -184,7 +186,7 @@ public class RobotContainer {
     //                     new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
                         
     joystick.b().whileTrue(new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-3),Units.inchesToMeters(4),new Rotation2d())));
-    joystick.x().whileTrue(new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-3),Units.inchesToMeters(17),new Rotation2d())));
+    joystick.x().whileTrue(new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-3),Units.inchesToMeters(16),new Rotation2d())));
 
     
     // joystick.x().whileTrue(new DriveToPose( new Pose2d(

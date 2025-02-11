@@ -15,7 +15,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public Command shootTrough() {
-    return this.run(() -> m_io.setSpeed(-0.2));
+    return this.run(() -> m_io.setSpeed(-0.4));
   }
 
   public Command stop() {

@@ -20,9 +20,17 @@ public class Elevator extends SubsystemBase {
     private final double L1Setpoint = 29;
     private final double L2Setpoint = 38.5;//32.5
     private final double L3Setpoint = 53.5;
-    private final double L4Setpoint = 76; // 74.5 and 78 dp on feb 1
+    private final double L4Setpoint = 74.5; // 74.5 and 78 dp on feb 1
     private final double L2ASetpoint = 37.5; 
     private final double L3ASetpoint = 54;
+    // private final double L1Setpoint = 1;
+    // private final double L2Setpoint = 2;//32.5
+    // private final double L3Setpoint = 3;
+    // private final double L4Setpoint = 4; // 74.5 and 78 dp on feb 1
+    // private final double L2ASetpoint = 2.5; 
+    // private final double L3ASetpoint = 3.5
+    
+    ;
     //inch to rotations of the motor
     final double m_gearRatio = 0.5 * (1d / (1.75100 * Math.PI)) * ( 2d / 3d ) * 25;
 

@@ -33,29 +33,11 @@
           "data": {
             "waitTime": 1.0
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "farRight-left-S"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "S-closeRight-right"
-          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "taxi and L4 far autos",
+  "folder": null,
   "choreoAuto": false
 }
