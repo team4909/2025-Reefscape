@@ -216,6 +216,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto("Score far L4");//m_chooser.getSelected();
+    return new PathPlannerAuto("Score L4 FarRight-left");//m_chooser.getSelected();
   }
 }
