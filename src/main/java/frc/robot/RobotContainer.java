@@ -96,7 +96,7 @@ public class RobotContainer {
 
         configureBindings();
 
-        if (HALUtil.getSerialNumber().equals(TunerConstants.ROBOT1)) {
+        if (HALUtil.getSerialNumber().equals(TunerConstants.RobotV3)) {
             m_vision = new Vision(drivetrain::addVisionMeasurement,
 
                     new VisionIOPhotonVision("front-right-cam", new Transform3d(new Translation3d(
@@ -117,7 +117,7 @@ public class RobotContainer {
                                     Units.degreesToRadians(-25.414),
                                     Units.degreesToRadians(-40)))));
         } 
-        else if (HALUtil.getSerialNumber().equals(TunerConstants.ROBOT2)) {
+        else if (HALUtil.getSerialNumber().equals(TunerConstants.RobotV2)) {
             m_vision = new Vision(drivetrain::addVisionMeasurement,
 
                     new VisionIOPhotonVision("front-right-cam", new Transform3d(new Translation3d(

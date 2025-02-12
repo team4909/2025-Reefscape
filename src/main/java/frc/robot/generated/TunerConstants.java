@@ -197,8 +197,8 @@ public class TunerConstants {
     private static final Distance kBackRightYPos = Inches.of(-10.5);
 
     
-    public final static String ROBOT1 = "032380FD";
-    public final static String ROBOT2 = "032243C9";
+    public final static String RobotV3 = "032380FD";
+    public final static String RobotV2 = "032243C9";
     
 
    
@@ -213,14 +213,14 @@ public class TunerConstants {
         Angle kBackLeftEncoderOffset;
         Angle kBackRightEncoderOffset;
 
-        if (HALUtil.getSerialNumber().equals(ROBOT1)) {
+        if (HALUtil.getSerialNumber().equals(RobotV3)) {
             System.out.println("Robot 1");
             kFrontLeftEncoderOffset = kFrontLeftEncoderOffsetRobot1;
             kFrontRightEncoderOffset = kFrontRightEncoderOffsetRobot1;
             kBackLeftEncoderOffset = kBackLeftEncoderOffsetRobot1;
             kBackRightEncoderOffset = kBackRightEncoderOffsetRobot1;
             
-        } else if (HALUtil.getSerialNumber().equals(ROBOT2)) {
+        } else if (HALUtil.getSerialNumber().equals(RobotV2)) {
             System.out.println("Robot 2");
             kBackLeftEncoderOffset = kBackLeftEncoderOffsetRobot2;
             kBackRightEncoderOffset = kBackRightEncoderOffsetRobot2;

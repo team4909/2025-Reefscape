@@ -16,6 +16,8 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -73,6 +75,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
+
+    private AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
     private final List<Pose2d> alignPositions;
     private Pose2d[] centerFaces = new Pose2d[6];
@@ -208,8 +212,23 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 Units.inchesToMeters(130.144),
                 Rotation2d.fromDegrees(60))
                 .transformBy(new Transform2d(new Translation2d(-Units.inchesToMeters(13), 0), new Rotation2d()));
-
-        alignPositions = Arrays.asList(centerFaces);
+        
+        if (DriverStation.getAlliance().isPresent()) {
+            if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
+                for(int i = 0; i<centerFaces.length; i++){
+                    centerFaces[i].getTranslation().rotateAround(new Translation2d(aprilTagLayout.getFieldLength()/2, aprilTagLayout.getFieldWidth()/2), Rotation2d.k180deg);
+                    centerFaces[i].getRotation().rotateBy(Rotation2d.k180deg);
+                }
+            }
+        }
+        // alignPositions = Arrays.asList(centerFaces);
+        alignPositions = new ArrayList<>();
+        int[] a = {17,18,19,20,21,22};
+        for (var tag : aprilTagLayout.getTags()) {
+            if (Arrays.stream(a).anyMatch(x -> x == tag.ID)) {
+                alignPositions.add(new Pose2d(tag.pose.toPose2d().getTranslation(), tag.pose.toPose2d().getRotation().rotateBy(Rotation2d.k180deg)));
+            }
+        }
     }
 
     public ChassisSpeeds getRobotRelativeSpeeds() {
