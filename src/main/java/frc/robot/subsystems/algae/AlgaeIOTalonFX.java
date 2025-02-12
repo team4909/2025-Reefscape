@@ -43,14 +43,14 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO{
         final MotorOutputConfigs outputConfigs = new MotorOutputConfigs();
         outputConfigs.Inverted = InvertedValue.Clockwise_Positive;
         outputConfigs.NeutralMode = NeutralModeValue.Brake;
-        algaeMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
+        algaeMotorConfig.CurrentLimits.SupplyCurrentLimit = 5.0;
         algaeMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
         // in init function, set slot 0 gains
         var slot0Configs = new Slot0Configs();
-        slot0Configs.kP = 5.5; // An error of 1 rotation results in 2.4 V output
+        slot0Configs.kP = 0.5; // An error of 1 rotation results in 2.4 V output
         slot0Configs.kI = 0; // no output for integrated error
         slot0Configs.kD = 0; // A velocity of 1 rps results in 0.1 V output
-        slot0Configs.kG = 0.5;
+        slot0Configs.kG = 0;
      
         m_algaepivotmotor.setPosition(0);
         m_algaeshootmotor.getConfigurator().apply(algaeMotorConfig);
@@ -99,7 +99,7 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO{
     }
     @Override
     public double getPosition() {
-        return m_algaeshootmotor.getPosition().getValueAsDouble();
+        return m_algaepivotmotor.getPosition().getValueAsDouble();
     }
 
     public double getSetpoint(){

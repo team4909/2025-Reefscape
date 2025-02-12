@@ -10,15 +10,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Algae extends SubsystemBase {
     private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    private final NetworkTable algaeTable = inst.getTable("Algae");
-    private final DoublePublisher  motorValPub= algaeTable.getDoubleTopic("Motor Val").publish();
-    private final DoublePublisher  motorVolPub= algaeTable.getDoubleTopic("Motor Vol").publish();
-    private final DoublePublisher  rotPub= algaeTable.getDoubleTopic("Rotations").publish();
-    private final DoublePublisher  setPub= algaeTable.getDoubleTopic("Setpoint").publish();
+    private final NetworkTable AlgaeTable = inst.getTable("Algae");
+    private final DoublePublisher  motorValPub= AlgaeTable.getDoubleTopic("Motor Val").publish();
+    private final DoublePublisher  motorVolPub= AlgaeTable.getDoubleTopic("Motor Vol").publish();
+    private final DoublePublisher  rotPub= AlgaeTable.getDoubleTopic("Rotations").publish();
+    private final DoublePublisher  setPub= AlgaeTable.getDoubleTopic("Setpoint").publish();
 
     private final AlgaeIO m_io;
     private final double DownPosition = 0;
-    private final double ExtendedPosition = -1.5;//32.5
+    private final double ExtendedPosition = 9.5;//32.5
     //inch to rotations of the motor
     final double m_gearRatio = 1d;
 
@@ -27,16 +27,16 @@ public class Algae extends SubsystemBase {
         // setDefaultCommand(stop());
       }
     
-      public Command shoot() {
-        return this.runOnce(() -> m_io.setShootVoltage(1)).withName("Shoot");
+      public Command intake() {
+        return this.runOnce(() -> m_io.setShootVoltage(10)).withName("Intake");
       }
     
       public Command stopShooter() {
         return this.runOnce(() -> m_io.setShootVoltage(0)).withName("Stop");
       }
     
-      public Command intake() {
-        return this.runOnce(() -> m_io.setShootVoltage(-1)).withName("Intake");
+      public Command shoot() {
+        return this.runOnce(() -> m_io.setShootVoltage(-10)).withName("Shoot");
       }
 
       public Command moveUp() {
