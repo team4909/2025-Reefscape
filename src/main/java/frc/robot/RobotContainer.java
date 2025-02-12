@@ -115,7 +115,7 @@ public class RobotContainer {
                             new Rotation3d(
                                     Units.degreesToRadians(0.0),
                                     Units.degreesToRadians(-25.414),
-                                    Units.degreesToRadians(-50)))));
+                                    Units.degreesToRadians(-40)))));
         } 
         else if (HALUtil.getSerialNumber().equals(TunerConstants.ROBOT2)) {
             m_vision = new Vision(drivetrain::addVisionMeasurement,
@@ -136,7 +136,7 @@ public class RobotContainer {
                             new Rotation3d(
                                     Units.degreesToRadians(0.0),
                                     Units.degreesToRadians(-25.414),
-                                    Units.degreesToRadians(-20)))));
+                                    Units.degreesToRadians(-50)))));
         }
         else { 
             System.out.println("Unknown Robot");
@@ -205,9 +205,9 @@ public class RobotContainer {
         // new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
         joystick.b().whileTrue(new DriveToPose(drivetrain,
-                new Transform2d(Units.inchesToMeters(-3), Units.inchesToMeters(4), new Rotation2d())));
+                new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5), new Rotation2d())));
         joystick.x().whileTrue(new DriveToPose(drivetrain,
-                new Transform2d(Units.inchesToMeters(-3), Units.inchesToMeters(17), new Rotation2d())));
+                new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5), new Rotation2d())));
 
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),

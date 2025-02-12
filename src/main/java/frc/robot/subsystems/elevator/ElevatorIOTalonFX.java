@@ -82,7 +82,6 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         m_rotations = rotations;
         System.out.println("rotations:" + rotations);
         m_right.setControl(m_request.withPosition(rotations));
-
     }
 
     public double getVelocity(){
