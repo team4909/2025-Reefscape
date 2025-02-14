@@ -3,6 +3,7 @@
   "waypoints": [
     {
       "anchor": {
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/far Reef.path
         "x": 7.197,
         "y": 3.972
       },
@@ -10,18 +11,36 @@
       "nextControl": {
         "x": 5.959044040523948,
         "y": 3.972
+========
+        "x": 7.19730308219178,
+        "y": 4.077589897260274
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.959347122715728,
+        "y": 4.077589897260274
+>>>>>>>> algaemechv2:src/main/deploy/pathplanner/paths/TAXI.path
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/far Reef.path
         "x": 5.799914383561644,
         "y": 3.972
       },
       "prevControl": {
         "x": 7.1685720142211835,
         "y": 3.972
+========
+        "x": 6.0,
+        "y": 4.078
+      },
+      "prevControl": {
+        "x": 7.3686576306595395,
+        "y": 4.078
+>>>>>>>> algaemechv2:src/main/deploy/pathplanner/paths/TAXI.path
       },
       "nextControl": null,
       "isLocked": false,

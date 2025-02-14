@@ -39,6 +39,8 @@ import frc.robot.subsystems.drivetrain.DriveToPose;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.Vision.VisionIOPhotonVision;
+import frc.robot.subsystems.algae.Algae;
+import frc.robot.subsystems.algae.AlgaeIOTalonFX;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
@@ -70,11 +72,14 @@ public class RobotContainer {
     private final Shooter s_Shooter;
     private final Elevator s_Elevator;
     private final Vision m_vision;
+    private final Algae s_Algae;
     public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+
 
     public RobotContainer() {
         s_Shooter = new Shooter(new ShooterIOTalonFX());
         s_Elevator = new Elevator(new ElevatorIOTalonFX());
+        s_Algae = new Algae(new AlgaeIOTalonFX());
 
         // Auto Named Commands
         NamedCommands.registerCommand("score", s_Shooter.shootTrough());
@@ -194,7 +199,10 @@ public class RobotContainer {
         joystick.back().onTrue(s_Elevator.reZero());
         // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
         joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
-
+        joystick.povLeft().onTrue(Commands.sequence(s_Elevator.goToL3(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
+        joystick.povRight().onTrue(s_Algae.down());
+        joystick.rightStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
+        joystick.leftStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
         // joystick
 
         // .b()
@@ -237,5 +245,6 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return new PathPlannerAuto("Score far L4");// m_chooser.getSelected();
     }
+
 
 }
