@@ -120,7 +120,7 @@ public class RobotContainer {
                             new Rotation3d(
                                     Units.degreesToRadians(0.0),
                                     Units.degreesToRadians(-25.414),
-                                    Units.degreesToRadians(-40)))));
+                                    Units.degreesToRadians(-50)))));
         } 
         else if (HALUtil.getSerialNumber().equals(TunerConstants.RobotV2)) {
             m_vision = new Vision(drivetrain::addVisionMeasurement,
@@ -243,7 +243,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new PathPlannerAuto("Score far L4");// m_chooser.getSelected();
+        return new PathPlannerAuto("Taxi");// m_chooser.getSelected();
     }
 
 

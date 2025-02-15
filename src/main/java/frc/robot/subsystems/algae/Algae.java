@@ -5,6 +5,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.algae.AlgaeIO.AlgaeIOInputs;
@@ -17,17 +18,20 @@ public class Algae extends SubsystemBase {
   private final DoublePublisher rotPub = AlgaeTable.getDoubleTopic("Rotations").publish();
   private final DoublePublisher setPub = AlgaeTable.getDoubleTopic("Setpoint").publish();
   private final DoublePublisher currentPub = AlgaeTable.getDoubleTopic("Current").publish();
-
+  final double kTriggerTime = 1;
 
   private final AlgaeIO m_io;
   private final AlgaeIOInputs m_inputs = new AlgaeIOInputs();
   private final double DownPosition = 0;
   private final double ExtendedPosition = 4.5;// 32.5
+  private Timer m_StallTimer;
   // inch to rotations of the motor
   final double m_gearRatio = 1d;
 
   public Algae(AlgaeIO io) {
     m_io = io;
+    m_StallTimer = new Timer();
+    
     // setDefaultCommand(stop());
   }
 
@@ -85,9 +89,15 @@ public class Algae extends SubsystemBase {
     setPub.set(m_inputs.wristSetpoint);
     rotPub.set(m_inputs.wristPosition);
     currentPub.set(m_inputs.shooterCurrent);
-    
-    if (m_inputs.shooterCurrent > 10) {
-      m_io.holdShooterPos();
+
+    if (m_inputs.shooterCurrent > 40) {
+      m_StallTimer.start();
+    } else {
+      m_StallTimer.reset();
+    }
+
+    if (m_StallTimer.get() > kTriggerTime) {
+      //  m_io.holdShooterPos();
     }
   }
 }

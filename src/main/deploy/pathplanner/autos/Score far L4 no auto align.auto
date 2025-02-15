@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Taxi"
+            "pathName": "Half Path Align"
           }
         },
         {
@@ -67,7 +67,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 3.0
+                  "waitTime": 5.0
                 }
               },
               {

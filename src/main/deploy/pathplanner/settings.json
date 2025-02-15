@@ -3,6 +3,7 @@
   "robotLength": 0.84455,
   "holonomicMode": true,
   "pathFolders": [
+    "Taxi",
     "taxi and L4 far paths"
   ],
   "autoFolders": [

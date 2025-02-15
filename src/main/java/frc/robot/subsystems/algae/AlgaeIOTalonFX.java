@@ -25,23 +25,23 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
 
         m_request = new PositionVoltage(0).withSlot(0);
 
-        final TalonFXConfiguration algaeMotorConfig = new TalonFXConfiguration();
+        final TalonFXConfiguration motorConfig = new TalonFXConfiguration();
 
-        algaeMotorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        algaeMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        algaeMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
-        algaeMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+        motorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        motorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
+        motorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         // in init function, set slot 0 gains
 
-        algaeMotorConfig.Slot0.kP = 0.5; // An error of 1 rotation results in 2.4 V output
-        algaeMotorConfig.Slot0.kI = 0; // no output for integrated error
-        algaeMotorConfig.Slot0.kD = 0; // A velocity of 1 rps results in 0.1 V output
-        algaeMotorConfig.Slot0.kG = 0;
+        motorConfig.Slot0.kP = 0.5; // An error of 1 rotation results in 2.4 V output
+        motorConfig.Slot0.kI = 0; // no output for integrated error
+        motorConfig.Slot0.kD = 0; // A velocity of 1 rps results in 0.1 V output
+        motorConfig.Slot0.kG = 0;
 
         m_pivotMotor.setPosition(0);
-        m_shootMotor.getConfigurator().apply(algaeMotorConfig);
-        m_pivotMotor.getConfigurator().apply(algaeMotorConfig);
+        m_shootMotor.getConfigurator().apply(motorConfig);
+        m_pivotMotor.getConfigurator().apply(motorConfig);
     }
 
     public void setShootVoltage(double voltage) {
