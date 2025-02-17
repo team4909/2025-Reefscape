@@ -91,10 +91,13 @@ public class RobotContainer {
         NamedCommands.registerCommand("L1", s_Elevator.goToL1());
         NamedCommands.registerCommand("test", s_Elevator.testPrint());
 
-        NamedCommands.registerCommand("autoalign left", new DriveToPose(drivetrain,
-                new Transform2d(Units.inchesToMeters(-3), Units.inchesToMeters(17), new Rotation2d())));
-        NamedCommands.registerCommand("autoalign right", new DriveToPose(drivetrain,
-                new Transform2d(Units.inchesToMeters(-3), Units.inchesToMeters(6), new Rotation2d())));
+        NamedCommands.registerCommand("autoalign left", new ReefBranchAlign(drivetrain,
+        new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),
+        () -> -joystick.getLeftY()));
+
+        NamedCommands.registerCommand("autoalign right", new ReefBranchAlign(drivetrain,
+        new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),
+        () -> -joystick.getLeftY()));
 
         m_chooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", m_chooser);
@@ -252,7 +255,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new PathPlannerAuto("Taxi");// m_chooser.getSelected();
+        return new PathPlannerAuto("FarRight-left and closeRight-right-left");// m_chooser.getSelected();
     }
 
 
