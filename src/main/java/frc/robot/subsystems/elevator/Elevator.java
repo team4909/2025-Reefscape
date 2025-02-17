@@ -20,7 +20,7 @@ public class Elevator extends SubsystemBase {
     private final double L1Setpoint = 29;
     private final double L2Setpoint = 38.5;//32.5
     private final double L3Setpoint = 54;
-    private final double L4Setpoint = 77.5; // 74.5 and 78 dp on feb 1
+    private final double L4Setpoint = 78; // 74.5 and 78 dp on feb 1
     private final double L2ASetpoint = 48.5; 
     private final double L3ASetpoint = 62.5;
     // private final double L1Setpoint = 1;
@@ -86,6 +86,11 @@ public class Elevator extends SubsystemBase {
         return this.runOnce(() -> {
             m_io.gotosetpoint(L2ASetpoint, m_gearRatio);
         }).withName("L2A");
+      }
+      public Command goUpInch(){
+        return this.runOnce(()-> {
+          m_io.gotosetpoint(m_io.getPosition()+(1/10), m_gearRatio);
+        }).withName("Inch");
       }
       public Command reZero(){
         return this.runOnce(() -> {

@@ -36,6 +36,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.subsystems.drivetrain.DriveToPose;
+import frc.robot.subsystems.drivetrain.ReefBranchAlign;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.Vision.VisionIOPhotonVision;
@@ -194,15 +195,15 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(s_Elevator.goToL2()).onFalse(s_Elevator.goToL1());
         joystick.rightBumper().onTrue(s_Elevator.goToL3()).onFalse(s_Elevator.goToL1());
         joystick.leftTrigger().onTrue(s_Elevator.goToL4()).onFalse(s_Elevator.goToL1());
-        joystick.povUp().whileTrue(s_Elevator.moveUp()).onFalse(s_Elevator.stop());
+        // joystick.povUp().whileTrue(s_Elevator.moveUp()).onFalse(s_Elevator.stop());
         joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
         joystick.back().onTrue(s_Elevator.reZero());
         // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
         joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
         joystick.povLeft().onTrue(Commands.sequence(s_Elevator.goToL2A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
         joystick.povRight().onTrue(Commands.sequence(s_Elevator.goToL3A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
-        joystick.rightStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
-        joystick.leftStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
+        joystick.rightStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
+        joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
         // joystick
 
         // .b()
@@ -212,10 +213,18 @@ public class RobotContainer {
         // point.withModuleDirection(
         // new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-        joystick.b().whileTrue(new DriveToPose(drivetrain,
-                new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5), new Rotation2d())));
-        joystick.x().whileTrue(new DriveToPose(drivetrain,
-                new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5), new Rotation2d())));
+        // joystick.b().whileTrue(new DriveToPose(drivetrain,
+        //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5), new Rotation2d())));
+        // joystick.x().whileTrue(new DriveToPose(drivetrain,
+        //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5), new Rotation2d())));
+        joystick.povDown().onTrue(s_Algae.reZero());
+
+        joystick.b().whileTrue(new ReefBranchAlign(drivetrain,
+                new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),
+                () -> -joystick.getLeftY()));
+        joystick.x().whileTrue(new ReefBranchAlign(drivetrain,
+                new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),
+                () -> -joystick.getLeftY()));
 
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),

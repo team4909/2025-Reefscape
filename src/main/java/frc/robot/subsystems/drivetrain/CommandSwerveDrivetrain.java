@@ -223,7 +223,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
         // alignPositions = Arrays.asList(centerFaces);
         alignPositions = new ArrayList<>();
-        int[] a = {17,18,19,20,21,22};
+        int[] a = {6,7,8,9,10,11, 17,18,19,20,21,22};
         for (var tag : aprilTagLayout.getTags()) {
             if (Arrays.stream(a).anyMatch(x -> x == tag.ID)) {
                 alignPositions.add(new Pose2d(tag.pose.toPose2d().getTranslation(), tag.pose.toPose2d().getRotation().rotateBy(Rotation2d.k180deg)));
