@@ -21,7 +21,7 @@ public class ClimberIOTalonFX implements ClimberIO {
     climberMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
     m_Climbermotor.getConfigurator().apply(climberMotorConfig);
-    m_Climbermotor.getConfigurator().apply(outputConfigs);dfcv 
+    m_Climbermotor.getConfigurator().apply(outputConfigs);
   }
 
   @Override
