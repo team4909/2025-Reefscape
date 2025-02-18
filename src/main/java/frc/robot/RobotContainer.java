@@ -177,7 +177,7 @@ public class RobotContainer {
                                                 * MaxAngularRate) // Drive counterclockwise with negative X (left)
                 ));
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        //joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         joystick.rightStick().whileTrue(
                 drivetrain.applyRequest(() -> drive
                         .withVelocityX(
@@ -196,17 +196,17 @@ public class RobotContainer {
 
         joystick.rightTrigger().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
         joystick.y().whileTrue(s_Shooter.intake()).onFalse(s_Shooter.stop());
-        joystick.a().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
+        joystick.a().whileTrue(s_Climber.lower()).onFalse(s_Climber.stop());
 
         joystick.b().onTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
         joystick.leftBumper().onTrue(s_Elevator.goToL2()).onFalse(s_Elevator.goToL1());
         joystick.rightBumper().onTrue(s_Elevator.goToL3()).onFalse(s_Elevator.goToL1());
         joystick.leftTrigger().onTrue(s_Elevator.goToL4()).onFalse(s_Elevator.goToL1());
-        // joystick.povUp().whileTrue(s_Elevator.moveUp()).onFalse(s_Elevator.stop());
+        joystick.povUp().whileTrue(s_Climber.climb()).onFalse(s_Climber.stop());
         joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
         joystick.back().onTrue(s_Elevator.reZero());
         // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
-        joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
+        //joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
         joystick.povLeft().onTrue(Commands.sequence(s_Elevator.goToL2A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
         joystick.povRight().onTrue(Commands.sequence(s_Elevator.goToL3A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
         joystick.rightStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());

@@ -11,7 +11,7 @@ public class ClimberIOTalonFX implements ClimberIO {
   private final TalonFX m_Climbermotor;
 
   public ClimberIOTalonFX() {
-    m_Climbermotor = new TalonFX(20, "CANivore2");
+    m_Climbermotor = new TalonFX(25, "CANivore2");
 
     final TalonFXConfiguration climberMotorConfig = new TalonFXConfiguration();
     final MotorOutputConfigs outputConfigs = new MotorOutputConfigs();
