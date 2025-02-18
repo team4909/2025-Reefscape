@@ -42,6 +42,8 @@ import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.Vision.VisionIOPhotonVision;
 import frc.robot.subsystems.algae.Algae;
 import frc.robot.subsystems.algae.AlgaeIOTalonFX;
+import frc.robot.subsystems.Climber.Climber;
+import frc.robot.subsystems.Climber.ClimberIOTalonFX;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
@@ -72,6 +74,7 @@ public class RobotContainer {
     private final SendableChooser<Command> m_chooser;
     private final Shooter s_Shooter;
     private final Elevator s_Elevator;
+  private final Climber s_Climber;
     private final Vision m_vision;
     private final Algae s_Algae;
     public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
@@ -81,6 +84,7 @@ public class RobotContainer {
         s_Shooter = new Shooter(new ShooterIOTalonFX());
         s_Elevator = new Elevator(new ElevatorIOTalonFX());
         s_Algae = new Algae(new AlgaeIOTalonFX());
+    s_Climber = new Climber(new ClimberIOTalonFX());
 
         // Auto Named Commands
         NamedCommands.registerCommand("score", s_Shooter.shootTrough());

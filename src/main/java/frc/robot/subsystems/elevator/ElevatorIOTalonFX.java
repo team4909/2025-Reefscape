@@ -40,9 +40,11 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         m_request = new PositionVoltage(0).withSlot(0);
 
         final TalonFXConfiguration elevatorMotorConfig = new TalonFXConfiguration();
-        final MotorOutputConfigs outputConfigs = new MotorOutputConfigs();
-        outputConfigs.Inverted = InvertedValue.Clockwise_Positive;
-        outputConfigs.NeutralMode = NeutralModeValue.Brake;
+        final MotorOutputConfigs rightOutputConfigs = new MotorOutputConfigs();
+        final MotorOutputConfigs leftOutputConfigs = new MotorOutputConfigs();
+        rightOutputConfigs.Inverted = InvertedValue.Clockwise_Positive;
+        rightOutputConfigs.NeutralMode = NeutralModeValue.Brake;
+        leftOutputConfigs.NeutralMode = NeutralModeValue.Brake;
         elevatorMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
         elevatorMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
         // in init function, set slot 0 gains
@@ -55,7 +57,8 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         m_right.setPosition(29 * (0.5 * (1d / (1.75100 * Math.PI)) * ( 2d / 3d ) * 25));
         m_left.getConfigurator().apply(elevatorMotorConfig);
         m_right.getConfigurator().apply(elevatorMotorConfig);
-        m_right.getConfigurator().apply(outputConfigs);
+        m_right.getConfigurator().apply(rightOutputConfigs);
+        m_left.getConfigurator().apply(leftOutputConfigs);
         m_left.getConfigurator().apply(slot0Configs);
         m_right.getConfigurator().apply(slot0Configs);
         m_left.setControl(new Follower(22, true));
