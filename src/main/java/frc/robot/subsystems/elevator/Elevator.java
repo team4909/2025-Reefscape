@@ -100,7 +100,7 @@ public class Elevator extends SubsystemBase {
         return m_SysIdRoutine.dynamic(direction);
       }
 
-      public Command runSysID(){
+      public Command runFullSysID(){
         return 
         this.runOnce(SignalLogger::start)
         .andThen(this.sysIdQuasistatic(SysIdRoutine.Direction.kForward))

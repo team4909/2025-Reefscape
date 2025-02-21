@@ -40,10 +40,12 @@ import frc.robot.subsystems.drivetrain.ReefBranchAlign;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.Vision.VisionIOPhotonVision;
+import frc.robot.subsystems.Vision.VisionIOPhotonVisionSim;
 import frc.robot.subsystems.algae.Algae;
 import frc.robot.subsystems.algae.AlgaeIOTalonFX;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
@@ -79,7 +81,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         s_Shooter = new Shooter(new ShooterIOTalonFX());
-        s_Elevator = new Elevator(new ElevatorIOTalonFX());
+        s_Elevator = RobotBase.isReal() ? new Elevator(new ElevatorIOTalonFX()) : new Elevator(new ElevatorIOSim());
         s_Algae = new Algae(new AlgaeIOTalonFX());
 
         // Auto Named Commands
@@ -145,6 +147,18 @@ public class RobotContainer {
                                     Units.degreesToRadians(0.0),
                                     Units.degreesToRadians(-25.414),
                                     Units.degreesToRadians(-50)))));
+        }
+        else if (RobotBase.isSimulation()){
+                m_vision = new Vision(drivetrain::addVisionMeasurement, new VisionIOPhotonVisionSim("front-right-cam",new Transform3d(new Translation3d(
+                        Units.inchesToMeters(7.16),
+                        Units.inchesToMeters(-10.92),
+                        Units.inchesToMeters(9.39)),
+                        new Rotation3d(
+                                Units.degreesToRadians(0.0),
+                                Units.degreesToRadians(-21.173),
+                                Units.degreesToRadians(-20))),
+                                ()->drivetrain.getState().Pose)
+                                );
         }
         else { 
             System.out.println("Unknown Robot");
