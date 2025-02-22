@@ -36,11 +36,14 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.subsystems.drivetrain.DriveToPose;
+import frc.robot.subsystems.drivetrain.ReefBranchAlign;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.Vision.VisionIOPhotonVision;
 import frc.robot.subsystems.algae.Algae;
 import frc.robot.subsystems.algae.AlgaeIOTalonFX;
+import frc.robot.subsystems.Climber.Climber;
+import frc.robot.subsystems.Climber.ClimberIOTalonFX;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
@@ -71,6 +74,7 @@ public class RobotContainer {
     private final SendableChooser<Command> m_chooser;
     private final Shooter s_Shooter;
     private final Elevator s_Elevator;
+  private final Climber s_Climber;
     private final Vision m_vision;
     private final Algae s_Algae;
     public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
@@ -80,6 +84,7 @@ public class RobotContainer {
         s_Shooter = new Shooter(new ShooterIOTalonFX());
         s_Elevator = new Elevator(new ElevatorIOTalonFX());
         s_Algae = new Algae(new AlgaeIOTalonFX());
+    s_Climber = new Climber(new ClimberIOTalonFX());
 
         // Auto Named Commands
         NamedCommands.registerCommand("score", s_Shooter.shootTrough());
@@ -90,10 +95,13 @@ public class RobotContainer {
         NamedCommands.registerCommand("L1", s_Elevator.goToL1());
         NamedCommands.registerCommand("test", s_Elevator.testPrint());
 
-        NamedCommands.registerCommand("autoalign left", new DriveToPose(drivetrain,
-                new Transform2d(Units.inchesToMeters(-3), Units.inchesToMeters(17), new Rotation2d())));
-        NamedCommands.registerCommand("autoalign right", new DriveToPose(drivetrain,
-                new Transform2d(Units.inchesToMeters(-3), Units.inchesToMeters(6), new Rotation2d())));
+        NamedCommands.registerCommand("autoalign left", new ReefBranchAlign(drivetrain,
+        new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),
+        () -> -joystick.getLeftY()));
+
+        NamedCommands.registerCommand("autoalign right", new ReefBranchAlign(drivetrain,
+        new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),
+        () -> -joystick.getLeftY()));
 
         m_chooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", m_chooser);
@@ -169,7 +177,7 @@ public class RobotContainer {
                                                 * MaxAngularRate) // Drive counterclockwise with negative X (left)
                 ));
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        //joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         joystick.rightStick().whileTrue(
                 drivetrain.applyRequest(() -> drive
                         .withVelocityX(
@@ -188,21 +196,21 @@ public class RobotContainer {
 
         joystick.rightTrigger().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
         joystick.y().whileTrue(s_Shooter.intake()).onFalse(s_Shooter.stop());
-        joystick.a().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
+        joystick.a().whileTrue(s_Climber.lower()).onFalse(s_Climber.stop());
 
         joystick.b().onTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
         joystick.leftBumper().onTrue(s_Elevator.goToL2()).onFalse(s_Elevator.goToL1());
         joystick.rightBumper().onTrue(s_Elevator.goToL3()).onFalse(s_Elevator.goToL1());
         joystick.leftTrigger().onTrue(s_Elevator.goToL4()).onFalse(s_Elevator.goToL1());
-        joystick.povUp().whileTrue(s_Elevator.moveUp()).onFalse(s_Elevator.stop());
+        joystick.povUp().whileTrue(s_Climber.climb()).onFalse(s_Climber.stop());
         joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
         joystick.back().onTrue(s_Elevator.reZero());
         // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
-        joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
+        //joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
         joystick.povLeft().onTrue(Commands.sequence(s_Elevator.goToL2A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
         joystick.povRight().onTrue(Commands.sequence(s_Elevator.goToL3A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
-        joystick.rightStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
-        joystick.leftStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
+        joystick.rightStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
+        joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
         // joystick
 
         // .b()
@@ -212,10 +220,18 @@ public class RobotContainer {
         // point.withModuleDirection(
         // new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-        joystick.b().whileTrue(new DriveToPose(drivetrain,
-                new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5), new Rotation2d())));
-        joystick.x().whileTrue(new DriveToPose(drivetrain,
-                new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5), new Rotation2d())));
+        // joystick.b().whileTrue(new DriveToPose(drivetrain,
+        //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5), new Rotation2d())));
+        // joystick.x().whileTrue(new DriveToPose(drivetrain,
+        //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5), new Rotation2d())));
+        joystick.povDown().onTrue(s_Algae.reZero());
+
+        joystick.b().whileTrue(Commands.parallel(new ReefBranchAlign(drivetrain,
+                new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),
+                () -> -joystick.getLeftY()), s_Shooter.shootTrough())).onFalse(s_Shooter.stop());
+        joystick.x().whileTrue(Commands.parallel(new ReefBranchAlign(drivetrain,
+                new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),
+                () -> -joystick.getLeftY()),s_Shooter.shootTrough())).onFalse(s_Shooter.stop());
 
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
@@ -243,7 +259,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new PathPlannerAuto("Taxi");// m_chooser.getSelected();
+        return new PathPlannerAuto("FarRight-left and closeRight-right-left");// m_chooser.getSelected();
     }
 
 
