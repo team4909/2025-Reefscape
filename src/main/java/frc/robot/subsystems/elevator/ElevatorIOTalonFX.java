@@ -32,7 +32,8 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
     private final TalonFX m_leftMotor;
     private final TalonFX m_rightMotor;
     
-    private final MotionMagicVoltage m_elevatorVoltageRequest;
+    private MotionMagicVoltage m_elevatorVoltageRequest;
+    private VoltageOut m_voltageRequest;
 
     private final StatusSignal<Voltage> m_rightMotorVolts, m_leftMotorVolts;
     private final StatusSignal<Angle> m_position;
@@ -42,23 +43,24 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         m_leftMotor = new TalonFX(21, "CANivore2");
         m_rightMotor = new TalonFX(22, "CANivore2");
         m_elevatorVoltageRequest = new MotionMagicVoltage(0);
+        m_voltageRequest = new VoltageOut(2);
         
         TalonFXConfiguration motorConfiguration = new TalonFXConfiguration();
         var slot0Configs = motorConfiguration.Slot0;
 
         //TODO: Run sysid and get these values
-        slot0Configs.kS = 0.0; //Voltage to overcome friction
-        slot0Configs.kV = 0.0; //Voltage to reach velocity target of 1 rps
-        slot0Configs.kA = 0.0; //Voltage to reach an acceleration of 1rps/s
-        slot0Configs.kG = 0.5; //Voltage to overcome gravity
-        slot0Configs.kP = 0.8;
+        slot0Configs.kS = 0.115; //Voltage to overcome friction
+        slot0Configs.kV = 1.99938560282; //Voltage to reach velocity target of 1 rps
+        slot0Configs.kA = 0.00139719469; //Voltage to reach an acceleration of 1rps/s
+        slot0Configs.kG = 0.125; //Voltage to overcome gravity
+        slot0Configs.kP = 24.0;
         slot0Configs.kI = 0;
-        slot0Configs.kD = 0.1;
+        slot0Configs.kD = 0.0;
 
-        //TODO: Tune these values (I mde them up)
+        // //TODO: Tune these values (I mde them up)
         var motionMagicConfigs = motorConfiguration.MotionMagic;
-        motionMagicConfigs.MotionMagicCruiseVelocity = 80; // Target cruise velocity of 80 rps
-        motionMagicConfigs.MotionMagicAcceleration = 160; // Target acceleration of 160 rps/s (0.5 seconds)
+        motionMagicConfigs.MotionMagicCruiseVelocity = 40; // Target cruise velocity of 80 rps
+        motionMagicConfigs.MotionMagicAcceleration = 60; // Target acceleration of 160 rps/s (0.5 seconds)
         motionMagicConfigs.MotionMagicJerk = 1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
 
         //Other settings:
@@ -82,8 +84,9 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         m_position = m_rightMotor.getPosition();
     }
 
-    public void setVoltage(Double volts) {
-        m_rightMotor.setVoltage(volts);
+    @Override
+    public void setVoltage(double voltage) {
+        m_rightMotor.setControl(m_voltageRequest.withOutput(voltage));
     }
     
     public void setBrakeMode(boolean enableBrakeMode) {
@@ -113,6 +116,7 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         inputs.leftMotorConnected = BaseStatusSignal.refreshAll(m_leftMotorVolts).isOK();
         inputs.rightMotorConnected = BaseStatusSignal.refreshAll(m_rightMotorVolts, m_velocity, m_position).isOK();
 
+        inputs.goalPosition = m_elevatorVoltageRequest.getPositionMeasure().magnitude();
         inputs.rightMotorVoltage = m_rightMotorVolts.getValueAsDouble();
         inputs.leftMotorVoltage = m_leftMotorVolts.getValueAsDouble();
         inputs.velocity = m_velocity.getValueAsDouble();
