@@ -7,6 +7,7 @@ import org.littletonrobotics.junction.Logger;
 import com.ctre.phoenix6.SignalLogger;
 
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -14,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 public class Elevator extends SubsystemBase {
     private ElevatorIO m_io;
     private ElevatorIOInputsAutoLogged m_inputs = new ElevatorIOInputsAutoLogged();
-
       public Elevator(ElevatorIO io) {
         m_io = io;
       }
@@ -74,6 +74,12 @@ public class Elevator extends SubsystemBase {
         return this.runOnce(() -> {
             m_io.setPosition(ElevatorConstants.kL1*ElevatorConstants.kGEAR_RATIO);
         }).withName("ReZero");
+      }
+
+      public Command setvoltage(double Volt){
+        return this.run(() -> {
+          m_io.setVoltage(Volt);
+        });
       }
 
       //--------------SYSID-------------

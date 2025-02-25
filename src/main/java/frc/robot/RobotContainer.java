@@ -12,6 +12,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -34,6 +35,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.subsystems.drivetrain.DriveToPose;
 import frc.robot.subsystems.drivetrain.ReefBranchAlign;
@@ -186,15 +188,28 @@ public class RobotContainer {
                                                 * MaxAngularRate) // Drive counterclockwise with negative X (left)
                 ));
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        joystick.rightStick().whileTrue(
-                drivetrain.applyRequest(() -> drive
-                        .withVelocityX(
-                                -joystick.getLeftX() * SlowSpeed)
-                        .withVelocityY(
-                                -joystick.getLeftY() * SlowSpeed)
-                        .withRotationalRate(
-                                -joystick.getRightX() * SlowAngularRate)));
+
+        //UNCOMMENT
+        // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        // joystick.rightStick().whileTrue(
+        //         drivetrain.applyRequest(() -> drive
+        //                 .withVelocityX(
+        //                         -joystick.getLeftX() * SlowSpeed)
+        //                 .withVelocityY(
+        //                         -joystick.getLeftY() * SlowSpeed)
+        //                 .withRotationalRate(
+        //                         -joystick.getRightX() * SlowAngularRate)));
+
+
+
+
+
+
+
+
+
+
+
         // joystick
         // .b()
         // .whileTrue(
@@ -203,23 +218,45 @@ public class RobotContainer {
         // point.withModuleDirection(
         // new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-        joystick.rightTrigger().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
-        joystick.y().whileTrue(s_Shooter.intake()).onFalse(s_Shooter.stop());
-        joystick.a().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
+        
+        
+        
+        //UNCOMMENT
+        // joystick.rightTrigger().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
+        // joystick.y().whileTrue(s_Shooter.intake()).onFalse(s_Shooter.stop());
+        // joystick.a().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
 
-        joystick.b().onTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
+        // joystick.b().onTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
         joystick.leftBumper().onTrue(s_Elevator.goToL2()).onFalse(s_Elevator.goToL1());
         joystick.rightBumper().onTrue(s_Elevator.goToL3()).onFalse(s_Elevator.goToL1());
         joystick.leftTrigger().onTrue(s_Elevator.goToL4()).onFalse(s_Elevator.goToL1());
-        // joystick.povUp().whileTrue(s_Elevator.moveUp()).onFalse(s_Elevator.stop());
-        joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
-        joystick.back().onTrue(s_Elevator.reZero());
-        // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
-        joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
-        joystick.povLeft().onTrue(Commands.sequence(s_Elevator.goToL2A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
-        joystick.povRight().onTrue(Commands.sequence(s_Elevator.goToL3A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
-        joystick.rightStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
-        joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
+        // joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
+        // joystick.back().onTrue(s_Elevator.reZero());
+        // joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
+        // joystick.povLeft().onTrue(Commands.sequence(s_Elevator.goToL2A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
+        // joystick.povRight().onTrue(Commands.sequence(s_Elevator.goToL3A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
+        // joystick.rightStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
+        // joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
+        
+
+
+
+        //BUTTONS FOR SYSID
+        // joystick.leftBumper().onTrue(Commands.runOnce(SignalLogger::start));
+        // joystick.rightBumper().onTrue(Commands.runOnce(SignalLogger::start));
+
+        // joystick.a().whileTrue(s_Elevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
+        // joystick.b().whileTrue(s_Elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+        // joystick.y().whileTrue(s_Elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        // joystick.x().whileTrue(s_Elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+        //0.24 is just about going up
+        //0.01 cant hold it up
+        
+        
+        
+        
+        
+        
         // joystick
 
         // .b()
@@ -233,14 +270,26 @@ public class RobotContainer {
         //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5), new Rotation2d())));
         // joystick.x().whileTrue(new DriveToPose(drivetrain,
         //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5), new Rotation2d())));
-        joystick.povDown().onTrue(s_Algae.reZero());
 
-        joystick.b().whileTrue(Commands.parallel(new ReefBranchAlign(drivetrain,
-                new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),
-                () -> -joystick.getLeftY()), s_Shooter.shootTrough())).onFalse(s_Shooter.stop());
-        joystick.x().whileTrue(Commands.parallel(new ReefBranchAlign(drivetrain,
-                new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),
-                () -> -joystick.getLeftY()),s_Shooter.shootTrough())).onFalse(s_Shooter.stop());
+
+
+
+        //UNCOMENT
+        // joystick.povDown().onTrue(s_Algae.reZero());
+
+        // joystick.b().whileTrue(Commands.parallel(new ReefBranchAlign(drivetrain,
+        //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),
+        //         () -> -joystick.getLeftY()), s_Shooter.shootTrough())).onFalse(s_Shooter.stop());
+        // joystick.x().whileTrue(Commands.parallel(new ReefBranchAlign(drivetrain,
+        //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),
+        //         () -> -joystick.getLeftY()),s_Shooter.shootTrough())).onFalse(s_Shooter.stop());
+
+
+
+
+
+
+
 
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
@@ -262,9 +311,11 @@ public class RobotContainer {
         // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        drivetrain.registerTelemetry(logger::telemeterize);
+
+        //UNCOMENT
+        // joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        // drivetrain.registerTelemetry(logger::telemeterize);
     }
 
     public Command getAutonomousCommand() {

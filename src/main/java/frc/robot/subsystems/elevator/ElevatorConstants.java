@@ -3,6 +3,8 @@ package frc.robot.subsystems.elevator;
 public class ElevatorConstants {
     
     //Gear Ratio (inch to rotations of the motor)
+    //gear ratio is 2/3*25
+    //spool diameter is 1.751
     public final static double kGEAR_RATIO = 0.5 * (1d / (1.75100 * Math.PI)) * ( 2d / 3d ) * 25;
     
     //Setpoints
