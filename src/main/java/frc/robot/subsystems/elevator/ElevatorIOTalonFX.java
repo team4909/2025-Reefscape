@@ -67,7 +67,7 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
     public void setVoltage(double voltage) {
         // return this.runOnce(()->{
             final VoltageOut request = new VoltageOut(0);
-            m_left.setControl(request.withOutput(-voltage));
+
             m_right.setControl(request.withOutput(voltage));
         // });
         System.out.println("volts:" + m_right.getMotorVoltage());

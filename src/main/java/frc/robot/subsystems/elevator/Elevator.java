@@ -39,9 +39,9 @@ public class Elevator extends SubsystemBase {
     
       }
     
-      public Command moveUp() {
-        return this.runOnce(() -> m_io.setVoltage(3)).withName("UP");
-      }
+      // public Command moveUp() {
+      //   return this.runOnce(() -> m_io.setVoltage(3)).withName("UP");
+      // }
     
       public Command stop() {
         return this.runOnce(() -> m_io.setVoltage(0)).withName("Stop");

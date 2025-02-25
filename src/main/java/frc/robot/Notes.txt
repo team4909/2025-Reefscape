@@ -8,3 +8,6 @@ CLEARING ROBORIO CACHE FOR AUTOS
 
 How do we check if code is called
  - print ln
+
+GOING BACK IN A COMMIT
+    - git checkout commmit id
