@@ -24,7 +24,7 @@ public interface ElevatorIO {
 
     public default double getVoltage() { return 0; }
 
-    public default double getPosition() { return 0; }
+    public default double[] getPosition() { return new double[]{0,0};}
 
     public default double getSetpoint() { return 0; }
 }

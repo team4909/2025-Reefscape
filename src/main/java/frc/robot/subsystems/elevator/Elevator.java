@@ -13,7 +13,8 @@ public class Elevator extends SubsystemBase {
     private final NetworkTable elevatorTable = inst.getTable("Elevator");
     private final DoublePublisher  motorValPub= elevatorTable.getDoubleTopic("Motor Val").publish();
     private final DoublePublisher  motorVolPub= elevatorTable.getDoubleTopic("Motor Vol").publish();
-    private final DoublePublisher  rotPub= elevatorTable.getDoubleTopic("Rotations").publish();
+    private final DoublePublisher  RrotPub= elevatorTable.getDoubleTopic("RightRotations").publish();
+    private final DoublePublisher  LrotPub= elevatorTable.getDoubleTopic("LeftRotations").publish();
     private final DoublePublisher  setPub= elevatorTable.getDoubleTopic("Setpoint").publish();
 
     private final ElevatorIO m_io;
@@ -89,7 +90,7 @@ public class Elevator extends SubsystemBase {
       }
       public Command goUpInch(){
         return this.runOnce(()-> {
-          m_io.gotosetpoint(m_io.getPosition()+(1/10), m_gearRatio);
+          m_io.gotosetpoint(m_io.getPosition()[0]+(1/10), m_gearRatio);
         }).withName("Inch");
       }
       public Command reZero(){
@@ -109,6 +110,7 @@ public class Elevator extends SubsystemBase {
         motorValPub.set(m_io.getVelocity());
         motorVolPub.set(m_io.getVoltage());
         setPub.set(m_io.getSetpoint());
-        rotPub.set(m_io.getPosition());
+        RrotPub.set(m_io.getPosition()[0]);
+        LrotPub.set(m_io.getPosition()[1]);
       }
 }

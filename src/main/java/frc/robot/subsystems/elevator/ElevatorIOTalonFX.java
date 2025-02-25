@@ -94,9 +94,10 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         return m_right.getMotorVoltage().getValueAsDouble();
     }
     @Override
-    public double getPosition() {
-        return m_right.getPosition().getValueAsDouble();
+    public double[] getPosition() {
+        return new double[] {m_right.getPosition().getValueAsDouble(), m_left.getPosition().getValueAsDouble()};
     }
+
 
     public double getSetpoint(){
         return m_rotations;
