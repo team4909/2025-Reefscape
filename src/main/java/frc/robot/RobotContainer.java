@@ -259,7 +259,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new PathPlannerAuto("FarRight-left and closeRight-right-left");// m_chooser.getSelected();
+        // return new PathPlannerAuto("cut");
+        return m_chooser.getSelected();
     }
 
 

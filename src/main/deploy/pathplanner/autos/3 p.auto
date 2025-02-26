@@ -261,6 +261,18 @@
               }
             ]
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "closeRight-S"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "S-closeRight-right"
+          }
         }
       ]
     }
