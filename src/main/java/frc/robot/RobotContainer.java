@@ -202,7 +202,7 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(s_Elevator.goToL2()).onFalse(s_Elevator.goToL1());
         joystick.rightBumper().onTrue(s_Elevator.goToL3()).onFalse(s_Elevator.goToL1());
         joystick.leftTrigger().onTrue(s_Elevator.goToL4()).onFalse(s_Elevator.goToL1());
-        joystick.povUp().whileTrue(s_Climber.climb()).onFalse(s_Climber.stop());
+        joystick.povUp().onTrue(s_Climber.climbPosition());
         joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
         joystick.back().onTrue(s_Elevator.reZero());
         // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
@@ -210,7 +210,8 @@ public class RobotContainer {
         joystick.povLeft().onTrue(Commands.sequence(s_Elevator.goToL2A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
         joystick.povRight().onTrue(Commands.sequence(s_Elevator.goToL3A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
         joystick.rightStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
-        joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
+       // joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
+        joystick.leftStick().onTrue(s_Climber.reZero());
         // joystick
 
         // .b()
