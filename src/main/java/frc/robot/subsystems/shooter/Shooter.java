@@ -10,8 +10,8 @@ public class Shooter extends SubsystemBase {
     m_io = io;
   }
 
-  public Command shootL4() {
-    return this.run(() -> m_io.setSpeed(-0.3));
+  public Command shoot() {
+    return this.run(() -> m_io.setSpeed(-0.2));
   }
 
   public Command shootTrough() {

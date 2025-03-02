@@ -195,7 +195,14 @@ public class RobotContainer {
         // new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
         joystick.rightTrigger().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
-        joystick.y().whileTrue(s_Shooter.intake()).onFalse(s_Shooter.stop());
+        // joystick.rightTrigger().whileTrue(
+        //         if (s_Elevator.getCurrentCommand.equals(s_Elevator.goToL4())) {
+        //         s_Shooter.shootTrough();
+        // }
+        // else {
+        //         s_Shooter.shootL4();
+        // }).onFalse(s_Shooter.stop());
+        joystick.y().whileTrue(s_Shooter.shoot()).onFalse(s_Shooter.stop());
         joystick.a().whileTrue(s_Climber.lower()).onFalse(s_Climber.stop());
 
         joystick.b().onTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
