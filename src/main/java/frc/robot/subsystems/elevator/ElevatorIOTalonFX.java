@@ -23,8 +23,8 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
     
     
 
-    private final TalonFX m_left;
-    private final TalonFX m_right;
+    private final TalonFX m_front;
+    private final TalonFX m_back;
     private double m_rotations;
     final PositionVoltage m_request;
     //final VelocityVoltage m_request = new VelocityVoltage(0).withSlot(0);
@@ -36,68 +36,71 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         
         
 
-        m_left = new TalonFX(21, "CANivore2");
-        m_right = new TalonFX(22, "CANivore2");
+        m_front = new TalonFX(21, "CANivore2");
+        m_back = new TalonFX(22, "CANivore2");
         
         m_request = new PositionVoltage(0).withSlot(0);
 
         final TalonFXConfiguration elevatorMotorConfig = new TalonFXConfiguration();
         final MotorOutputConfigs rightOutputConfigs = new MotorOutputConfigs();
         final MotorOutputConfigs leftOutputConfigs = new MotorOutputConfigs();
+
         rightOutputConfigs.Inverted = InvertedValue.Clockwise_Positive;
         rightOutputConfigs.NeutralMode = NeutralModeValue.Brake;
         leftOutputConfigs.NeutralMode = NeutralModeValue.Brake;
+
         elevatorMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
         elevatorMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
         // in init function, set slot 0 gains
-        var slot0Configs = new Slot0Configs();
-        slot0Configs.kP = 2.8; // An error of 1 rotation results in 2.4 V output
-        slot0Configs.kI = 0; // no output for integrated error
-        slot0Configs.kD = 0.1; // A velocity of 1 rps results in 0.1 V output
-        slot0Configs.kG = 0.5;
+
+        elevatorMotorConfig.Slot0.kP = 3; 
+        elevatorMotorConfig.Slot0.kI = 0; // no output for integrated error
+        elevatorMotorConfig.Slot0.kD = 0.1; 
+        elevatorMotorConfig.Slot0.kG = 0.5;
+        elevatorMotorConfig.Slot0.kS = .4;
      
-        m_right.setPosition(29 * m_gearRatio);
-        m_left.getConfigurator().apply(elevatorMotorConfig);
-        m_right.getConfigurator().apply(elevatorMotorConfig);
-        m_right.getConfigurator().apply(rightOutputConfigs);
-        m_left.getConfigurator().apply(leftOutputConfigs);
-        m_left.getConfigurator().apply(slot0Configs);
-        m_right.getConfigurator().apply(slot0Configs);
-        m_left.setControl(new Follower(22, true));
+        m_back.setPosition(29 * m_gearRatio);
+        m_front.getConfigurator().apply(elevatorMotorConfig);
+        m_back.getConfigurator().apply(elevatorMotorConfig);
+
+        m_back.getConfigurator().apply(rightOutputConfigs);
+        m_front.getConfigurator().apply(leftOutputConfigs);
+
+        m_front.setControl(new Follower(m_back.getDeviceID(), true));
     }
 
     public void setVoltage(double voltage) {
         // return this.runOnce(()->{
             final VoltageOut request = new VoltageOut(0);
 
-            m_right.setControl(request.withOutput(voltage));
+            m_back.setControl(request.withOutput(voltage));
         // });
-        System.out.println("volts:" + m_right.getMotorVoltage());
+        System.out.println("volts:" + m_back.getMotorVoltage());
     }
     
     public void setBrakeMode(boolean enableBrakeMode) {
         final NeutralModeValue neutralModeValue =
             enableBrakeMode ? NeutralModeValue.Brake : NeutralModeValue.Coast;
-        m_left.setNeutralMode(neutralModeValue);
-        m_right.setNeutralMode(neutralModeValue);
+        m_front.setNeutralMode(neutralModeValue);
+        m_back.setNeutralMode(neutralModeValue);
     }
     @Override
     public void gotosetpoint(double setpoint, double gearRatio) {
         double rotations = setpoint * gearRatio;
         m_rotations = rotations;
         System.out.println("rotations:" + rotations);
-        m_right.setControl(m_request.withPosition(rotations));
+        m_back.setControl(m_request.withPosition(rotations));
     }
 
     public double getVelocity(){
-        return m_right.getVelocity().getValueAsDouble();
+        return m_back.getVelocity().getValueAsDouble();
     }
     public double getVoltage(){
-        return m_right.getMotorVoltage().getValueAsDouble();
+        return m_back.getMotorVoltage().getValueAsDouble();
     }
     @Override
     public double getPosition() {
-        return m_right.getPosition().getValueAsDouble();
+        return m_back.getPosition().getValueAsDouble();
     }
 
     public double getSetpoint(){
@@ -105,11 +108,11 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
     }
 
     public void setPosition(double position){
-        m_right.setPosition(position);
+        m_back.setPosition(position);
     }
 
     public void updateInputs(ElevatorIOInputsAutoLogged m_inputs) {
-        double motorRPS = m_right.getVelocity().getValueAsDouble();
+        double motorRPS = m_back.getVelocity().getValueAsDouble();
         m_inputs.elevatorRPM = motorRPS*60;
     }
 
