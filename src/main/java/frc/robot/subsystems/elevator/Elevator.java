@@ -20,19 +20,19 @@ public class Elevator extends SubsystemBase {
   private ElevatorIOInputsAutoLogged m_inputs = new ElevatorIOInputsAutoLogged();
   private final ElevatorIO m_io;
   // GSD setpoints
-  // private final double L1Setpoint = 29;
-  // private final double L2Setpoint = 33.5;
-  // private final double L3Setpoint = 51;
-  // private final double L4Setpoint = 77;
-  // private final double L2ASetpoint = 48.5;
-  // private final double L3ASetpoint = 64.5;
-
   private final double L1Setpoint = 29;
-  private final double L2Setpoint = 33;
-  private final double L3Setpoint = 40;
-  private final double L4Setpoint = 50;
-  private final double L2ASetpoint = 2.5;
-  private final double L3ASetpoint = 3.5
+  private final double L2Setpoint = 33.5;
+  private final double L3Setpoint = 51;
+  private final double L4Setpoint = 77;
+  private final double L2ASetpoint = 48.5;
+  private final double L3ASetpoint = 64.5;
+
+  // private final double L1Setpoint = 29;
+  // private final double L2Setpoint = 33;
+  // private final double L3Setpoint = 40;
+  // private final double L4Setpoint = 50;
+  // private final double L2ASetpoint = 2.5;
+  // private final double L3ASetpoint = 3.5
 
   ;
   // inch to rotations of the motor
