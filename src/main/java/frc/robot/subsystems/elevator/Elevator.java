@@ -15,7 +15,8 @@ public class Elevator extends SubsystemBase {
   private final DoublePublisher motorValPub = elevatorTable.getDoubleTopic("Motor Val").publish();
   private final DoublePublisher motorVolPub = elevatorTable.getDoubleTopic("Motor Vol").publish();
   private final DoublePublisher rotPub = elevatorTable.getDoubleTopic("Rotations").publish();
-  private final DoublePublisher setPub = elevatorTable.getDoubleTopic("Setpoint").publish();
+  private final DoublePublisher setRotPub = elevatorTable.getDoubleTopic("Setpoint Rotations").publish();
+  private final DoublePublisher setInchPub = elevatorTable.getDoubleTopic("Setpoint Inches").publish();
 
   private ElevatorIOInputsAutoLogged m_inputs = new ElevatorIOInputsAutoLogged();
   private final ElevatorIO m_io;
@@ -23,7 +24,8 @@ public class Elevator extends SubsystemBase {
   private final double L1Setpoint = 29;
   private final double L2Setpoint = 33.5;
   private final double L3Setpoint = 51;
-  private final double L4Setpoint = 77;
+  private final double L4Setpoint = 76.5;//gsd 77
+
   private final double L2ASetpoint = 48.5;
   private final double L3ASetpoint = 64.5;
 
@@ -122,7 +124,8 @@ public class Elevator extends SubsystemBase {
 
     motorValPub.set(m_io.getVelocity());
     motorVolPub.set(m_io.getVoltage());
-    setPub.set(m_io.getSetpoint());
+    setRotPub.set(m_io.getSetpoint());
+    setInchPub.set(m_io.getSetpoint() / ElevatorIOTalonFX.m_gearRatio);
     rotPub.set(m_io.getPosition());
   }
 }

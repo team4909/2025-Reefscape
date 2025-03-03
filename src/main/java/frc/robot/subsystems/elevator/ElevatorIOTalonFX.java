@@ -4,19 +4,12 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.networktables.DoubleArrayPublisher;
-import edu.wpi.first.networktables.DoublePublisher;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
@@ -26,7 +19,7 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
     private final TalonFX m_left;
     private final TalonFX m_right;
     private double m_rotations;
-    final PositionVoltage m_request;
+    final MotionMagicVoltage m_request;
     //final VelocityVoltage m_request = new VelocityVoltage(0).withSlot(0);
     //private final PositionVoltage m_request;
 
@@ -39,7 +32,7 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         m_left = new TalonFX(21, "CANivore2");
         m_right = new TalonFX(22, "CANivore2");
         
-        m_request = new PositionVoltage(0).withSlot(0);
+        m_request = new MotionMagicVoltage(0);//new PositionVoltage(0).withSlot(0);
 
         final TalonFXConfiguration elevatorMotorConfig = new TalonFXConfiguration();
         final MotorOutputConfigs rightOutputConfigs = new MotorOutputConfigs();
@@ -50,19 +43,25 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         elevatorMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
         elevatorMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
         // in init function, set slot 0 gains
-        var slot0Configs = new Slot0Configs();
-        slot0Configs.kP = 2.8; // An error of 1 rotation results in 2.4 V output
-        slot0Configs.kI = 0; // no output for integrated error
-        slot0Configs.kD = 0.1; // A velocity of 1 rps results in 0.1 V output
-        slot0Configs.kG = 0.5;
+      
+        elevatorMotorConfig.Slot0.kP = 20; 
+        elevatorMotorConfig.Slot0.kI = 0; // no output for integrated error
+        elevatorMotorConfig.Slot0.kD = 0.1; // A velocity of 1 rps results in 0.1 V output
+        elevatorMotorConfig.Slot0.kG = 0.5;
+        elevatorMotorConfig.Slot0.kS = .3;
+
+        // TODO: Tune these values (I made them up)
+        var motionMagicConfigs = elevatorMotorConfig.MotionMagic;
+        motionMagicConfigs.MotionMagicCruiseVelocity = 80; // Target cruise velocity of 80 rps
+        motionMagicConfigs.MotionMagicAcceleration = 120; // Target acceleration of 160 rps/s (0.5 seconds)
+        // motionMagicConfigs.MotionMagicJerk = 1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
      
         m_right.setPosition(29 * m_gearRatio);
         m_left.getConfigurator().apply(elevatorMotorConfig);
         m_right.getConfigurator().apply(elevatorMotorConfig);
         m_right.getConfigurator().apply(rightOutputConfigs);
         m_left.getConfigurator().apply(leftOutputConfigs);
-        m_left.getConfigurator().apply(slot0Configs);
-        m_right.getConfigurator().apply(slot0Configs);
+
         m_left.setControl(new Follower(22, true));
     }
 
