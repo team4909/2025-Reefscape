@@ -30,6 +30,8 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
     //final VelocityVoltage m_request = new VelocityVoltage(0).withSlot(0);
     //private final PositionVoltage m_request;
 
+    public static final double m_gearRatio = 0.5 * (1d / (1.75100 * Math.PI)) * ( 2d / 3d ) * 12;
+
     public ElevatorIOTalonFX() {
         
         
@@ -54,7 +56,7 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         slot0Configs.kD = 0.1; // A velocity of 1 rps results in 0.1 V output
         slot0Configs.kG = 0.5;
      
-        m_right.setPosition(29 * (0.5 * (1d / (1.75100 * Math.PI)) * ( 2d / 3d ) * 25));
+        m_right.setPosition(29 * m_gearRatio);
         m_left.getConfigurator().apply(elevatorMotorConfig);
         m_right.getConfigurator().apply(elevatorMotorConfig);
         m_right.getConfigurator().apply(rightOutputConfigs);
@@ -105,5 +107,11 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
     public void setPosition(double position){
         m_right.setPosition(position);
     }
+
+    public void updateInputs(ElevatorIOInputsAutoLogged m_inputs) {
+        double motorRPS = m_right.getVelocity().getValueAsDouble();
+        m_inputs.elevatorRPM = motorRPS*60;
+    }
+
  
 }
