@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.866,
-        "y": 2.9880635245901637
+        "x": 3.867927631578947,
+        "y": 3.0243421052631576
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0673980263157894,
-        "y": 1.96816220880069
+        "x": 3.069325657894736,
+        "y": 2.004440789473684
       },
       "isLocked": false,
       "linkedName": "closeRight-right"
     },
     {
       "anchor": {
-        "x": 1.549095394736842,
-        "y": 0.6766447368421052
+        "x": 1.366282894736842,
+        "y": 0.474588815789474
       },
       "prevControl": {
-        "x": 2.453536184210526,
-        "y": 1.5329769736842107
+        "x": 2.270723684210526,
+        "y": 1.3309210526315796
       },
       "nextControl": null,
-      "isLocked": true,
-      "linkedName": null
+      "isLocked": false,
+      "linkedName": "Source Right"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -36.573030978519256
+    "rotation": -36.277659837442044
   },
   "reversed": false,
   "folder": "taxi and L4 far paths",

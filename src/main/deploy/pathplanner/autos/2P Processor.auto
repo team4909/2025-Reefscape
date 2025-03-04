@@ -142,12 +142,6 @@
           "data": {
             "name": "score"
           }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 15.0
-          }
         }
       ]
     }

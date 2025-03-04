@@ -89,7 +89,7 @@ public class RobotContainer {
 
         // Auto Named Commands
         NamedCommands.registerCommand("score", s_Shooter.shootTrough().withTimeout(.5));
-        NamedCommands.registerCommand("feed", s_Shooter.shootTrough().withTimeout(1));
+        NamedCommands.registerCommand("feed", s_Shooter.shootTrough().withTimeout(1.5));
         NamedCommands.registerCommand("stop shooter", s_Shooter.stopInstant());
         NamedCommands.registerCommand("L4", s_Elevator.goToL4());
         NamedCommands.registerCommand("L3", s_Elevator.goToL3());
