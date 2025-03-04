@@ -1,5 +1,7 @@
 package frc.robot.subsystems.elevator;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.networktables.DoublePublisher;
@@ -39,7 +41,9 @@ public class Elevator extends SubsystemBase {
   // inch to rotations of the motor
 
   public Elevator(ElevatorIO io) {
+    super("Elevator");
     m_io = io;
+    SmartDashboard.putString("L4Wait", "Idle");
 
   }
 
@@ -83,6 +87,20 @@ public class Elevator extends SubsystemBase {
     }).withName("L4");
   }
 
+  public Command L4_Wait() {
+    // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
+    return this.run(() -> {
+      SmartDashboard.putString("L4Wait", "Start");
+      m_io.gotosetpoint(L4Setpoint, ElevatorIOTalonFX.m_gearRatio);
+    }).withName("L4").until(() -> {
+      // SmartDashboard.putNumber("Elevator/l4wait", Math.abs(L4Setpoint - m_inputs.elevatorHeightInch) );
+      // SmartDashboard.putNumber("Elevator/actual", m_inputs.elevatorHeightInch);
+      // SmartDashboard.putNumber("Elevator/target", L4Setpoint);
+      return Math.abs(L4Setpoint - m_inputs.elevatorHeightInch) < 0.1;
+    }).andThen(()-> SmartDashboard.putString("L4Wait", "End"));
+  }
+
+
   public Command goToL3A() {
     // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
     return this.runOnce(() -> {
@@ -119,6 +137,7 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     super.periodic();
     m_io.updateInputs(m_inputs);
+    Logger.processInputs(getName(), m_inputs);
     SmartDashboard.putNumber("Elevator RPM ", m_inputs.elevatorRPM);
 
     motorValPub.set(m_io.getVelocity());

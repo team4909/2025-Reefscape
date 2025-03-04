@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.subsystems.drivetrain.DriveToPose;
@@ -87,13 +88,15 @@ public class RobotContainer {
     s_Climber = new Climber(new ClimberIOTalonFX());
 
         // Auto Named Commands
-        NamedCommands.registerCommand("score", s_Shooter.shootTrough());
-        NamedCommands.registerCommand("stop shooter", s_Shooter.stop());
+        NamedCommands.registerCommand("score", s_Shooter.shootTrough().withTimeout(.5));
+        NamedCommands.registerCommand("feed", s_Shooter.shootTrough().withTimeout(1));
+        NamedCommands.registerCommand("stop shooter", s_Shooter.stopInstant());
         NamedCommands.registerCommand("L4", s_Elevator.goToL4());
         NamedCommands.registerCommand("L3", s_Elevator.goToL3());
         NamedCommands.registerCommand("L2", s_Elevator.goToL2());
         NamedCommands.registerCommand("L1", s_Elevator.goToL1());
         NamedCommands.registerCommand("test", s_Elevator.testPrint());
+        NamedCommands.registerCommand("L4 Wait", s_Elevator.L4_Wait());
 
         NamedCommands.registerCommand("autoalign left", new ReefBranchAlign(drivetrain,
         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),

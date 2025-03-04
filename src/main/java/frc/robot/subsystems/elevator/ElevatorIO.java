@@ -2,15 +2,13 @@ package frc.robot.subsystems.elevator;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-
 public interface ElevatorIO {
     
     @AutoLog
     public static class ElevatorIOInputs { 
         public double voltage = 0d;
         public double elevatorRPM = 0;
+        public double elevatorHeightInch = 0;
     }
 
     public abstract void updateInputs (ElevatorIOInputsAutoLogged m_inputs) ;
