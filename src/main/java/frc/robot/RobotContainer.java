@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.subsystems.drivetrain.DriveToPose;
@@ -194,14 +195,12 @@ public class RobotContainer {
         // point.withModuleDirection(
         // new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-        joystick.rightTrigger().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
-        // joystick.rightTrigger().whileTrue(
-        //         if (s_Elevator.getCurrentCommand.equals(s_Elevator.goToL4())) {
-        //         s_Shooter.shootTrough();
-        // }
-        // else {
-        //         s_Shooter.shootL4();
-        // }).onFalse(s_Shooter.stop());
+        // joystick.rightTrigger().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
+        joystick.rightTrigger().whileTrue(Commands.runOnce(()-> {
+                if(s_Elevator.getCurrentCommand().equals(s_Elevator.goToL4())) s_Shooter.shootTrough();
+                else s_Shooter.shoot();
+        }, s_Elevator)).onFalse(s_Shooter.stop());
+
         joystick.y().whileTrue(s_Shooter.shoot()).onFalse(s_Shooter.stop());
         joystick.a().whileTrue(s_Climber.lower()).onFalse(s_Climber.stop());
 
