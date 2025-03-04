@@ -195,14 +195,21 @@ public class RobotContainer {
         // new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
         joystick.rightTrigger().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
-        joystick.y().whileTrue(s_Shooter.intake()).onFalse(s_Shooter.stop());
+        // joystick.rightTrigger().whileTrue(
+        //         if (s_Elevator.getCurrentCommand.equals(s_Elevator.goToL4())) {
+        //         s_Shooter.shootTrough();
+        // }
+        // else {
+        //         s_Shooter.shootL4();
+        // }).onFalse(s_Shooter.stop());
+        joystick.y().whileTrue(s_Shooter.shoot()).onFalse(s_Shooter.stop());
         joystick.a().whileTrue(s_Climber.lower()).onFalse(s_Climber.stop());
 
         joystick.b().onTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
         joystick.leftBumper().onTrue(s_Elevator.goToL2()).onFalse(s_Elevator.goToL1());
         joystick.rightBumper().onTrue(s_Elevator.goToL3()).onFalse(s_Elevator.goToL1());
         joystick.leftTrigger().onTrue(s_Elevator.goToL4()).onFalse(s_Elevator.goToL1());
-        joystick.povUp().whileTrue(s_Climber.climb()).onFalse(s_Climber.stop());
+        joystick.povUp().onTrue(s_Climber.climbPosition());
         joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
         joystick.back().onTrue(s_Elevator.reZero());
         // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
@@ -210,7 +217,8 @@ public class RobotContainer {
         joystick.povLeft().onTrue(Commands.sequence(s_Elevator.goToL2A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
         joystick.povRight().onTrue(Commands.sequence(s_Elevator.goToL3A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
         joystick.rightStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
-        joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
+       // joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
+        joystick.leftStick().onTrue(s_Climber.reZero());
         // joystick
 
         // .b()
@@ -259,7 +267,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new PathPlannerAuto("FarRight-left and closeRight-right-left");// m_chooser.getSelected();
+        // return new PathPlannerAuto("cut");
+        return m_chooser.getSelected();
     }
 
 
