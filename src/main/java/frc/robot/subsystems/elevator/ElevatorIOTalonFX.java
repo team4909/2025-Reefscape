@@ -55,15 +55,15 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         // slot0Configs.kV = 1.99938560282; //Voltage to reach velocity target of 1 rps
         // slot0Configs.kA = 0.00139719469; //Voltage to reach an acceleration of 1rps/s
         slot0Configs.kG = 0.3; //Voltage to overcome gravity
-        slot0Configs.kP = 30.0;
-        slot0Configs.kI = 0;
-        slot0Configs.kD = 0.1;
+        slot0Configs.kP = 33.0;
+        slot0Configs.kI = 0.1;
+        slot0Configs.kD = 0.3 ;
 
         // //TODO: Tune these values (I mde them up)
         var motionMagicConfigs = motorConfiguration.MotionMagic;
-        motionMagicConfigs.MotionMagicCruiseVelocity = 400; // Target cruise velocity of 80 rps
-        motionMagicConfigs.MotionMagicAcceleration = 400; // Target acceleration of 160 rps/s (0.5 seconds)
-        motionMagicConfigs.MotionMagicJerk = 2400; // Target jerk of 1600 rps/s/s (0.1 seconds)
+        motionMagicConfigs.MotionMagicCruiseVelocity = 200; // Target cruise velocity of 80 rps
+        motionMagicConfigs.MotionMagicAcceleration = 200; // Target acceleration of 160 rps/s (0.5 seconds)
+        motionMagicConfigs.MotionMagicJerk = 1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
 
         //Other settings:
         motorConfiguration.CurrentLimits.SupplyCurrentLimit = 40.0;
