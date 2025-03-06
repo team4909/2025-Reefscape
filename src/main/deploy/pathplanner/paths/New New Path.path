@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.795,
-        "y": 2.724
+        "x": 2.649,
+        "y": 2.7
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.383307097213108,
-        "y": 1.7296520489055753
+        "x": 2.8076859999626724,
+        "y": 2.893180623810585
       },
-      "isLocked": true,
+      "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.2170804794520549,
-        "y": 0.26106592465753464
+        "x": 0.992,
+        "y": 0.5916309931506851
       },
       "prevControl": {
-        "x": 3.274063430781095,
-        "y": 1.4994536198454564
+        "x": 1.9869795081967228,
+        "y": 1.814376894790029
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -37.0
+    "rotation": -38.65980825408998
   },
   "reversed": false,
-  "folder": "taxi and L4 far paths",
+  "folder": "human player ",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 122.16299999999998
+    "rotation": 52.43060789173672
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
