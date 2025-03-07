@@ -53,9 +53,9 @@ public class Telemetry {
       driveStateTable.getDoubleTopic("OdometryFrequency").publish();
 
   /* Robot pose for field positioning */
-  private final NetworkTable table = inst.getTable("Pose");
-  private final DoubleArrayPublisher fieldPub = table.getDoubleArrayTopic("robotPose").publish();
-  private final StringPublisher fieldTypePub = table.getStringTopic(".type").publish();
+//   private final NetworkTable table = inst.getTable("Pose");
+//   private final DoubleArrayPublisher fieldPub = table.getDoubleArrayTopic("robotPose").publish();
+//   private final StringPublisher fieldTypePub = table.getStringTopic(".type").publish();
 
   /* Mechanisms to represent the swerve module states */
   private final Mechanism2d[] m_moduleMechanisms =
@@ -127,8 +127,8 @@ public class Telemetry {
     SignalLogger.writeDouble("DriveState/OdometryPeriod", state.OdometryPeriod, "seconds");
 
     /* Telemeterize the pose to a Field2d */
-    fieldTypePub.set("Field2d");
-    fieldPub.set(m_poseArray);
+    // fieldTypePub.set("Field2d");
+    // fieldPub.set(m_poseArray);
 
     /* Telemeterize the module states to a Mechanism2d */
     for (int i = 0; i < 4; ++i) {
@@ -140,3 +140,4 @@ public class Telemetry {
     }
   }
 }
+
