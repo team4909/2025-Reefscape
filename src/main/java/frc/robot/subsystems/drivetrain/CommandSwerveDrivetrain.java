@@ -33,6 +33,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -234,6 +235,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public ChassisSpeeds getRobotRelativeSpeeds() {
         return this.getKinematics().toChassisSpeeds(this.getState().ModuleStates);
     }
+
+    
 
     /**
      * Constructs a CTRE SwerveDrivetrain using the specified constants.
@@ -439,6 +442,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                                 m_hasAppliedOperatorPerspective = true;
                             });
         }
+
+        var speeds = this.getKinematics().toChassisSpeeds(this.getState().ModuleStates);
+        double vx = speeds.vxMetersPerSecond;
+        double vy = speeds.vyMetersPerSecond;
+        double robotVelocity = Math.sqrt(vx * vx + vy * vy);
+        SmartDashboard.putNumber("dtvelocity", robotVelocity);
     }
 
     private void startSimThread() {

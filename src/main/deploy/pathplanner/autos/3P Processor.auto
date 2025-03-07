@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "farRight-left"
+                  "pathName": "farRight-right"
                 }
               },
               {
@@ -81,16 +81,10 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "farRight-left-S"
+                  "pathName": "farRight-right-S"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.1
           }
         },
         {
@@ -169,9 +163,78 @@
           }
         },
         {
-          "type": "wait",
+          "type": "parallel",
           "data": {
-            "waitTime": 0.1
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "S-closeRight-left"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "feed"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "stop shooter"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.5
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "L4 Wait"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stop shooter"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "L1"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "closeRight-left-S"
+                }
+              }
+            ]
           }
         },
         {
@@ -181,7 +244,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "S-closeRight-left"
+                  "pathName": "S-closeCenter-right"
                 }
               },
               {

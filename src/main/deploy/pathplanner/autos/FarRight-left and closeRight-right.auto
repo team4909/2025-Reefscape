@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "farRight-left"
+            "pathName": "farRight-right"
           }
         },
         {
@@ -37,7 +37,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "farRight-left-S"
+            "pathName": "farRight-right-S"
           }
         },
         {

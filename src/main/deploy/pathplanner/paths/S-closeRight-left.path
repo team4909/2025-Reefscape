@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.1269263698630136,
-        "y": 0.2760916095890411
+        "x": 1.452878289473684,
+        "y": 0.7055098684210531
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.1257184319855327,
-        "y": 2.7914591139031044
+        "x": 3.451670351596203,
+        "y": 3.2208773727351163
       },
       "isLocked": false,
       "linkedName": "Source Right"
     },
     {
       "anchor": {
-        "x": 3.57,
-        "y": 3.187911184210526
+        "x": 3.5023026315789467,
+        "y": 3.1109375
       },
       "prevControl": {
-        "x": 3.4199999999999995,
-        "y": 2.9879111842105264
+        "x": 3.3523026315789464,
+        "y": 2.9109375
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,11 +32,11 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.5614973262032092,
+      "minWaypointRelativePos": 0.3662477558348294,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 10.0,
-        "maxAcceleration": 1.5,
+        "maxVelocity": 1.8,
+        "maxAcceleration": 3.2,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -47,8 +47,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 10.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 3.7,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -62,7 +62,7 @@
   "folder": "taxi and L4 far paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -36.277659837442044
+    "rotation": 53.13010235415598
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
