@@ -96,37 +96,6 @@
                 "data": {
                   "pathName": "S-closeRight-right"
                 }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "feed"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "stop shooter"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.5
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "L4 Wait"
-                      }
-                    }
-                  ]
-                }
               }
             ]
           }

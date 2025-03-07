@@ -110,6 +110,9 @@ public class Telemetry {
     driveTimestamp.set(state.Timestamp);
     driveOdometryFrequency.set(1.0 / state.OdometryPeriod);
 
+    SmartDashboard.putNumber("drivetrain/FailedDaqs", state.FailedDaqs);
+    SmartDashboard.putNumber("drivetrain/SuccessfulDaqs", state.SuccessfulDaqs);
+
     /* Also write to log file */
     m_poseArray[0] = state.Pose.getX();
     m_poseArray[1] = state.Pose.getY();

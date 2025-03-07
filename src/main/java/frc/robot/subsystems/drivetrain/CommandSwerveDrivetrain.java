@@ -448,6 +448,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         double vy = speeds.vyMetersPerSecond;
         double robotVelocity = Math.sqrt(vx * vx + vy * vy);
         SmartDashboard.putNumber("dtvelocity", robotVelocity);
+
+        var yaw = this.getPigeon2().getYaw(true);
+        SmartDashboard.putNumber("Pigeon/yaw", yaw.getValueAsDouble());
+        SmartDashboard.putNumber("Pigeon/timestamp", yaw.getTimestamp().getTime());
     }
 
     private void startSimThread() {
