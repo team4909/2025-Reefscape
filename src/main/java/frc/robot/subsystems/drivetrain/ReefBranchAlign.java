@@ -91,7 +91,7 @@ public class ReefBranchAlign extends Command {
 
     double ffScaler = MathUtil.clamp((distanceToGoalPose - 0.2) / (0.8 - 0.2), 0.0, 1.0);
 
-    m_translationController.reset(
+    m_translationController.calculate(
         Math.abs(m_lastSetpointTranslation.getY() - m_goalPose.getY()),
         m_translationController.getSetpoint().velocity);//ROBO RELATIVE
 
