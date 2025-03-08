@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 4.7338815789473685,
-        "y": 2.668338815789474
+        "x": 4.8,
+        "y": 2.7
       },
       "prevControl": {
-        "x": 5.898108552631579,
-        "y": 2.6490953947368414
+        "x": 5.964226973684211,
+        "y": 2.6807565789473675
       },
       "nextControl": null,
       "isLocked": false,
@@ -56,7 +56,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 120.03647070098954
+    "rotation": 120.76167135123241
   },
   "reversed": false,
   "folder": "taxi and L4 far paths",
