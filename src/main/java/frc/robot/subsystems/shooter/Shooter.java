@@ -1,13 +1,18 @@
 package frc.robot.subsystems.shooter;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.shooter.ShooterIO.ShooterIOInputs;
 
 public class Shooter extends SubsystemBase {
   private final ShooterIO m_io;
+  private final ShooterIOInputsAutoLogged m_inputs = new ShooterIOInputsAutoLogged();
 
   public Shooter(ShooterIO io) {
+    super("Shooter");
     m_io = io;
   }
 
@@ -32,10 +37,23 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
+    Logger.processInputs(this.getName(), m_inputs);
     if (this.getCurrentCommand() != null) {
       SmartDashboard.putString("shooter/command", this.getCurrentCommand().getName());
     } else {
       SmartDashboard.putString("shooter/command", "null");
     }
+  }
+
+  public Command setDefaultDoNotRun() {
+    return this.run(() -> this.setDefaultCommand(this.stop()));
+  }
+
+  public Command setDefaultRunToCurrentSpike() {
+    return this.run(() -> this.setDefaultCommand(this.runToCurrentSpike())); //@todo
+  }
+
+  public Command runToCurrentSpike() {
+    return this.run(() -> m_io.setSpeed(0.2)).until(() -> m_inputs.statorCurrent > 15).andThen(this.stop()).withName("RunToCurrentSpike");
   }
 }

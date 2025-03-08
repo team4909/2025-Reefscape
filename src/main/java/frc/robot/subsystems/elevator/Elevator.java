@@ -164,4 +164,8 @@ public class Elevator extends SubsystemBase {
       SmartDashboard.putString("elevator/command", "null");
     }
   }
+
+  public boolean isAtL1() {
+    return m_inputs.heightInch < L1Setpoint + 0.1;
+  }
 }
