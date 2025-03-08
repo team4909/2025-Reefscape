@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.171,
-        "y": 5.092
+        "x": 5.148,
+        "y": 5.035
       },
       "prevControl": {
-        "x": 5.419626363230352,
-        "y": 5.11817119612951
+        "x": 5.396626363230351,
+        "y": 5.061171196129511
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.37163375224416534,
+      "minWaypointRelativePos": 0.2860962566844918,
       "maxWaypointRelativePos": 0.8833034111310594,
       "constraints": {
         "maxVelocity": 1.2,
@@ -56,7 +56,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.07
+    "rotation": -117.90000000000002
   },
   "reversed": false,
   "folder": "taxi and L4 far paths",
