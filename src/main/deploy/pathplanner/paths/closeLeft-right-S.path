@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.858305921052631,
-        "y": 5.112253289473684
+        "x": 3.903,
+        "y": 5.163
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.125740131575546,
-        "y": 7.1905427631612175
+        "x": 1.1704342105229153,
+        "y": 7.241289473687534
       },
       "isLocked": false,
       "linkedName": "closeLeft-right"
@@ -48,7 +48,7 @@
   "folder": "taxi and L4 far paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -59.588918732874646
+    "rotation": -59.870000000000005
   },
   "useDefaultConstraints": true
 }
