@@ -158,6 +158,10 @@ public class Elevator extends SubsystemBase {
     setPub.set(m_io.getSetpoint());
     rotPub.set(m_io.getPosition());
 
-    SmartDashboard.putString("elevator/command", this.getCurrentCommand().getName());
+    if (this.getCurrentCommand() != null) {
+      SmartDashboard.putString("elevator/command", this.getCurrentCommand().getName());
+    } else {
+      SmartDashboard.putString("elevator/command", "null");
+    }
   }
 }

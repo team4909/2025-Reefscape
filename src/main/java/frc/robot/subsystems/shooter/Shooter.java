@@ -32,6 +32,10 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
+    if (this.getCurrentCommand() != null) {
       SmartDashboard.putString("shooter/command", this.getCurrentCommand().getName());
+    } else {
+      SmartDashboard.putString("shooter/command", "null");
+    }
   }
 }
