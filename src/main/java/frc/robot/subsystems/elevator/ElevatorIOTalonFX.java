@@ -138,7 +138,8 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
     public void updateInputs(ElevatorIOInputsAutoLogged m_inputs) {
         double motorRPS = m_back.getVelocity().getValueAsDouble();
         m_inputs.elevatorRPM = motorRPS*60;
-        m_inputs.elevatorHeightInch = m_back.getPosition().getValueAsDouble() / m_gearRatio;
+        m_inputs.heightInch = m_back.getPosition().getValueAsDouble() / m_gearRatio;
+        m_inputs.setpointInch = m_rotations / m_gearRatio;
     }
 
  

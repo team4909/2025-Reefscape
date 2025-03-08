@@ -96,7 +96,7 @@ public class Elevator extends SubsystemBase {
       // SmartDashboard.putNumber("Elevator/l4wait", Math.abs(L4Setpoint - m_inputs.elevatorHeightInch) );
       // SmartDashboard.putNumber("Elevator/actual", m_inputs.elevatorHeightInch);
       // SmartDashboard.putNumber("Elevator/target", L4Setpoint);
-      return Math.abs(L4Setpoint - m_inputs.elevatorHeightInch) < 0.1;
+      return Math.abs(L4Setpoint - m_inputs.heightInch) < 0.1;
     }).andThen(()-> SmartDashboard.putString("L4Wait", "End"));
   }
 
@@ -109,7 +109,7 @@ public class Elevator extends SubsystemBase {
       // SmartDashboard.putNumber("Elevator/l4wait", Math.abs(L4Setpoint - m_inputs.elevatorHeightInch) );
       // SmartDashboard.putNumber("Elevator/actual", m_inputs.elevatorHeightInch);
       // SmartDashboard.putNumber("Elevator/target", L4Setpoint);
-      return Math.abs(L2Setpoint - m_inputs.elevatorHeightInch) < 0.1;
+      return Math.abs(L2Setpoint - m_inputs.heightInch) < 0.1;
     }).andThen(()-> SmartDashboard.putString("L2Wait", "End"));
   }
 

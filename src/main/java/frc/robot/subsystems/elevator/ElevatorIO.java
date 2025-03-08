@@ -8,7 +8,8 @@ public interface ElevatorIO {
     public static class ElevatorIOInputs { 
         public double voltage = 0d;
         public double elevatorRPM = 0;
-        public double elevatorHeightInch = 0;
+        public double heightInch = 0;
+        public double setpointInch = 0;
     }
 
     public abstract void updateInputs (ElevatorIOInputsAutoLogged m_inputs) ;
