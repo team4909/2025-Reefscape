@@ -15,6 +15,7 @@ import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -53,13 +54,22 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         elevatorMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
         // in init function, set slot 0 gains
 
-        elevatorMotorConfig.Slot0.kP = 1; //3
+        elevatorMotorConfig.Slot0.kP = 3; //3
         elevatorMotorConfig.Slot0.kI = 0; // no output for integrated error
         elevatorMotorConfig.Slot0.kD = 0.1; 
         elevatorMotorConfig.Slot0.kG = 5; //.5
         elevatorMotorConfig.Slot0.kS = 0; //.2
+
+        // use these constants when going down
+        elevatorMotorConfig.Slot1.kP = 2; //3
+        elevatorMotorConfig.Slot1.kI = 0; // no output for integrated error
+        elevatorMotorConfig.Slot1.kD = 1; 
+        elevatorMotorConfig.Slot1.kG = 5; //.5
+        elevatorMotorConfig.Slot1.kS = 0; //.2
      
-        m_back.setPosition(29 * m_gearRatio);
+        m_rotations = 29 * m_gearRatio;
+        m_back.setPosition(m_rotations);
+        
         m_front.getConfigurator().apply(elevatorMotorConfig);
         m_back.getConfigurator().apply(elevatorMotorConfig);
 
@@ -86,10 +96,19 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
     }
     @Override
     public void gotosetpoint(double setpoint, double gearRatio) {
-        double rotations = setpoint * gearRatio;
-        m_rotations = rotations;
-        System.out.println("rotations:" + rotations);
-        m_back.setControl(m_request.withPosition(rotations));
+        double targetRot = setpoint * gearRatio;
+        double currentRot = m_rotations;
+
+        int slot = 0;
+        if (targetRot < currentRot) {
+            slot = 1;
+        }
+
+        m_rotations = targetRot;
+        // System.out.println("rotations:" + targetRot);
+        SmartDashboard.putNumber("elevator/slot", slot);
+
+        m_back.setControl(m_request.withPosition(targetRot).withSlot(slot));
     }
 
     public double getVelocity(){
