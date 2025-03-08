@@ -56,8 +56,8 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         elevatorMotorConfig.Slot0.kP = 3; 
         elevatorMotorConfig.Slot0.kI = 0; // no output for integrated error
         elevatorMotorConfig.Slot0.kD = 0.1; 
-        elevatorMotorConfig.Slot0.kG = 0.5;
-        elevatorMotorConfig.Slot0.kS = 0.2;
+        elevatorMotorConfig.Slot0.kG = 0; //.5
+        elevatorMotorConfig.Slot0.kS = 0; //.2
      
         m_back.setPosition(29 * m_gearRatio);
         m_front.getConfigurator().apply(elevatorMotorConfig);
