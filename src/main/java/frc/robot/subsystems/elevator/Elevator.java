@@ -105,7 +105,7 @@ public class Elevator extends SubsystemBase {
     return this.run(() -> {
       SmartDashboard.putString("L2Wait", "Start");
       m_io.gotosetpoint(L2Setpoint, ElevatorIOTalonFX.m_gearRatio);
-    }).withName("L2").until(() -> {
+    }).withName("L2Wait").until(() -> {
       // SmartDashboard.putNumber("Elevator/l4wait", Math.abs(L4Setpoint - m_inputs.elevatorHeightInch) );
       // SmartDashboard.putNumber("Elevator/actual", m_inputs.elevatorHeightInch);
       // SmartDashboard.putNumber("Elevator/target", L4Setpoint);
@@ -157,5 +157,7 @@ public class Elevator extends SubsystemBase {
     motorVolPub.set(m_io.getVoltage());
     setPub.set(m_io.getSetpoint());
     rotPub.set(m_io.getPosition());
+
+    SmartDashboard.putString("elevator/command", this.getCurrentCommand().getName());
   }
 }
