@@ -258,7 +258,7 @@ public class RobotContainer {
                 Commands.parallel(      
                         new ReefBranchAlign(drivetrain, new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),() -> -joystick.getLeftY()),
                         s_Shooter.shootTrough()
-                )).onFalse(s_Shooter.stop());
+                ))).onFalse(s_Shooter.stop());
 
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
