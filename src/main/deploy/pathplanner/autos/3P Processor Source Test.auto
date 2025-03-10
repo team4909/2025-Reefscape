@@ -83,6 +83,12 @@
                 "data": {
                   "pathName": "farRight-left-S-back"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "feed"
+                }
               }
             ]
           }
@@ -101,12 +107,6 @@
                 "type": "sequential",
                 "data": {
                   "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "feed"
-                      }
-                    },
                     {
                       "type": "named",
                       "data": {
