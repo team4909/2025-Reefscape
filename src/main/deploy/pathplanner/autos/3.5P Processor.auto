@@ -237,13 +237,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "L1"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "dash"
+                  "name": "L3 Algae"
                 }
               }
             ]

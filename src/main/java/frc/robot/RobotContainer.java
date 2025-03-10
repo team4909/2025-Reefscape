@@ -99,7 +99,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("L4 Wait", s_Elevator.L4_Wait());
         NamedCommands.registerCommand("L2 Wait", s_Elevator.L2_Wait());
         NamedCommands.registerCommand("L3 Wait", s_Elevator.L3_Wait());
-
+        NamedCommands.registerCommand("L3 Algae", Commands.sequence(s_Elevator.goToL3A(), s_Algae.extend(), s_Algae.intake()));
+        NamedCommands.registerCommand("L2 Algae", Commands.sequence(s_Elevator.goToL2A(), s_Algae.extend(), s_Algae.intake()));
 
         NamedCommands.registerCommand("autoalign left", new ReefBranchAlign(drivetrain,
         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),
