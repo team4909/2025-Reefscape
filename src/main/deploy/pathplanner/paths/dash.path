@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 1.3855263157894737,
-        "y": 0.8209703947368427
+        "x": 1.452878289473684,
+        "y": 0.7055098684210531
       },
       "prevControl": {
-        "x": 1.780016447368421,
-        "y": 1.2731907894736856
+        "x": 1.8473684210526313,
+        "y": 1.1577302631578958
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "SourceProcessor"
+      "linkedName": "Source Right"
     }
   ],
   "rotationTargets": [],
@@ -56,7 +56,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -35.753887254436805
+    "rotation": -34.992020198558755
   },
   "reversed": false,
   "folder": "taxi and L4 far paths",
