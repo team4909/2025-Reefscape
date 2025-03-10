@@ -94,12 +94,6 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.0
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -111,12 +105,6 @@
                       "type": "named",
                       "data": {
                         "name": "stop shooter"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.5
                       }
                     },
                     {
