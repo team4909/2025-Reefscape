@@ -1,5 +1,7 @@
 package frc.robot.subsystems.elevator;
 
+import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -15,6 +17,9 @@ import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -26,17 +31,17 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
 
     private final TalonFX m_front;
     private final TalonFX m_back;
-    private double m_rotations;
+
     final PositionVoltage m_request;
-    //final VelocityVoltage m_request = new VelocityVoltage(0).withSlot(0);
-    //private final PositionVoltage m_request;
+    
+    private final StatusSignal<Voltage> m_frontMotorVolts, m_backMotorVolts;
+    private final StatusSignal<Angle> m_frontMotorPosition, m_backMotorPosition;
+    private final StatusSignal<AngularVelocity> m_velocity;
+    private double m_rotations = 0;
 
     public static final double m_gearRatio = 0.5 * (1d / (1.75100 * Math.PI)) * ( 2d / 3d ) * 12;
 
     public ElevatorIOTalonFX() {
-        
-        
-
         m_front = new TalonFX(21, "CANivore2");
         m_back = new TalonFX(22, "CANivore2");
         
@@ -45,6 +50,13 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         final TalonFXConfiguration elevatorMotorConfig = new TalonFXConfiguration();
         final MotorOutputConfigs rightOutputConfigs = new MotorOutputConfigs();
         final MotorOutputConfigs leftOutputConfigs = new MotorOutputConfigs();
+
+        //Logged Values
+        m_frontMotorVolts = m_front.getMotorVoltage();
+        m_backMotorVolts = m_back.getMotorVoltage();
+        m_velocity = m_front.getVelocity();
+        m_frontMotorPosition = m_front.getPosition();
+        m_backMotorPosition = m_back.getPosition();
 
         rightOutputConfigs.Inverted = InvertedValue.Clockwise_Positive;
         rightOutputConfigs.NeutralMode = NeutralModeValue.Brake;
@@ -71,8 +83,7 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         elevatorMotorConfig.Slot0.kA = 0;
         elevatorMotorConfig.Slot1.kG = 0;
      
-        m_rotations = 29 * m_gearRatio;
-        m_back.setPosition(m_rotations);
+        m_back.setPosition(29*m_gearRatio);
         
         m_front.getConfigurator().apply(elevatorMotorConfig);
         m_back.getConfigurator().apply(elevatorMotorConfig);
@@ -89,7 +100,7 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
 
             m_back.setControl(request.withOutput(voltage));
         // });
-        System.out.println("volts:" + m_back.getMotorVoltage());
+        // System.out.println("volts:" + m_back.getMotorVoltage());
     }
     
     public void setBrakeMode(boolean enableBrakeMode) {
@@ -108,37 +119,49 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
             slot = 1;
         }
 
-        m_rotations = targetRot;
+        // m_rotations = targetRot; //not sure why this is here
         // System.out.println("rotations:" + targetRot);
         SmartDashboard.putNumber("elevator/slot", slot);
 
         m_back.setControl(m_request.withPosition(targetRot).withSlot(slot));
     }
 
-    public double getVelocity(){
-        return m_back.getVelocity().getValueAsDouble();
-    }
-    public double getVoltage(){
-        return m_back.getMotorVoltage().getValueAsDouble();
-    }
-    @Override
-    public double getPosition() {
-        return m_back.getPosition().getValueAsDouble();
-    }
+    // public double getVelocity(){
+    //     return m_back.getVelocity().getValueAsDouble();
+    // }
+    // public double getVoltage(){
+    //     return m_back.getMotorVoltage().getValueAsDouble();
+    // }
+    // @Override
+    // public double getPosition() {
+    //     return m_back.getPosition().getValueAsDouble();
+    // }
 
-    public double getSetpoint(){
-        return m_rotations;
-    }
+    // public double getSetpoint(){
+    //     return m_rotations;
+    // }
 
     public void setPosition(double position){
         m_back.setPosition(position);
     }
 
-    public void updateInputs(ElevatorIOInputsAutoLogged m_inputs) {
-        double motorRPS = m_back.getVelocity().getValueAsDouble();
-        m_inputs.elevatorRPM = motorRPS*60;
-        m_inputs.heightInch = m_back.getPosition().getValueAsDouble() / m_gearRatio;
-        m_inputs.setpointInch = m_rotations / m_gearRatio;
+    public void updateInputs(ElevatorIOInputsAutoLogged inputs) {
+        inputs.backMotorConnected = BaseStatusSignal.refreshAll(m_backMotorVolts, m_backMotorPosition).isOK();
+        inputs.frontMotorConnected = BaseStatusSignal.refreshAll(m_frontMotorVolts, m_velocity, m_frontMotorPosition).isOK();
+
+        inputs.goalPosition = m_request.getPositionMeasure().magnitude();
+
+        inputs.frontMotorVoltage = m_frontMotorVolts.getValueAsDouble();
+        inputs.backMotorVoltage = m_backMotorVolts.getValueAsDouble();
+
+        inputs.velocity = m_velocity.getValueAsDouble();
+
+        inputs.frontMotorPosition = m_frontMotorPosition.getValueAsDouble();
+        inputs.backMotorPosition = m_back.getPosition().getValueAsDouble();
+
+        inputs.heightInch = inputs.frontMotorPosition / m_gearRatio;
+
+        m_rotations = inputs.frontMotorPosition;
     }
 
  

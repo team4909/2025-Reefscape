@@ -12,13 +12,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
-  private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
-  private final NetworkTable elevatorTable = inst.getTable("Elevator");
-  private final DoublePublisher motorValPub = elevatorTable.getDoubleTopic("Motor Val").publish();
-  private final DoublePublisher motorVolPub = elevatorTable.getDoubleTopic("Motor Vol").publish();
-  private final DoublePublisher rotPub = elevatorTable.getDoubleTopic("Rotations").publish();
-  private final DoublePublisher setPub = elevatorTable.getDoubleTopic("Setpoint").publish();
-
   private ElevatorIOInputsAutoLogged m_inputs = new ElevatorIOInputsAutoLogged();
   private final ElevatorIO m_io;
   // GSD setpoints
@@ -138,11 +131,11 @@ public class Elevator extends SubsystemBase {
     }).withName("L2A");
   }
 
-  public Command goUpInch() {
-    return this.runOnce(() -> {
-      m_io.gotosetpoint(m_io.getPosition() + (1 / 10), ElevatorIOTalonFX.m_gearRatio);
-    }).withName("Inch");
-  }
+  // public Command goUpInch() {
+  //   return this.runOnce(() -> {
+  //     m_io.gotosetpoint(m_io.getPosition() + (1 / 10), ElevatorIOTalonFX.m_gearRatio);
+  //   }).withName("Inch");
+  // }
 
   public Command reZero() {
     return this.runOnce(() -> {
@@ -161,12 +154,6 @@ public class Elevator extends SubsystemBase {
     super.periodic();
     m_io.updateInputs(m_inputs);
     Logger.processInputs(getName(), m_inputs);
-    SmartDashboard.putNumber("Elevator RPM ", m_inputs.elevatorRPM);
-
-    motorValPub.set(m_io.getVelocity());
-    motorVolPub.set(m_io.getVoltage());
-    setPub.set(m_io.getSetpoint());
-    rotPub.set(m_io.getPosition());
 
     if (this.getCurrentCommand() != null) {
       SmartDashboard.putString("elevator/command", this.getCurrentCommand().getName());
