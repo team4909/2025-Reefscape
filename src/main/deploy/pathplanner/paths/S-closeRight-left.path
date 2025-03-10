@@ -48,7 +48,7 @@
   "folder": "taxi and L4 far paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -37.0
+    "rotation": 52.69605172201653
   },
   "useDefaultConstraints": true
 }
