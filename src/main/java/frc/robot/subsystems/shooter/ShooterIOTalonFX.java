@@ -5,6 +5,8 @@ import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import frc.robot.subsystems.elevator.ElevatorIOInputsAutoLogged;
+
 public class ShooterIOTalonFX implements ShooterIO {
 
   private final TalonFX m_shootermotor;
@@ -30,4 +32,15 @@ public class ShooterIOTalonFX implements ShooterIO {
         enableBrakeMode ? NeutralModeValue.Brake : NeutralModeValue.Coast;
     m_shootermotor.setNeutralMode(neutralModeValue);
   }
+
+  public void updateInputs(ShooterIOInputsAutoLogged m_inputs) {
+    m_inputs.speed = m_shootermotor.getVelocity().getValueAsDouble();
+    m_inputs.statorCurrent = m_shootermotor.getStatorCurrent().getValueAsDouble();
+    m_inputs.supplyCurrent = m_shootermotor.getSupplyCurrent().getValueAsDouble();
+        // double motorRPS = m_back.getVelocity().getValueAsDouble();
+        // m_inputs.elevatorRPM = motorRPS*60;
+        // m_inputs.heightInch = m_back.getPosition().getValueAsDouble() / m_gearRatio;
+        // m_inputs.setpointInch = m_rotations / m_gearRatio;
+    }
+  
 }

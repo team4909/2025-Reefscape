@@ -22,10 +22,10 @@ public class Elevator extends SubsystemBase {
   private ElevatorIOInputsAutoLogged m_inputs = new ElevatorIOInputsAutoLogged();
   private final ElevatorIO m_io;
   // GSD setpoints
-  private final double L1Setpoint = 29;
+  private final double L1Setpoint = 29.48;
   private final double L2Setpoint = 34;
   private final double L3Setpoint = 51;
-  private final double L4Setpoint = 76
+  private final double L4Setpoint = 78
   ;
   private final double L2ASetpoint = 48.5;
   private final double L3ASetpoint = 64.5;
@@ -163,5 +163,9 @@ public class Elevator extends SubsystemBase {
     } else {
       SmartDashboard.putString("elevator/command", "null");
     }
+  }
+
+  public boolean isAtL1() {
+    return m_inputs.heightInch < L1Setpoint + 0.1;
   }
 }
