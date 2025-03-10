@@ -98,6 +98,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("test", s_Elevator.testPrint());
         NamedCommands.registerCommand("L4 Wait", s_Elevator.L4_Wait());
         NamedCommands.registerCommand("L2 Wait", s_Elevator.L2_Wait());
+        NamedCommands.registerCommand("L3 Wait", s_Elevator.L3_Wait());
 
 
         NamedCommands.registerCommand("autoalign left", new ReefBranchAlign(drivetrain,
