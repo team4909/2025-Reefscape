@@ -229,6 +229,12 @@
           "data": {
             "name": "stop shooter"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L1"
+          }
         }
       ]
     }
