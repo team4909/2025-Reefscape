@@ -1,11 +1,8 @@
 package frc.robot.subsystems.shooter;
 
 import org.littletonrobotics.junction.Logger;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.shooter.ShooterIO.ShooterIOInputs;
 
 public class Shooter extends SubsystemBase {
   private final ShooterIO m_io;
@@ -37,12 +34,15 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    Logger.processInputs(this.getName(), m_inputs);
+    m_io.updateInputs(m_inputs);
+    // there is probably a better way to do this
     if (this.getCurrentCommand() != null) {
-      SmartDashboard.putString("shooter/command", this.getCurrentCommand().getName());
+      m_inputs.currentCommand = this.getCurrentCommand().getName();
     } else {
-      SmartDashboard.putString("shooter/command", "null");
+      m_inputs.currentCommand = "null";
     }
+    Logger.processInputs(this.getName(), m_inputs);
+
   }
 
   public Command setDefaultDoNotRun() {

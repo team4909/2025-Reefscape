@@ -2,8 +2,6 @@ package frc.robot.subsystems.elevator;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -25,20 +23,11 @@ public class Elevator extends SubsystemBase {
   private final double L1Setpoint = 29.48;
   private final double L2Setpoint = 34;
   private final double L3Setpoint = 51;
-  private final double L4Setpoint = 78
-  ;
+  private final double L4Setpoint = 78;
+  
   private final double L2ASetpoint = 48.5;
   private final double L3ASetpoint = 64.5;
 
-  // private final double L1Setpoint = 29;
-  // private final double L2Setpoint = 33;
-  // private final double L3Setpoint = 40;
-  // private final double L4Setpoint = 50;
-  // private final double L2ASetpoint = 2.5;
-  // private final double L3ASetpoint = 3.5
-
-  ;
-  // inch to rotations of the motor
 
   public Elevator(ElevatorIO io) {
     super("Elevator");

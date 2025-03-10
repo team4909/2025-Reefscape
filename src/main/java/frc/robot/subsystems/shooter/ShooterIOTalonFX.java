@@ -37,10 +37,6 @@ public class ShooterIOTalonFX implements ShooterIO {
     m_inputs.speed = m_shootermotor.getVelocity().getValueAsDouble();
     m_inputs.statorCurrent = m_shootermotor.getStatorCurrent().getValueAsDouble();
     m_inputs.supplyCurrent = m_shootermotor.getSupplyCurrent().getValueAsDouble();
-        // double motorRPS = m_back.getVelocity().getValueAsDouble();
-        // m_inputs.elevatorRPM = motorRPS*60;
-        // m_inputs.heightInch = m_back.getPosition().getValueAsDouble() / m_gearRatio;
-        // m_inputs.setpointInch = m_rotations / m_gearRatio;
-    }
+  }
   
 }
