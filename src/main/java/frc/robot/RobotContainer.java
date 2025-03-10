@@ -245,20 +245,27 @@ public class RobotContainer {
         //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5), new Rotation2d())));
         joystick.povDown().onTrue(s_Algae.reZero());
 
-        joystick.b().whileTrue(Commands.sequence(
-                s_Shooter.setDefaultDoNotRun(), 
-                Commands.parallel(
-                        new ReefBranchAlign(drivetrain, new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),() -> -joystick.getLeftY()),
-                        s_Shooter.shootTrough()
-                        )
-                )).onFalse(s_Shooter.stop());
+        // joystick.b().whileTrue(Commands.sequence(
+        //         s_Shooter.setDefaultDoNotRun(), 
+        //         Commands.parallel(
+        //                 new ReefBranchAlign(drivetrain, new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),() -> -joystick.getLeftY()),
+        //                 s_Shooter.shootTrough()
+        //                 )
+        //         )).onFalse(s_Shooter.stop());
 
-        joystick.x().whileTrue(Commands.sequence(
-                s_Shooter.setDefaultDoNotRun(), 
-                Commands.parallel(      
-                        new ReefBranchAlign(drivetrain, new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),() -> -joystick.getLeftY()),
-                        s_Shooter.shootTrough()
-                ))).onFalse(s_Shooter.stop());
+        // joystick.x().whileTrue(Commands.sequence(
+        //         s_Shooter.setDefaultDoNotRun(), 
+        //         Commands.parallel(      
+        //                 new ReefBranchAlign(drivetrain, new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),() -> -joystick.getLeftY()),
+        //                 s_Shooter.shootTrough()
+        //         ))).onFalse(s_Shooter.stop());
+
+        joystick.b().whileTrue(Commands.parallel(new ReefBranchAlign(drivetrain,
+                 new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),
+                 () -> -joystick.getLeftY()), s_Shooter.shootTrough())).onFalse(s_Shooter.stop());
+         joystick.x().whileTrue(Commands.parallel(new ReefBranchAlign(drivetrain,
+                 new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),
+                 () -> -joystick.getLeftY()),s_Shooter.shootTrough())).onFalse(s_Shooter.stop());
 
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
