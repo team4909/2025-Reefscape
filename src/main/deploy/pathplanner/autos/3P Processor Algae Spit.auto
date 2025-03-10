@@ -237,13 +237,51 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "dash"
+                  "pathName": "closeRight-algae"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "L1"
+                  "name": "L2 Algae"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Algae Stow"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "closeRight-algae-Spit"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.25
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Algae Shoot"
+                      }
+                    }
+                  ]
                 }
               }
             ]
