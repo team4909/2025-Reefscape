@@ -1,5 +1,6 @@
 package frc.robot.subsystems.algae;
 
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -81,12 +82,17 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
     }
 
     public void updateInputs(AlgaeIOInputs inputs) {
-        inputs.shooterConnected = true;//m_shootMotor.getMotorVoltage().isOK();
-        inputs.shooterVoltage = m_shootMotor.getMotorVoltage().getValueAsDouble();
-        inputs.shooterCurrent = m_shootMotor.getSupplyCurrent().getValueAsDouble();
-        inputs.shootVelocity = m_shootMotor.getVelocity().getValueAsDouble();
-        inputs.wristPosition = m_pivotMotor.getPosition().getValueAsDouble();
-        // inputs.wristSetpoint = m_rotations;
+        inputs.shooterConnected = BaseStatusSignal.refreshAll(m_shooterVoltage, m_shooterCurrent, m_shooterVelocity).isOK();
+        inputs.wristConnected = BaseStatusSignal.refreshAll(m_wristPosition, m_wristVelocity, m_wristVoltage, m_wristCurrent).isOK();
+
+        inputs.shooterVoltage = m_shooterVoltage.getValueAsDouble();
+        inputs.shooterCurrent = m_shooterCurrent.getValueAsDouble();
+        inputs.shootVelocity = m_shooterVelocity.getValueAsDouble();
+
+        inputs.wristPosition = m_wristPosition.getValueAsDouble();
+        inputs.wristVoltage = m_wristVoltage.getValueAsDouble();
+        inputs.wristCurrent = m_wristCurrent.getValueAsDouble();
+        inputs.wristSetpoint = m_request.getPositionMeasure().magnitude();
     }
 
     public void holdShooterPos() {
