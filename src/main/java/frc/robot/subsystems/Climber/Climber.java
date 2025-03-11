@@ -18,6 +18,7 @@ public class Climber extends SubsystemBase {
 
   private ClimberIO m_io;
   private final double climb = -190.866;
+  private final double winched = 22;
 
   final double m_gearRatio = 1d;
 
@@ -40,6 +41,12 @@ public class Climber extends SubsystemBase {
   public Command climbPosition() {
     return this.runOnce(() -> {
       m_io.gotosetpoint(climb, m_gearRatio);
+    });
+  }
+
+  public Command winchedPosition() {
+    return this.runOnce(() -> {
+      m_io.gotosetpoint(winched, m_gearRatio);
     });
   }
 

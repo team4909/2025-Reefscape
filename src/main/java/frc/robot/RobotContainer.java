@@ -71,6 +71,8 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController zeroController = new CommandXboxController(1);
+
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final SendableChooser<Command> m_chooser;
@@ -219,6 +221,7 @@ public class RobotContainer {
         // }).onFalse(s_Shooter.stop());
         joystick.y().whileTrue(s_Shooter.shoot()).onFalse(s_Shooter.stop());
         joystick.a().whileTrue(s_Climber.lower()).onFalse(s_Climber.stop());
+        joystick.leftStick().onTrue(s_Climber.winchedPosition());
 
         joystick.b().onTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
         joystick.leftBumper().onTrue(s_Elevator.goToL2()).onFalse(s_Elevator.goToL1());
@@ -226,14 +229,14 @@ public class RobotContainer {
         joystick.leftTrigger().onTrue(s_Elevator.goToL4()).onFalse(s_Elevator.goToL1());
         joystick.povUp().onTrue(s_Climber.climbPosition());
         joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
-        joystick.back().onTrue(s_Elevator.reZero());
+        zeroController.x().onTrue(s_Elevator.reZero());
         // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
         //joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
         joystick.povLeft().onTrue(Commands.sequence(s_Elevator.goToL2A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
         joystick.povRight().onTrue(Commands.sequence(s_Elevator.goToL3A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
         joystick.rightStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
        // joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
-        joystick.leftStick().onTrue(s_Climber.reZero());
+        zeroController.a().onTrue(s_Climber.reZero());
         // joystick
 
         // .b()
@@ -247,7 +250,7 @@ public class RobotContainer {
         //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5), new Rotation2d())));
         // joystick.x().whileTrue(new DriveToPose(drivetrain,
         //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5), new Rotation2d())));
-        joystick.povDown().onTrue(s_Algae.reZero());
+        zeroController.b().onTrue(s_Algae.reZero());
 
         // joystick.b().whileTrue(Commands.sequence(
         //         s_Shooter.setDefaultDoNotRun(), 
