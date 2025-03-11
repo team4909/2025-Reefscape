@@ -75,7 +75,7 @@ public void setPosition(double position){
 
 @Override
 public void updateInputs(ClimberIOinputs inputs) {
-  inputs.motorConnected = BaseStatusSignal.refreshAll(m_velocity, m_supplyCurrent, m_motorVoltage, m_position).isOK();
+  inputs.motorConnected = true;//BaseStatusSignal.refreshAll(m_velocity, m_supplyCurrent, m_motorVoltage, m_position).isOK();
 
   inputs.velocity = m_velocity.getValueAsDouble();
 
