@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.*;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -33,6 +34,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.subsystems.drivetrain.DriveToPose;
@@ -87,14 +89,21 @@ public class RobotContainer {
     s_Climber = new Climber(new ClimberIOTalonFX());
 
         // Auto Named Commands
-        NamedCommands.registerCommand("score", s_Shooter.shootTrough());
-        NamedCommands.registerCommand("stop shooter", s_Shooter.stop());
+        NamedCommands.registerCommand("score", s_Shooter.shootTrough().withTimeout(.5));
+        NamedCommands.registerCommand("feed", s_Shooter.shootTrough().withTimeout(1.5));
+        NamedCommands.registerCommand("stop shooter", s_Shooter.stopInstant());
         NamedCommands.registerCommand("L4", s_Elevator.goToL4());
         NamedCommands.registerCommand("L3", s_Elevator.goToL3());
         NamedCommands.registerCommand("L2", s_Elevator.goToL2());
         NamedCommands.registerCommand("L1", s_Elevator.goToL1());
         NamedCommands.registerCommand("test", s_Elevator.testPrint());
-
+        NamedCommands.registerCommand("L4 Wait", s_Elevator.L4_Wait());
+        NamedCommands.registerCommand("L2 Wait", s_Elevator.L2_Wait());
+        NamedCommands.registerCommand("L3 Wait", s_Elevator.L3_Wait());
+        NamedCommands.registerCommand("L3 Algae", Commands.sequence(s_Elevator.goToL3A(), s_Algae.extend(), s_Algae.intake()));
+        NamedCommands.registerCommand("L2 Algae", Commands.sequence(s_Elevator.goToL2A(), s_Algae.extend(), s_Algae.intake()).withTimeout(1));
+        NamedCommands.registerCommand("Algae Stow", Commands.sequence(s_Algae.down(), s_Elevator.goToL1()).withTimeout(.1));
+        NamedCommands.registerCommand("Algae Shoot", s_Algae.shoot().withTimeout(1));
         NamedCommands.registerCommand("autoalign left", new ReefBranchAlign(drivetrain,
         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),
         () -> -joystick.getLeftY()));
@@ -159,6 +168,12 @@ public class RobotContainer {
 
     public void periodic() {
         // System.out.println("Elevator Command"+s_Elevator.getCurrentCommand());
+
+
+        // check if elevator is at L1, if so run the command that looks for current spike running intake
+        if (s_Elevator.isAtL1()) {
+            s_Shooter.setDefaultRunToCurrentSpike();
+        }
     }
 
     private void configureBindings() {
@@ -234,12 +249,27 @@ public class RobotContainer {
         //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5), new Rotation2d())));
         joystick.povDown().onTrue(s_Algae.reZero());
 
+        // joystick.b().whileTrue(Commands.sequence(
+        //         s_Shooter.setDefaultDoNotRun(), 
+        //         Commands.parallel(
+        //                 new ReefBranchAlign(drivetrain, new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),() -> -joystick.getLeftY()),
+        //                 s_Shooter.shootTrough()
+        //                 )
+        //         )).onFalse(s_Shooter.stop());
+
+        // joystick.x().whileTrue(Commands.sequence(
+        //         s_Shooter.setDefaultDoNotRun(), 
+        //         Commands.parallel(      
+        //                 new ReefBranchAlign(drivetrain, new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),() -> -joystick.getLeftY()),
+        //                 s_Shooter.shootTrough()
+        //         ))).onFalse(s_Shooter.stop());
+
         joystick.b().whileTrue(Commands.parallel(new ReefBranchAlign(drivetrain,
-                new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),
-                () -> -joystick.getLeftY()), s_Shooter.shootTrough())).onFalse(s_Shooter.stop());
-        joystick.x().whileTrue(Commands.parallel(new ReefBranchAlign(drivetrain,
-                new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),
-                () -> -joystick.getLeftY()),s_Shooter.shootTrough())).onFalse(s_Shooter.stop());
+                 new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),
+                 () -> -joystick.getLeftY()), s_Shooter.shootTrough())).onFalse(s_Shooter.stop());
+         joystick.x().whileTrue(Commands.parallel(new ReefBranchAlign(drivetrain,
+                 new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),
+                 () -> -joystick.getLeftY()),s_Shooter.shootTrough())).onFalse(s_Shooter.stop());
 
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),

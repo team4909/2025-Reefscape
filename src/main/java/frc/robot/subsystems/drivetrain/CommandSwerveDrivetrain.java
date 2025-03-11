@@ -470,8 +470,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     public void resetPose(Pose2d pose) {
-        System.out.println("Resetting Pose" + pose.toString());
+        if (pose == null) {
+            return;
+        }
         super.resetPose(pose);
-        System.out.println("Resetting Pose after" + this.getState().Pose.toString());
     }
 }

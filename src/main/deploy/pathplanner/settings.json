@@ -3,10 +3,12 @@
   "robotLength": 0.84455,
   "holonomicMode": true,
   "pathFolders": [
+    "human player ",
     "Taxi",
     "taxi and L4 far paths"
   ],
   "autoFolders": [
+    "human player",
     "taxi and L4 far autos"
   ],
   "defaultMaxVel": 3.0,

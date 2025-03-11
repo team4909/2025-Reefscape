@@ -1,5 +1,7 @@
 package frc.robot.subsystems.elevator;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.networktables.DoublePublisher;
@@ -20,10 +22,10 @@ public class Elevator extends SubsystemBase {
   private ElevatorIOInputsAutoLogged m_inputs = new ElevatorIOInputsAutoLogged();
   private final ElevatorIO m_io;
   // GSD setpoints
-  private final double L1Setpoint = 29;
+  private final double L1Setpoint = 29.48;
   private final double L2Setpoint = 34;
   private final double L3Setpoint = 51;
-  private final double L4Setpoint = 75
+  private final double L4Setpoint = 77
   ;
   private final double L2ASetpoint = 48.5;
   private final double L3ASetpoint = 64.5;
@@ -37,7 +39,9 @@ public class Elevator extends SubsystemBase {
   // inch to rotations of the motor
 
   public Elevator(ElevatorIO io) {
+    super("Elevator");
     m_io = io;
+    SmartDashboard.putString("L4Wait", "Idle");
 
   }
 
@@ -81,6 +85,43 @@ public class Elevator extends SubsystemBase {
     }).withName("L4");
   }
 
+  public Command L4_Wait() {
+    // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
+    return this.run(() -> {
+      SmartDashboard.putString("L4Wait", "Start");
+      m_io.gotosetpoint(L4Setpoint, ElevatorIOTalonFX.m_gearRatio);
+    }).withName("L4").until(() -> {
+      // SmartDashboard.putNumber("Elevator/l4wait", Math.abs(L4Setpoint - m_inputs.elevatorHeightInch) );
+      // SmartDashboard.putNumber("Elevator/actual", m_inputs.elevatorHeightInch);
+      // SmartDashboard.putNumber("Elevator/target", L4Setpoint);
+      return Math.abs(L4Setpoint - m_inputs.heightInch) < 0.1;
+    }).andThen(()-> SmartDashboard.putString("L4Wait", "End"));
+  }
+
+  public Command L2_Wait() {
+    // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
+    return this.run(() -> {
+      SmartDashboard.putString("L2Wait", "Start");
+      m_io.gotosetpoint(L2Setpoint, ElevatorIOTalonFX.m_gearRatio);
+    }).withName("L2Wait").until(() -> {
+      // SmartDashboard.putNumber("Elevator/l4wait", Math.abs(L4Setpoint - m_inputs.elevatorHeightInch) );
+      // SmartDashboard.putNumber("Elevator/actual", m_inputs.elevatorHeightInch);
+      // SmartDashboard.putNumber("Elevator/target", L4Setpoint);
+      return Math.abs(L2Setpoint - m_inputs.heightInch) < 0.1;
+    }).andThen(()-> SmartDashboard.putString("L2Wait", "End"));
+  }
+
+  public Command L3_Wait() {
+    // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
+    return this.run(() -> {
+      SmartDashboard.putString("L3Wait", "Start");
+      m_io.gotosetpoint(L3Setpoint, ElevatorIOTalonFX.m_gearRatio);
+    }).withName("L3Wait").until(() -> {
+      return Math.abs(L3Setpoint - m_inputs.heightInch) < 0.1;
+    }).andThen(()-> SmartDashboard.putString("L3Wait", "End"));
+  }
+
+
   public Command goToL3A() {
     // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
     return this.runOnce(() -> {
@@ -117,11 +158,22 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     super.periodic();
     m_io.updateInputs(m_inputs);
+    Logger.processInputs(getName(), m_inputs);
     SmartDashboard.putNumber("Elevator RPM ", m_inputs.elevatorRPM);
 
     motorValPub.set(m_io.getVelocity());
     motorVolPub.set(m_io.getVoltage());
     setPub.set(m_io.getSetpoint());
     rotPub.set(m_io.getPosition());
+
+    if (this.getCurrentCommand() != null) {
+      SmartDashboard.putString("elevator/command", this.getCurrentCommand().getName());
+    } else {
+      SmartDashboard.putString("elevator/command", "null");
+    }
+  }
+
+  public boolean isAtL1() {
+    return m_inputs.heightInch < L1Setpoint + 0.1;
   }
 }

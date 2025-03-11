@@ -65,8 +65,19 @@ public class ReefBranchAlign extends Command {
     ChassisSpeeds fieldVelocity = ChassisSpeeds.fromRobotRelativeSpeeds(m_drivetrain.getState().Speeds, initialPose.getRotation());
 
     m_translationController.reset(
-        Math.abs(initialPose.getTranslation().getY() - m_goalPose.getTranslation().getY()),
-        Math.min(0.0, m_drivetrain.getState().Speeds.vyMetersPerSecond));
+        // Math.abs(initialPose.getTranslation().getY() - m_goalPose.getTranslation().getY()),
+        // Math.min(0.0, m_drivetrain.getState().Speeds.vyMetersPerSecond));
+        initialPose.getTranslation().getDistance(m_goalPose.getTranslation()),
+        Math.min(
+            0.0,
+            -new Translation2d(fieldVelocity.vxMetersPerSecond, fieldVelocity.vyMetersPerSecond)
+                .rotateBy(
+                    m_goalPose
+                        .getTranslation()
+                        .minus(initialPose.getTranslation())
+                        .getAngle()
+                        .unaryMinus())
+                .getX()));
     m_thetaController.reset(
         initialPose.getRotation().getRadians(),
         fieldVelocity.omegaRadiansPerSecond);
@@ -76,50 +87,55 @@ public class ReefBranchAlign extends Command {
   @Override
   public void execute() {
     Pose2d currentPose = m_drivetrain.getState().Pose;
-    double distanceToGoalPose = currentPose.getTranslation().getY() - m_goalPose.getTranslation().getY();
+    double distanceToGoalPose = currentPose.getTranslation().getDistance(m_goalPose.getTranslation()); //currentPose.getTranslation().getY() - m_goalPose.getTranslation().getY();
 
-    // double ffScaler = MathUtil.clamp((distanceToGoalPose - 0.2) / (0.8 - 0.2), 0.0, 1.0);
+    double ffScaler = MathUtil.clamp((distanceToGoalPose - 0.2) / (0.8 - 0.2), 0.0, 1.0);
 
-    // m_translationController.reset(
-    //     Math.abs(m_lastSetpointTranslation.getY() - m_goalPose.getY()),
-    //     m_translationController.getSetpoint().velocity);//ROBO RELATIVE
+    m_translationController.calculate(
+        Math.abs(m_lastSetpointTranslation.getY() - m_goalPose.getY()),
+        m_translationController.getSetpoint().velocity);//ROBO RELATIVE
 
-    double driveVelocity =
-        // m_translationController.getSetpoint().velocity * ffScaler
-            m_translationController.calculate(distanceToGoalPose, 0.0);
+    // double driveVelocity =
+    //     m_translationController.getSetpoint().velocity * ffScaler
+    //         + m_translationController.calculate(distanceToGoalPose, 0.0);
 
-    // if (distanceToGoalPose < m_translationController.getPositionTolerance())
-    //   driveVelocityScalar = 0.0;
+    double driveVelocityScalar =
+    m_translationController.getSetpoint().velocity * ffScaler
+        + m_translationController.calculate(distanceToGoalPose, 0.0);
+
+    if (distanceToGoalPose < m_translationController.getPositionTolerance())
+      driveVelocityScalar = 0.0;
       
-    // m_lastSetpointTranslation = 
-    //     new Pose2d(
-    //             m_goalPose.getTranslation(),
-    //             currentPose.getTranslation().minus(m_goalPose.getTranslation()).getAngle())
-    //         .transformBy(
-    //             new Transform2d(
-    //                 new Translation2d(m_translationController.getSetpoint().position, 0.0),
-    //                 new Rotation2d()))
-    //         .getTranslation();
+    m_lastSetpointTranslation = 
+        new Pose2d(
+                m_goalPose.getTranslation(),
+                currentPose.getTranslation().minus(m_goalPose.getTranslation()).getAngle())
+            .transformBy(
+                new Transform2d(
+                    new Translation2d(m_translationController.getSetpoint().position, 0.0),
+                    new Rotation2d()))
+            .getTranslation();
 
-    double thetaVelocity = m_thetaController.calculate(currentPose.getRotation().getRadians(), m_goalPose.getRotation().getRadians());
-        // m_thetaController.getSetpoint().velocity * ffScaler
+    double thetaVelocity = //m_thetaController.calculate(currentPose.getRotation().getRadians(), m_goalPose.getRotation().getRadians());
+        m_thetaController.getSetpoint().velocity * ffScaler + m_thetaController.calculate(
+          currentPose.getRotation().getRadians(), m_goalPose.getRotation().getRadians());
             
 
-    // double thetaErrorAbsolute =
-    //     Math.abs(currentPose.getRotation().minus(m_goalPose.getRotation()).getRadians());
-    // if (thetaErrorAbsolute < m_thetaController.getPositionTolerance()) thetaVelocity = 0.0;
+    double thetaErrorAbsolute =
+        Math.abs(currentPose.getRotation().minus(m_goalPose.getRotation()).getRadians());
+    if (thetaErrorAbsolute < m_thetaController.getPositionTolerance()) thetaVelocity = 0.0;
 
-    // Translation2d driveVelocity =
-    //     new Pose2d(
-    //             new Translation2d(),
-    //             currentPose.getTranslation().minus(m_goalPose.getTranslation()).getAngle())
-    //         .transformBy(
-    //             new Transform2d(new Translation2d(driveVelocityScalar, 0.0), new Rotation2d()))
-    //         .getTranslation();
+    Translation2d driveVelocity =
+        new Pose2d(
+                new Translation2d(),
+                currentPose.getTranslation().minus(m_goalPose.getTranslation()).getAngle())
+            .transformBy(
+                new Transform2d(new Translation2d(driveVelocityScalar, 0.0), new Rotation2d()))
+            .getTranslation();
 
-    final ChassisSpeeds CS = new ChassisSpeeds(m_joystickInput.getAsDouble(), driveVelocity, thetaVelocity);
+    final ChassisSpeeds CS = ChassisSpeeds.fromFieldRelativeSpeeds(new ChassisSpeeds(driveVelocity.getX(), driveVelocity.getY(), thetaVelocity), currentPose.getRotation());//new ChassisSpeeds(m_joystickInput.getAsDouble(), driveVelocity, thetaVelocity);
 
-    m_drivetrain.setControl(m_drive.withSpeeds(CS));
+    m_drivetrain.setControl(m_drive.withSpeeds((new ChassisSpeeds(m_joystickInput.getAsDouble(), CS.vyMetersPerSecond, CS.omegaRadiansPerSecond))));
 
     Logger.recordOutput("Drivetrain/DriveToPose/ChassisSpeeds", CS);
     Logger.recordOutput("Drivetrain/DriveToPose/DistanceToGoalPose", distanceToGoalPose);
