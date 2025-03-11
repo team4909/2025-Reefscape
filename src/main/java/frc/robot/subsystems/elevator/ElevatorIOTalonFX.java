@@ -159,7 +159,7 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         inputs.frontMotorPosition = m_front.getPosition().getValueAsDouble();
         inputs.backMotorPosition = m_back.getPosition().getValueAsDouble();
 
-        inputs.heightInch = inputs.frontMotorPosition;
+        inputs.heightInch = inputs.frontMotorPosition / m_gearRatio;
 
         m_rotations = inputs.frontMotorPosition;
     }
