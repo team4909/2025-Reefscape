@@ -1,5 +1,6 @@
 package frc.robot.subsystems.Climber;
 
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -12,14 +13,17 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 
 public class ClimberIOTalonFX implements ClimberIO {
   private final TalonFX m_Climbermotor;
 
-  
+  private StatusSignal<AngularVelocity> m_velocity;
+  private StatusSignal<Current> m_supplyCurrent;
+  private StatusSignal<Voltage> m_motorVoltage;
+  private StatusSignal<Angle> m_position;
 
-  private double m_rotations;
   final PositionVoltage m_request;
   
 
@@ -60,29 +64,25 @@ public class ClimberIOTalonFX implements ClimberIO {
   }
 
   
-    public void gotosetpoint(double setpoint, double gearRatio) {
-        double rotations = setpoint * gearRatio;
-        m_rotations = rotations;
-        m_Climbermotor.setControl(m_request.withPosition(rotations));
-    }
-
-  public double getVelocity(){
-    return m_Climbermotor.getVelocity().getValueAsDouble();
-}
-public double getVoltage(){
-    return m_Climbermotor.getMotorVoltage().getValueAsDouble();
-}
-
-public double getPosition() {
-    return m_Climbermotor.getPosition().getValueAsDouble();
-}
-
-public double getSetpoint(){
-    return m_rotations;
+public void gotosetpoint(double setpoint, double gearRatio) {
+    double rotations = setpoint * gearRatio;
+    m_Climbermotor.setControl(m_request.withPosition(rotations));
 }
 
 public void setPosition(double position){
   m_Climbermotor.setPosition(position);
 }
 
+@Override
+public void updateInputs(ClimberIOinputs inputs) {
+  inputs.motorConnected = BaseStatusSignal.refreshAll(m_velocity, m_supplyCurrent, m_motorVoltage, m_position).isOK();
+
+  inputs.velocity = m_velocity.getValueAsDouble();
+
+  inputs.motorSupplyCurrent = m_supplyCurrent.getValueAsDouble();
+  inputs.motorVoltage = m_motorVoltage.getValueAsDouble();
+
+  inputs.motorPosition = m_position.getValueAsDouble();
+  inputs.motorSetpoint = m_request.getPositionMeasure().magnitude();
+}
 }

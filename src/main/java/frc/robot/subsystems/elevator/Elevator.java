@@ -153,7 +153,7 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     super.periodic();
     m_io.updateInputs(m_inputs);
-    Logger.processInputs(getName(), m_inputs);
+    Logger.processInputs(getName()+"/", m_inputs);
 
     if (this.getCurrentCommand() != null) {
       SmartDashboard.putString("elevator/command", this.getCurrentCommand().getName());

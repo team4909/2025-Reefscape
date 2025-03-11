@@ -1,15 +1,25 @@
 package frc.robot.subsystems.shooter;
 
+import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Voltage;
 import frc.robot.subsystems.elevator.ElevatorIOInputsAutoLogged;
 
 public class ShooterIOTalonFX implements ShooterIO {
 
   private final TalonFX m_shootermotor;
+
+  private StatusSignal<AngularVelocity> m_velocity;
+  private StatusSignal<Current> m_statorCurrent, m_supplyCurrent;
+  private StatusSignal<Voltage> m_motorVoltage;
+
 
   public ShooterIOTalonFX() {
     m_shootermotor = new TalonFX(20, "CANivore2");
@@ -34,13 +44,14 @@ public class ShooterIOTalonFX implements ShooterIO {
   }
 
   public void updateInputs(ShooterIOInputsAutoLogged m_inputs) {
-    m_inputs.speed = m_shootermotor.getVelocity().getValueAsDouble();
-    m_inputs.statorCurrent = m_shootermotor.getStatorCurrent().getValueAsDouble();
-    m_inputs.supplyCurrent = m_shootermotor.getSupplyCurrent().getValueAsDouble();
-        // double motorRPS = m_back.getVelocity().getValueAsDouble();
-        // m_inputs.elevatorRPM = motorRPS*60;
-        // m_inputs.heightInch = m_back.getPosition().getValueAsDouble() / m_gearRatio;
-        // m_inputs.setpointInch = m_rotations / m_gearRatio;
+    m_inputs.motorConnected = BaseStatusSignal.refreshAll(m_velocity, m_statorCurrent, m_supplyCurrent, m_motorVoltage).isOK();
+
+    m_inputs.velocity = m_velocity.getValueAsDouble();
+
+    m_inputs.statorCurrent = m_statorCurrent.getValueAsDouble();
+    m_inputs.supplyCurrent = m_supplyCurrent.getValueAsDouble();
+
+    m_inputs.voltage = m_motorVoltage.getValueAsDouble();
     }
   
 }

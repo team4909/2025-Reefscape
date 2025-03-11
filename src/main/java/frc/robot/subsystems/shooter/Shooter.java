@@ -37,7 +37,9 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    Logger.processInputs(this.getName(), m_inputs);
+    m_io.updateInputs(m_inputs);
+    Logger.processInputs(getName()+"/", m_inputs);
+
     if (this.getCurrentCommand() != null) {
       SmartDashboard.putString("shooter/command", this.getCurrentCommand().getName());
     } else {

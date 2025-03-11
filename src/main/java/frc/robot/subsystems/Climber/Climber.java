@@ -7,16 +7,12 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.Climber.ClimberIO.ClimberIOinputs;
 
 public class Climber extends SubsystemBase {
-  private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
-  private final NetworkTable climberTable = inst.getTable("Climber");
-  private final DoublePublisher  motorVelPub= climberTable.getDoubleTopic("Motor Vel").publish();
-  private final DoublePublisher  motorVolPub= climberTable.getDoubleTopic("Motor Vol").publish();
-  private final DoublePublisher  rotPub= climberTable.getDoubleTopic("Rotations").publish();
-  private final DoublePublisher  setPub= climberTable.getDoubleTopic("Setpoint").publish();
-
   private ClimberIO m_io;
+  private final ClimberIOinputsAutoLogged m_inputs = new ClimberIOinputsAutoLogged();
+
   private final double climb = -190.866;
 
   final double m_gearRatio = 1d;
@@ -51,11 +47,8 @@ public class Climber extends SubsystemBase {
 
   @Override
       public void periodic() {
-        super.periodic();
-        motorVelPub.set(m_io.getVelocity());
-        motorVolPub.set(m_io.getVoltage());
-        setPub.set(m_io.getSetpoint());
-        rotPub.set(m_io.getPosition());
+        m_io.updateInputs(m_inputs);
+        Logger.processInputs(getName()+"/", m_inputs);
       }
     
 }

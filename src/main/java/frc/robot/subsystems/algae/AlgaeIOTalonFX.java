@@ -1,5 +1,6 @@
 package frc.robot.subsystems.algae;
 
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
@@ -7,19 +8,29 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
 
     private final TalonFX m_shootMotor;
     private final TalonFX m_pivotMotor;
-    private double m_rotations;
+
     final PositionVoltage m_request;
-    // final VelocityVoltage m_request = new VelocityVoltage(0).withSlot(0);
-    // private final PositionVoltage m_request;
+
+    private StatusSignal<Voltage> m_shooterVoltage;
+    private StatusSignal<Current> m_shooterCurrent;
+    private StatusSignal<AngularVelocity> m_shooterVelocity;
+
+    private StatusSignal<Angle> m_wristPosition;
+    private StatusSignal<AngularVelocity> m_wristVelocity;
+    private StatusSignal<Voltage> m_wristVoltage;
+    private StatusSignal<Current> m_wristCurrent;
 
     public AlgaeIOTalonFX() {
-
         m_shootMotor = new TalonFX(23, "CANivore2");
         m_pivotMotor = new TalonFX(24, "CANivore2");
 
@@ -62,7 +73,6 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
     @Override
     public void gotosetpoint(double setpoint, double gearRatio) {
         double rotations = setpoint * gearRatio;
-        m_rotations = rotations;
         m_pivotMotor.setControl(m_request.withPosition(rotations));
     }
 
@@ -71,6 +81,7 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
     }
 
     public void updateInputs(AlgaeIOInputs inputs) {
+        inputs.shooterConnected = m_shootMotor.getMotorVoltage().isOK();
         inputs.shooterVoltage = m_shootMotor.getMotorVoltage().getValueAsDouble();
         inputs.shooterCurrent = m_shootMotor.getSupplyCurrent().getValueAsDouble();
         inputs.shootVelocity = m_shootMotor.getVelocity().getValueAsDouble();
