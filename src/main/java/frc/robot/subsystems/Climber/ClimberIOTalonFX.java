@@ -35,6 +35,11 @@ public class ClimberIOTalonFX implements ClimberIO {
     final TalonFXConfiguration climberMotorConfig = new TalonFXConfiguration();
     final MotorOutputConfigs outputConfigs = new MotorOutputConfigs();
 
+    m_velocity = m_Climbermotor.getVelocity();
+    m_supplyCurrent = m_Climbermotor.getSupplyCurrent();
+    m_motorVoltage = m_Climbermotor.getMotorVoltage();
+    m_position = m_Climbermotor.getPosition();
+
     outputConfigs.NeutralMode = NeutralModeValue.Brake;
     climberMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
     climberMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
@@ -75,7 +80,7 @@ public void setPosition(double position){
 
 @Override
 public void updateInputs(ClimberIOinputs inputs) {
-  inputs.motorConnected = true;//BaseStatusSignal.refreshAll(m_velocity, m_supplyCurrent, m_motorVoltage, m_position).isOK();
+  inputs.motorConnected = BaseStatusSignal.refreshAll(m_velocity, m_supplyCurrent, m_motorVoltage, m_position).isOK();
 
   inputs.velocity = m_velocity.getValueAsDouble();
 
