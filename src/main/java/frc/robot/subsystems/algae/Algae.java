@@ -1,5 +1,7 @@
 package frc.robot.subsystems.algae;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.networktables.DoublePublisher;
@@ -11,17 +13,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.algae.AlgaeIO.AlgaeIOInputs;
 
 public class Algae extends SubsystemBase {
-  private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
-  private final NetworkTable AlgaeTable = inst.getTable("Algae");
-  private final DoublePublisher motorValPub = AlgaeTable.getDoubleTopic("Motor Val").publish();
-  private final DoublePublisher motorVolPub = AlgaeTable.getDoubleTopic("Motor Vol").publish();
-  private final DoublePublisher rotPub = AlgaeTable.getDoubleTopic("Rotations").publish();
-  private final DoublePublisher setPub = AlgaeTable.getDoubleTopic("Setpoint").publish();
-  private final DoublePublisher currentPub = AlgaeTable.getDoubleTopic("Current").publish();
   final double kTriggerTime = 1;
 
   private final AlgaeIO m_io;
-  private final AlgaeIOInputs m_inputs = new AlgaeIOInputs();
+  private final AlgaeIOInputsAutoLogged m_inputs = new AlgaeIOInputsAutoLogged();
 
 
   private final double DownPosition = 0;
@@ -85,13 +80,9 @@ public class Algae extends SubsystemBase {
   @Override
   public void periodic() {
     super.periodic();
+    
     m_io.updateInputs(m_inputs);
-
-    motorValPub.set(m_inputs.shootVelocity);
-    motorVolPub.set(m_inputs.shooterVoltage);
-    setPub.set(m_inputs.wristSetpoint);
-    rotPub.set(m_inputs.wristPosition);
-    currentPub.set(m_inputs.shooterCurrent);
+    Logger.processInputs(getName()+"/", m_inputs);
 
     if (m_inputs.shooterCurrent > 40) {
       m_StallTimer.start();
