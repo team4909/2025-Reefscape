@@ -34,6 +34,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -220,23 +223,27 @@ public class RobotContainer {
       
         // joystick.rightTrigger().whileTrue(Commands.run(() -> {
         //         if (s_Elevator.L4_True == true ) {
-        //             s_Shooter.shoot();
+        //             s_Shooter.shoot().schedule();
         //         } else {
         //             s_Shooter.slowShoot();
         //         }
         //     }, s_Elevator)).onFalse(s_Shooter.stop());
 
-        joystick.rightTrigger().whileTrue(s_Shooter.shoot()).onFalse(s_Shooter.stop());
-       
-        // joystick.rightTrigger().whileTrue(
-        //         if (s_Elevator.getCurrentCommand.equals(s_Elevator.goToL4())) {
-        //         s_Shooter.shootTrough();
-        // }
-        // else {
-        //         s_Shooter.shootL4();
-        // }).onFalse(s_Shooter.stop());
+		// (new RunCommand(()-> {
+		// 	if (s_Elevator.isAtL4()) {
+		// 			s_Shooter.shoot();
+		// 	} else {
+		// 			s_Shooter.slowShoot();
+		// 	}
+        // }, new Subsystem[] {s_Elevator, s_Shooter})
 
-        joystick.y().whileTrue(s_Shooter.slowShoot()).onFalse(s_Shooter.stop());
+		// joystick.rightTrigger().whileTrue(s_Shooter.shoot()).onFalse(s_Shooter.stop());
+        joystick.rightTrigger().whileTrue(new ConditionalCommand(s_Shooter.shoot(), s_Shooter.slowShoot(), () -> s_Elevator.isAtL4())).onFalse(s_Shooter.stop());
+    
+
+        // joystick.y().whileTrue(s_Shooter.slowShoot()).onFalse(s_Shooter.stop());
+
+
         joystick.a().whileTrue(s_Climber.lower()).onFalse(s_Climber.stop());
         joystick.leftStick().onTrue(s_Climber.winchedPosition());
 

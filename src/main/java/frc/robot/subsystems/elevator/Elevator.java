@@ -174,6 +174,10 @@ public class Elevator extends SubsystemBase {
   }
 
   public boolean isAtL1() {
-    return m_inputs.heightInch < L1Setpoint + 0.1;
+    return Math.abs(L1Setpoint - m_inputs.heightInch) < 0.1;
+  }
+
+  public boolean isAtL4() {
+    return Math.abs(L4Setpoint - m_inputs.heightInch) < 0.1;
   }
 }
