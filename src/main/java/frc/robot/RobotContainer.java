@@ -89,10 +89,10 @@ public class RobotContainer {
         s_Elevator = new Elevator(new ElevatorIOTalonFX());
         s_Algae = new Algae(new AlgaeIOTalonFX());
     s_Climber = new Climber(new ClimberIOTalonFX());
-
+    
         // Auto Named Commands
-        NamedCommands.registerCommand("score", s_Shooter.shootTrough().withTimeout(.5));
-        NamedCommands.registerCommand("feed", s_Shooter.shootTrough().withTimeout(1.5));
+        NamedCommands.registerCommand("score", s_Shooter.shoot().withTimeout(.5));
+        NamedCommands.registerCommand("feed", s_Shooter.shoot().withTimeout(1.5));
         NamedCommands.registerCommand("stop shooter", s_Shooter.stopInstant());
         NamedCommands.registerCommand("L4", s_Elevator.goToL4());
         NamedCommands.registerCommand("L3", s_Elevator.goToL3());
@@ -211,7 +211,23 @@ public class RobotContainer {
         // point.withModuleDirection(
         // new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-        joystick.rightTrigger().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
+        //joystick.rightTrigger().whileTrue(s_Shooter.shoot()).onFalse(s_Shooter.stop());
+
+        // joystick.rightTrigger().whileTrue(Commands.runOnce(()-> {
+        //         if(s_Elevator.getCurrentCommand().equals(s_Elevator.goToL4())) {s_Shooter.shoot();}
+        //         else s_Shooter.slowShoot();
+        // }, s_Elevator)).onFalse(s_Shooter.stop());
+      
+        // joystick.rightTrigger().whileTrue(Commands.run(() -> {
+        //         if (s_Elevator.L4_True == true ) {
+        //             s_Shooter.shoot();
+        //         } else {
+        //             s_Shooter.slowShoot();
+        //         }
+        //     }, s_Elevator)).onFalse(s_Shooter.stop());
+
+        joystick.rightTrigger().whileTrue(s_Shooter.shoot()).onFalse(s_Shooter.stop());
+       
         // joystick.rightTrigger().whileTrue(
         //         if (s_Elevator.getCurrentCommand.equals(s_Elevator.goToL4())) {
         //         s_Shooter.shootTrough();
@@ -219,7 +235,8 @@ public class RobotContainer {
         // else {
         //         s_Shooter.shootL4();
         // }).onFalse(s_Shooter.stop());
-        joystick.y().whileTrue(s_Shooter.shoot()).onFalse(s_Shooter.stop());
+
+        joystick.y().whileTrue(s_Shooter.slowShoot()).onFalse(s_Shooter.stop());
         joystick.a().whileTrue(s_Climber.lower()).onFalse(s_Climber.stop());
         joystick.leftStick().onTrue(s_Climber.winchedPosition());
 
@@ -230,6 +247,7 @@ public class RobotContainer {
         joystick.povUp().onTrue(s_Climber.climbPosition());
         joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
         zeroController.x().onTrue(s_Elevator.reZero());
+
         // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
         //joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
         joystick.povLeft().onTrue(Commands.sequence(s_Elevator.goToL2A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
@@ -269,10 +287,10 @@ public class RobotContainer {
 
         joystick.b().whileTrue(Commands.parallel(new ReefBranchAlign(drivetrain,
                  new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),
-                 () -> -joystick.getLeftY()), s_Shooter.shootTrough())).onFalse(s_Shooter.stop());
+                 () -> -joystick.getLeftY()), s_Shooter.shoot())).onFalse(s_Shooter.stop());
          joystick.x().whileTrue(Commands.parallel(new ReefBranchAlign(drivetrain,
                  new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),
-                 () -> -joystick.getLeftY()),s_Shooter.shootTrough())).onFalse(s_Shooter.stop());
+                 () -> -joystick.getLeftY()),s_Shooter.shoot())).onFalse(s_Shooter.stop());
 
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),

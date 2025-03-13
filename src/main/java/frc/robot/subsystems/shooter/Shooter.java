@@ -16,12 +16,12 @@ public class Shooter extends SubsystemBase {
     m_io = io;
   }
 
-  public Command shoot() {
-    return this.run(() -> m_io.setSpeed(-0.2)).withName("Shoot");
+  public Command slowShoot() {
+    return this.run(() -> m_io.setSpeed(-0.2)).withName("SlowShoot");
   }
 
-  public Command shootTrough() {
-    return this.run(() -> m_io.setSpeed(-0.3)).withName("ShootTrough");
+  public Command shoot() {
+    return this.run(() -> m_io.setSpeed(-0.3)).withName("Shoot");
   }
 
   public Command stop() {
@@ -33,6 +33,7 @@ public class Shooter extends SubsystemBase {
 
   public Command intake() {
     return this.run(() -> m_io.setSpeed(1)).withName("Intake");
+  
   }
 
   @Override

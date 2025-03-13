@@ -21,7 +21,7 @@ public class Algae extends SubsystemBase {
   final double kTriggerTime = 1;
 
   private final AlgaeIO m_io;
-  private final AlgaeIOInputs m_inputs = new AlgaeIOInputs();
+  private final AlgaeIOInputsAutoLogged m_inputs = new AlgaeIOInputsAutoLogged();
   private final double DownPosition = 0;
   private final double ExtendedPosition = 4.9;// 32.5
   private Timer m_StallTimer;
@@ -81,8 +81,8 @@ public class Algae extends SubsystemBase {
 
   @Override
   public void periodic() {
-    super.periodic();
-    m_io.updateInputs(m_inputs);
+    // super.periodic();
+    // m_io.updateInputs(m_inputs);
 
     motorValPub.set(m_inputs.shootVelocity);
     motorVolPub.set(m_inputs.shooterVoltage);
