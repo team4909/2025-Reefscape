@@ -3,8 +3,9 @@
   "robotLength": 0.84455,
   "holonomicMode": true,
   "pathFolders": [
-    "human player ",
+    "New Folder",
     "Taxi",
+    "human player ",
     "taxi and L4 far paths"
   ],
   "autoFolders": [

@@ -6,11 +6,16 @@ public interface AlgaeIO {
     
     @AutoLog
     public static class AlgaeIOInputs { 
-        public double shooterVoltage = 0d;
-        public double shooterCurrent = 0;
-        public double shootVelocity = 0;
-        public double wristPosition = 0;
-        public double wristSetpoint = 0;
+        public boolean shooterConnected = false;
+        public double shooterVoltage = 0.0;
+        public double shooterCurrent = 0.0;
+        public double shootVelocity = 0.0;
+
+        public boolean wristConnected = false;
+        public double wristPosition = 0.0;
+        public double wristSetpoint = 0.0;
+        public double wristVoltage = 0.0;
+        public double wristCurrent = 0.0;
     }
 
     public default void setShootVoltage(double voltage) {}
