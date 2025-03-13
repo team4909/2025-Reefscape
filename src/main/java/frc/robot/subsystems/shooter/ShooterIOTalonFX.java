@@ -24,6 +24,11 @@ public class ShooterIOTalonFX implements ShooterIO {
   public ShooterIOTalonFX() {
     m_shootermotor = new TalonFX(20, "CANivore2");
 
+    m_velocity = m_shootermotor.getVelocity();
+    m_statorCurrent = m_shootermotor.getStatorCurrent();
+    m_supplyCurrent = m_shootermotor.getSupplyCurrent();
+    m_motorVoltage = m_shootermotor.getMotorVoltage();
+
     final TalonFXConfiguration shooterMotorConfig = new TalonFXConfiguration();
     shooterMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
     shooterMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
