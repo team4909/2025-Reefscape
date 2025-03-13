@@ -37,6 +37,15 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
 
         m_request = new PositionVoltage(0).withSlot(0);
 
+        m_shooterVoltage = m_shootMotor.getMotorVoltage();
+        m_shooterCurrent = m_shootMotor.getSupplyCurrent();
+        m_shooterVelocity = m_shootMotor.getVelocity();
+
+        m_wristPosition = m_pivotMotor.getPosition();
+        m_wristVelocity = m_pivotMotor.getVelocity();
+        m_wristVoltage = m_pivotMotor.getMotorVoltage();
+        m_wristCurrent = m_pivotMotor.getSupplyCurrent();
+
         final TalonFXConfiguration motorConfig = new TalonFXConfiguration();
 
         motorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
