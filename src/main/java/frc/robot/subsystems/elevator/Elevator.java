@@ -23,12 +23,11 @@ public class Elevator extends SubsystemBase {
   private final ElevatorIO m_io;
   // GSD setpoints
   private final double L1Setpoint = 29.48;
-  private final double L2Setpoint = 36   ;
+  private final double L2Setpoint = 36;
   private final double L3Setpoint = 51;
-  private final double L4Setpoint = 77
-  ;
-  private final double L2ASetpoint = 48.5+3+1;
-  private final double L3ASetpoint = 66.5+1.5;
+  private final double L4Setpoint = 77;
+  private final double L2ASetpoint = 48.5 + 3 + 1;
+  private final double L3ASetpoint = 66.5 + 1.5;
 
   // private final double L1Setpoint = 29;
   // private final double L2Setpoint = 33;
@@ -91,11 +90,12 @@ public class Elevator extends SubsystemBase {
       SmartDashboard.putString("L4Wait", "Start");
       m_io.gotosetpoint(L4Setpoint, ElevatorIOTalonFX.m_gearRatio);
     }).withName("L4").until(() -> {
-      // SmartDashboard.putNumber("Elevator/l4wait", Math.abs(L4Setpoint - m_inputs.elevatorHeightInch) );
+      // SmartDashboard.putNumber("Elevator/l4wait", Math.abs(L4Setpoint -
+      // m_inputs.elevatorHeightInch) );
       // SmartDashboard.putNumber("Elevator/actual", m_inputs.elevatorHeightInch);
       // SmartDashboard.putNumber("Elevator/target", L4Setpoint);
       return Math.abs(L4Setpoint - m_inputs.heightInch) < 0.1;
-    }).andThen(()-> SmartDashboard.putString("L4Wait", "End"));
+    }).andThen(() -> SmartDashboard.putString("L4Wait", "End"));
   }
 
   public Command L2_Wait() {
@@ -104,11 +104,12 @@ public class Elevator extends SubsystemBase {
       SmartDashboard.putString("L2Wait", "Start");
       m_io.gotosetpoint(L2Setpoint, ElevatorIOTalonFX.m_gearRatio);
     }).withName("L2Wait").until(() -> {
-      // SmartDashboard.putNumber("Elevator/l4wait", Math.abs(L4Setpoint - m_inputs.elevatorHeightInch) );
+      // SmartDashboard.putNumber("Elevator/l4wait", Math.abs(L4Setpoint -
+      // m_inputs.elevatorHeightInch) );
       // SmartDashboard.putNumber("Elevator/actual", m_inputs.elevatorHeightInch);
       // SmartDashboard.putNumber("Elevator/target", L4Setpoint);
       return Math.abs(L2Setpoint - m_inputs.heightInch) < 0.1;
-    }).andThen(()-> SmartDashboard.putString("L2Wait", "End"));
+    }).andThen(() -> SmartDashboard.putString("L2Wait", "End"));
   }
 
   public Command L3_Wait() {
@@ -118,9 +119,8 @@ public class Elevator extends SubsystemBase {
       m_io.gotosetpoint(L3Setpoint, ElevatorIOTalonFX.m_gearRatio);
     }).withName("L3Wait").until(() -> {
       return Math.abs(L3Setpoint - m_inputs.heightInch) < 0.1;
-    }).andThen(()-> SmartDashboard.putString("L3Wait", "End"));
+    }).andThen(() -> SmartDashboard.putString("L3Wait", "End"));
   }
-
 
   public Command goToL3A() {
     // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
