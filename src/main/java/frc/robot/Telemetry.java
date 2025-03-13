@@ -5,6 +5,7 @@ import org.littletonrobotics.junction.Logger;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -118,7 +119,7 @@ public class Telemetry {
       m_moduleTargetsArray[i * 2 + 1] = state.ModuleTargets[i].speedMetersPerSecond;
     }
 
-    Logger.recordOutput("Drivetrain/Pose", state.Pose);
+    Logger.recordOutput("Drivetrain/Pose", new Pose3d(state.Pose));
     Logger.recordOutput("Drivetrain/Speeds", state.Speeds);
     Logger.recordOutput("Drivetrain/ModuleStates", state.ModuleStates);
     Logger.recordOutput("Drivetrain/ModuleTargets", state.ModuleTargets);
