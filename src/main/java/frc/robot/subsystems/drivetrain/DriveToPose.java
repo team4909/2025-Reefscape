@@ -36,10 +36,10 @@ public class DriveToPose extends Command {
   public DriveToPose(CommandSwerveDrivetrain drivetrain, Transform2d shift) {
     m_shift = shift;
     m_translationController =
-        new ProfiledPIDController(8.0, 0.0, 0.0, new TrapezoidProfile.Constraints(2, 2));
+        new ProfiledPIDController(8.0, 0.0, 0.0, new TrapezoidProfile.Constraints(100, 100));
     m_thetaController =
         new ProfiledPIDController(
-            5.0, 0.0, 0.0, new TrapezoidProfile.Constraints(1 * Math.PI, 1 * Math.PI));
+            7.0, 0.0, 0.0, new TrapezoidProfile.Constraints(100 * Math.PI, 100 * Math.PI));
     this.m_drivetrain = drivetrain;
 
     m_drive = new SwerveRequest.ApplyFieldSpeeds()

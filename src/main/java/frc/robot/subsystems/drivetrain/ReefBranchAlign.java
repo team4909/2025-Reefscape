@@ -65,9 +65,9 @@ public class ReefBranchAlign extends Command {
     ChassisSpeeds fieldVelocity = ChassisSpeeds.fromRobotRelativeSpeeds(m_drivetrain.getState().Speeds, initialPose.getRotation());
 
     m_translationController.reset(
+        m_goalPose.relativeTo(initialPose).getTranslation().getY(),
         // Math.abs(initialPose.getTranslation().getY() - m_goalPose.getTranslation().getY()),
         // Math.min(0.0, m_drivetrain.getState().Speeds.vyMetersPerSecond));
-        initialPose.getTranslation().getDistance(m_goalPose.getTranslation()),
         Math.min(
             0.0,
             -new Translation2d(fieldVelocity.vxMetersPerSecond, fieldVelocity.vyMetersPerSecond)
@@ -78,6 +78,7 @@ public class ReefBranchAlign extends Command {
                         .getAngle()
                         .unaryMinus())
                 .getX()));
+                
     m_thetaController.reset(
         initialPose.getRotation().getRadians(),
         fieldVelocity.omegaRadiansPerSecond);
@@ -87,12 +88,15 @@ public class ReefBranchAlign extends Command {
   @Override
   public void execute() {
     Pose2d currentPose = m_drivetrain.getState().Pose;
-    double distanceToGoalPose = currentPose.getTranslation().getDistance(m_goalPose.getTranslation()); //currentPose.getTranslation().getY() - m_goalPose.getTranslation().getY();
+    double distanceToGoalPose = m_goalPose.relativeTo(currentPose).getTranslation().getY();
+    // double yVelocity = m_translationController.calculate(distanceToGoalPose, 0);
+    // double thetaVelocity = m_thetaController.calculate(currentPose.getRotation().getRadians(), m_goalPose.getRotation().getRadians());
+
 
     double ffScaler = MathUtil.clamp((distanceToGoalPose - 0.2) / (0.8 - 0.2), 0.0, 1.0);
 
     m_translationController.calculate(
-        Math.abs(m_lastSetpointTranslation.getY() - m_goalPose.getY()),
+        Math.abs(m_lastSetpointTranslation.getY() - m_goalPose.getX()),
         m_translationController.getSetpoint().velocity);//ROBO RELATIVE
 
     // double driveVelocity =
@@ -133,7 +137,7 @@ public class ReefBranchAlign extends Command {
                 new Transform2d(new Translation2d(driveVelocityScalar, 0.0), new Rotation2d()))
             .getTranslation();
 
-    final ChassisSpeeds CS = ChassisSpeeds.fromFieldRelativeSpeeds(new ChassisSpeeds(driveVelocity.getX(), driveVelocity.getY(), thetaVelocity), currentPose.getRotation());//new ChassisSpeeds(m_joystickInput.getAsDouble(), driveVelocity, thetaVelocity);
+    final ChassisSpeeds CS = ChassisSpeeds.fromFieldRelativeSpeeds(new ChassisSpeeds(m_joystickInput.getAsDouble(), driveVelocity.getY(), thetaVelocity), currentPose.getRotation());//new ChassisSpeeds(m_joystickInput.getAsDouble(), driveVelocity, thetaVelocity);
 
     m_drivetrain.setControl(m_drive.withSpeeds((new ChassisSpeeds(m_joystickInput.getAsDouble(), CS.vyMetersPerSecond, CS.omegaRadiansPerSecond))));
 
