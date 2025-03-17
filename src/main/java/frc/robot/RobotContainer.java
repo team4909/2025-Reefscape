@@ -206,38 +206,7 @@ public class RobotContainer {
                                 -joystick.getLeftY() * SlowSpeed)
                         .withRotationalRate(
                                 -joystick.getRightX() * SlowAngularRate)));
-        // joystick
-        // .b()
-        // .whileTrue(
-        // drivetrain.applyRequest(
-        // () ->
-        // point.withModuleDirection(
-        // new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
-
-        //joystick.rightTrigger().whileTrue(s_Shooter.shoot()).onFalse(s_Shooter.stop());
-
-        // joystick.rightTrigger().whileTrue(Commands.runOnce(()-> {
-        //         if(s_Elevator.getCurrentCommand().equals(s_Elevator.goToL4())) {s_Shooter.shoot();}
-        //         else s_Shooter.slowShoot();
-        // }, s_Elevator)).onFalse(s_Shooter.stop());
-      
-        // joystick.rightTrigger().whileTrue(Commands.run(() -> {
-        //         if (s_Elevator.L4_True == true ) {
-        //             s_Shooter.shoot().schedule();
-        //         } else {
-        //             s_Shooter.slowShoot();
-        //         }
-        //     }, s_Elevator)).onFalse(s_Shooter.stop());
-
-		// (new RunCommand(()-> {
-		// 	if (s_Elevator.isAtL4()) {
-		// 			s_Shooter.shoot();
-		// 	} else {
-		// 			s_Shooter.slowShoot();
-		// 	}
-        // }, new Subsystem[] {s_Elevator, s_Shooter})
-
-		// joystick.rightTrigger().whileTrue(s_Shooter.shoot()).onFalse(s_Shooter.stop());
+        
         joystick.rightTrigger().whileTrue(new ConditionalCommand(s_Shooter.shoot(), s_Shooter.slowShoot(), () -> s_Elevator.isAtL4())).onFalse(s_Shooter.stop());
     
 
