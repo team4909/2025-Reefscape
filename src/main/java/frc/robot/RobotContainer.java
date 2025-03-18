@@ -293,9 +293,9 @@ public class RobotContainer {
         //         ))).onFalse(s_Shooter.stop());
 
         joystick.b().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
-                 new Transform2d(Units.inchesToMeters(-33.5/2), Units.inchesToMeters(0.5+2.25), new Rotation2d())), s_Shooter.shoot())).onFalse(s_Shooter.stop());
+                 new Transform2d(Units.inchesToMeters(-33.5/2+0.75), Units.inchesToMeters(0.5+2.25), new Rotation2d())), s_Shooter.shoot())).onFalse(s_Shooter.stop());
          joystick.x().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
-                 new Transform2d(Units.inchesToMeters(-33.5/2), Units.inchesToMeters(13.5+2.25), new Rotation2d())),s_Shooter.shoot())).onFalse(s_Shooter.stop());
+                 new Transform2d(Units.inchesToMeters(-33.5/2+0.75), Units.inchesToMeters(13.5+2.25), new Rotation2d())),s_Shooter.shoot())).onFalse(s_Shooter.stop());
 
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),

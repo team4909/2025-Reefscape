@@ -36,7 +36,7 @@ public class DriveToPose extends Command {
   public DriveToPose(CommandSwerveDrivetrain drivetrain, Transform2d shift) {
     m_shift = shift;
     m_translationController =
-        new ProfiledPIDController(4.0, 0.0, 0.0, new TrapezoidProfile.Constraints(3, 2));
+        new ProfiledPIDController(6.0, 0.0, 0.0, new TrapezoidProfile.Constraints(3, 4));
     m_thetaController =
         new ProfiledPIDController(
             4.0, 0.0, 0.0, new TrapezoidProfile.Constraints(100 * Math.PI, 100 * Math.PI));
@@ -54,7 +54,7 @@ public class DriveToPose extends Command {
     m_goalPose = m_drivetrain.findClosestNode().transformBy(m_shift);
     Pose2d initialPose = m_drivetrain.getState().Pose;
 
-    m_translationController.setTolerance(0.05);
+    m_translationController.setTolerance(0.01);
     m_thetaController.setTolerance(Units.degreesToRadians(1.0));
 
     m_thetaController.enableContinuousInput(-Math.PI, Math.PI);
