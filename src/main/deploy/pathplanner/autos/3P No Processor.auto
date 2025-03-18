@@ -181,7 +181,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "test slide"
+                  "pathName": "S-closeLeft-left"
                 }
               },
               {
@@ -234,6 +234,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "taxi and L4 far autos",
+  "folder": "Main Autos",
   "choreoAuto": false
 }

@@ -45,7 +45,7 @@
     "rotation": 121.18499999999999
   },
   "reversed": false,
-  "folder": "taxi and L4 far paths",
+  "folder": "Main Paths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 118.60265816557605
