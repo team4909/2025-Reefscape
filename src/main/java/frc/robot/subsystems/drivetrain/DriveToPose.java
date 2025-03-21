@@ -16,8 +16,11 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Unit;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 
 
@@ -30,11 +33,13 @@ public class DriveToPose extends Command {
   private Translation2d m_lastSetpointTranslation;
   private Pose2d m_goalPose;
   private SwerveRequest.ApplyFieldSpeeds m_drive;
+  private CommandXboxController m_controller;
   Transform2d m_shift;
 
 
-  public DriveToPose(CommandSwerveDrivetrain drivetrain, Transform2d shift) {
+  public DriveToPose(CommandSwerveDrivetrain drivetrain, Transform2d shift, CommandXboxController controller) {
     m_shift = shift;
+    m_controller = controller;
     m_translationController =
         new ProfiledPIDController(6.0, 0.0, 0.0, new TrapezoidProfile.Constraints(3, 4));
     m_thetaController =
@@ -89,6 +94,10 @@ public class DriveToPose extends Command {
 
     double distanceToGoalPose =
         currentPose.getTranslation().getDistance(m_goalPose.getTranslation());
+    
+        if (distanceToGoalPose<Units.inchesToMeters(1)){
+            m_controller.setRumble(RumbleType.kBothRumble, 1);
+        }
 
     double ffScaler = MathUtil.clamp((distanceToGoalPose - 0.2) / (0.8 - 0.2), 0.0, 1.0);
 

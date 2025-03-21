@@ -2,6 +2,8 @@ package frc.robot.subsystems.elevator;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.CANBus.CANBusStatus;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.networktables.DoublePublisher;
@@ -24,11 +26,13 @@ public class Elevator extends SubsystemBase {
   // GSD setpoints
   private final double L1Setpoint = 29.48;
   private final double L2Setpoint = 36   ;
-  private final double L3Setpoint = 51;
-  private final double L4Setpoint = 77
-  ;
+  private final double L3Setpoint = 52;
+  private final double L4Setpoint = 77;
+
   private final double L2ASetpoint = 48.5+3+1;
   private final double L3ASetpoint = 66.5+1.5;
+
+  CANBus canBus = new CANBus("CANivore2");
 
   // private final double L1Setpoint = 29;
   // private final double L2Setpoint = 33;
@@ -89,7 +93,7 @@ public class Elevator extends SubsystemBase {
     // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
     return this.run(() -> {
       SmartDashboard.putString("L4Wait", "Start");
-      m_io.gotosetpoint(L4Setpoint, ElevatorIOTalonFX.m_gearRatio);
+      m_io.gotosetpointWithSlot(L4Setpoint, ElevatorIOTalonFX.m_gearRatio,2);
     }).withName("L4").until(() -> {
       // SmartDashboard.putNumber("Elevator/l4wait", Math.abs(L4Setpoint - m_inputs.elevatorHeightInch) );
       // SmartDashboard.putNumber("Elevator/actual", m_inputs.elevatorHeightInch);
@@ -136,6 +140,15 @@ public class Elevator extends SubsystemBase {
     }).withName("L2A");
   }
 
+  public Command goToL2A_wait() {
+    // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
+    return this.run(() -> {
+      m_io.gotosetpoint(L2Setpoint, ElevatorIOTalonFX.m_gearRatio);
+    }).withName("L2AWait").until(() -> {
+      return Math.abs(L2ASetpoint - m_inputs.heightInch) < 0.1;
+    });
+  }
+
   public Command goUpInch() {
     return this.runOnce(() -> {
       m_io.gotosetpoint(m_io.getPosition() + (1 / 10), ElevatorIOTalonFX.m_gearRatio);
@@ -159,18 +172,23 @@ public class Elevator extends SubsystemBase {
     super.periodic();
     m_io.updateInputs(m_inputs);
     Logger.processInputs(getName(), m_inputs);
-    SmartDashboard.putNumber("Elevator RPM ", m_inputs.elevatorRPM);
+    var status = canBus.getStatus();
+    SmartDashboard.putString("Canivore2/status", status.Status.toString());
+    SmartDashboard.putBoolean("Canivore2/isNetworkFD", canBus.isNetworkFD());
+    SmartDashboard.putNumber("Canivore2/BusUtilization", status.BusUtilization);
+    SmartDashboard.putNumber("Canivore2/BusOffCount", status.BusOffCount);
+    SmartDashboard.putNumber("Canivore2/TxFullCount", status.TxFullCount);
 
-    motorValPub.set(m_io.getVelocity());
-    motorVolPub.set(m_io.getVoltage());
-    setPub.set(m_io.getSetpoint());
-    rotPub.set(m_io.getPosition());
+    // motorValPub.set(m_io.getVelocity());
+    // motorVolPub.set(m_io.getVoltage());
+    // setPub.set(m_io.getSetpoint());
+    // rotPub.set(m_io.getPosition());
 
-    if (this.getCurrentCommand() != null) {
-      SmartDashboard.putString("elevator/command", this.getCurrentCommand().getName());
-    } else {
-      SmartDashboard.putString("elevator/command", "null");
-    }
+    // if (this.getCurrentCommand() != null) {
+    //   SmartDashboard.putString("elevator/command", this.getCurrentCommand().getName());
+    // } else {
+    //   SmartDashboard.putString("elevator/command", "null");
+    // }
   }
 
   public boolean isAtL1() {

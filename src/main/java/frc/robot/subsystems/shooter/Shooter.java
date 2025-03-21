@@ -4,8 +4,8 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.shooter.ShooterIO.ShooterIOInputs;
 
 public class Shooter extends SubsystemBase {
   private final ShooterIO m_io;
@@ -14,6 +14,7 @@ public class Shooter extends SubsystemBase {
   public Shooter(ShooterIO io) {
     super("Shooter");
     m_io = io;
+    // setDefaultCommand(new ConditionalCommand(this.stop(), this.slowShoot(), () -> m_inputs.statorCurrent > 15));
   }
 
   public Command slowShoot() {
@@ -33,7 +34,6 @@ public class Shooter extends SubsystemBase {
 
   public Command intake() {
     return this.run(() -> m_io.setSpeed(1)).withName("Intake");
-  
   }
 
   @Override

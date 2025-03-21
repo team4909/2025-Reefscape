@@ -20,8 +20,8 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
 
     public AlgaeIOTalonFX() {
 
-        m_shootMotor = new TalonFX(23, "CANivore2");
-        m_pivotMotor = new TalonFX(24, "CANivore2");
+        m_shootMotor = new TalonFX(23);
+        m_pivotMotor = new TalonFX(24);
 
         m_request = new PositionVoltage(0).withSlot(0);
 

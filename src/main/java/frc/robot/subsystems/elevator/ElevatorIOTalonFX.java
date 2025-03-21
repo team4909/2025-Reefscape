@@ -1,30 +1,22 @@
 package frc.robot.subsystems.elevator;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.networktables.DoubleArrayPublisher;
-import edu.wpi.first.networktables.DoublePublisher;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
     
     
 
-    private final TalonFX m_front;
+    private final TalonFX m_front_follow;
     private final TalonFX m_back;
     private double m_rotations;
     final PositionVoltage m_request;
@@ -37,7 +29,7 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         
         
 
-        m_front = new TalonFX(21, "CANivore2");
+        m_front_follow = new TalonFX(21, "CANivore2");
         m_back = new TalonFX(22, "CANivore2");
         
         m_request = new PositionVoltage(0).withSlot(0);
@@ -54,7 +46,8 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         elevatorMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
         // in init function, set slot 0 gains
 
-        elevatorMotorConfig.Slot0.kP = 3; //3
+        //teleop up gains
+        elevatorMotorConfig.Slot0.kP = 3.5; //3
         elevatorMotorConfig.Slot0.kI = 0; // no output for integrated error
         elevatorMotorConfig.Slot0.kD = 0.2;//.2 
         elevatorMotorConfig.Slot0.kS = 0; 
@@ -67,20 +60,29 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         elevatorMotorConfig.Slot1.kI = 0; // no output for integrated error
         elevatorMotorConfig.Slot1.kD = .3; 
         elevatorMotorConfig.Slot1.kS = 0;
-        elevatorMotorConfig.Slot0.kV = 0; 
-        elevatorMotorConfig.Slot0.kA = 0;
+        elevatorMotorConfig.Slot1.kV = 0; 
+        elevatorMotorConfig.Slot1.kA = 0;
         elevatorMotorConfig.Slot1.kG = 0;
+
+        // auto up gains
+        elevatorMotorConfig.Slot2.kP = 3; //3
+        elevatorMotorConfig.Slot2.kI = 0; // no output for integrated error
+        elevatorMotorConfig.Slot2.kD = 0.1;
+        elevatorMotorConfig.Slot2.kS = 0; 
+        elevatorMotorConfig.Slot2.kV = 0; 
+        elevatorMotorConfig.Slot2.kA = 0;
+        elevatorMotorConfig.Slot2.kG = .5; //.5
      
         m_rotations = 29 * m_gearRatio;
         m_back.setPosition(m_rotations);
         
-        m_front.getConfigurator().apply(elevatorMotorConfig);
+        m_front_follow.getConfigurator().apply(elevatorMotorConfig);
         m_back.getConfigurator().apply(elevatorMotorConfig);
 
         m_back.getConfigurator().apply(rightOutputConfigs);
-        m_front.getConfigurator().apply(leftOutputConfigs);
+        m_front_follow.getConfigurator().apply(leftOutputConfigs);
 
-        m_front.setControl(new Follower(m_back.getDeviceID(), true));
+        m_front_follow.setControl(new Follower(m_back.getDeviceID(), true));
     }
 
     public void setVoltage(double voltage) {
@@ -95,7 +97,7 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
     public void setBrakeMode(boolean enableBrakeMode) {
         final NeutralModeValue neutralModeValue =
             enableBrakeMode ? NeutralModeValue.Brake : NeutralModeValue.Coast;
-        m_front.setNeutralMode(neutralModeValue);
+        m_front_follow.setNeutralMode(neutralModeValue);
         m_back.setNeutralMode(neutralModeValue);
     }
     @Override
@@ -114,6 +116,18 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
 
         m_back.setControl(m_request.withPosition(targetRot).withSlot(slot));
     }
+
+    @Override
+    public void gotosetpointWithSlot(double setpoint, double gearRatio, int slot) {
+        double targetRot = setpoint * gearRatio;
+
+        m_rotations = targetRot;
+        // System.out.println("rotations:" + targetRot);
+        SmartDashboard.putNumber("elevator/slot", slot);
+
+        m_back.setControl(m_request.withPosition(targetRot).withSlot(slot));
+    }
+
 
     public double getVelocity(){
         return m_back.getVelocity().getValueAsDouble();
@@ -140,6 +154,12 @@ public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
         m_inputs.elevatorRPM = motorRPS*60;
         m_inputs.heightInch = m_back.getPosition().getValueAsDouble() / m_gearRatio;
         m_inputs.setpointInch = m_rotations / m_gearRatio;
+
+        var sig = m_back.getStatorCurrent();
+
+        m_inputs.backStatorCurrent = sig.getValueAsDouble();
+        m_inputs.backStatus = sig.getStatus();
+        m_inputs.frontStatorCurrent = m_front_follow.getStatorCurrent().getValueAsDouble();
     }
 
  

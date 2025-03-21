@@ -30,11 +30,13 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -176,9 +178,9 @@ public class RobotContainer {
 
 
         // check if elevator is at L1, if so run the command that looks for current spike running intake
-        if (s_Elevator.isAtL1()) {
-            s_Shooter.setDefaultRunToCurrentSpike();
-        }
+        // if (s_Elevator.isAtL1()) {
+        //     s_Shooter.setDefaultRunToCurrentSpike();
+        // }
     }
 
     private void configureBindings() {
@@ -261,10 +263,13 @@ public class RobotContainer {
         //                 s_Shooter.shootTrough()
         //         ))).onFalse(s_Shooter.stop());
 
-        joystick.b().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
-                 new Transform2d(Units.inchesToMeters(-33.5/2+0.75), Units.inchesToMeters(0.5+2.25), new Rotation2d())), s_Shooter.shoot())).onFalse(s_Shooter.stop());
+        joystick.b().whileTrue(Commands.parallel(
+                new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-33.5/2+0.75), Units.inchesToMeters(0.5+2.25), new Rotation2d()), joystick), 
+                s_Shooter.shoot()))
+                .onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0)).andThen(s_Shooter.stop()));
+
          joystick.x().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
-                 new Transform2d(Units.inchesToMeters(-33.5/2+0.75), Units.inchesToMeters(13.5+2.25), new Rotation2d())),s_Shooter.shoot())).onFalse(s_Shooter.stop());
+                 new Transform2d(Units.inchesToMeters(-33.5/2+0.75), Units.inchesToMeters(13.5+2.25), new Rotation2d()), joystick),s_Shooter.shoot())).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0)).andThen(s_Shooter.stop()));
 
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
