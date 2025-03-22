@@ -8,7 +8,7 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.2424667506825675,
+        "x": 3.242466750682567,
         "y": 2.6520253384767196
       },
       "isLocked": false,
@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.7761270491803276,
-        "y": 3.0060450819672133
+        "x": 3.821,
+        "y": 2.95
       },
       "prevControl": {
-        "x": 3.5822914327419717,
-        "y": 2.8461665221258294
+        "x": 3.6271643835616443,
+        "y": 2.7901214401586163
       },
       "nextControl": null,
       "isLocked": false,
@@ -56,7 +56,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 61.09
+    "rotation": 60.60999999999999
   },
   "reversed": false,
   "folder": "taxi and L4 far paths",
