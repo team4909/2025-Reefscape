@@ -159,5 +159,10 @@ public class DriveToPose extends Command {
                     roboSpeed.vyMetersPerSecond * pose.getRotation().getCos()
                     + roboSpeed.vxMetersPerSecond * pose.getRotation().getSin(),
                     roboSpeed.omegaRadiansPerSecond);
-}
+    }
+
+    // @Override
+    // public void end(boolean interrupted) {
+    //     joystick.setRumble(RumbleType.kBothRumble, 0)
+    // }
 }

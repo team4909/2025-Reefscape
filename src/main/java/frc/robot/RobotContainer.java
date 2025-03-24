@@ -52,6 +52,7 @@ import frc.robot.subsystems.algae.AlgaeIOTalonFX;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIOTalonFX;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
+import frc.robot.subsystems.drivetrain.DriveToFieldPose;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
@@ -271,8 +272,8 @@ public class RobotContainer {
          joystick.x().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
                  new Transform2d(Units.inchesToMeters(-33.5/2+0.75), Units.inchesToMeters(13.5+2.25), new Rotation2d()), joystick),s_Shooter.shoot())).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0)).andThen(s_Shooter.stop()));
 
-        joystick.y().whileTrue(new DriveToPose(drivetrain,
-                 new Transform2d(Units.inchesToMeters(-33.5), Units.inchesToMeters(0), Rotation2d.fromDegrees(-90)), joystick));
+        joystick.y().whileTrue(new DriveToFieldPose(drivetrain,
+                 new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90)), joystick));
         
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
