@@ -145,6 +145,15 @@ public class Elevator extends SubsystemBase {
     });
   }
 
+  public Command goToL3A_wait() {
+    // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
+    return this.run(() -> {
+      m_io.gotosetpoint(L3Setpoint, ElevatorIOTalonFX.m_gearRatio);
+    }).withName("L3AWait").until(() -> {
+      return Math.abs(L3ASetpoint - m_inputs.heightInch) < 0.1;
+    });
+  }
+
   public Command goUpInch() {
     return this.runOnce(() -> {
       m_io.gotosetpoint(m_io.getPosition() + (1 / 10), ElevatorIOTalonFX.m_gearRatio);
