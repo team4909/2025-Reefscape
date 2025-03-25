@@ -210,7 +210,11 @@ public class RobotContainer {
                         .withRotationalRate(
                                 -joystick.getRightX() * SlowAngularRate)));
         
-        joystick.rightTrigger().whileTrue(new ConditionalCommand(s_Shooter.shoot(), s_Shooter.slowShoot(), () -> s_Elevator.isAtL4())).onFalse(s_Shooter.stop());
+        joystick.rightTrigger().whileTrue(new ConditionalCommand(
+                s_Shooter.shoot(), 
+                s_Shooter.slowShoot(), 
+                () -> s_Elevator.isAtL4()
+        )).onFalse(s_Shooter.stop());
     
 
         // joystick.y().whileTrue(s_Shooter.slowShoot()).onFalse(s_Shooter.stop());
@@ -269,11 +273,17 @@ public class RobotContainer {
                 s_Shooter.shoot()))
                 .onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0)).andThen(s_Shooter.stop()));
 
-         joystick.x().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
-                 new Transform2d(Units.inchesToMeters(-33.5/2+0.75), Units.inchesToMeters(13.5+2.25), new Rotation2d()), joystick),s_Shooter.shoot())).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0)).andThen(s_Shooter.stop()));
+        joystick.x().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
+                new Transform2d(Units.inchesToMeters(-33.5/2+0.75), Units.inchesToMeters(13.5+2.25), new Rotation2d()), joystick),s_Shooter.shoot())).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0)).andThen(s_Shooter.stop()));
 
-        joystick.y().whileTrue(new DriveToFieldPose(drivetrain,
-                 new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90)), joystick));
+        // joystick.y().whileTrue(new DriveToFieldPose(drivetrain,
+        //         new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90)), joystick));
+
+        var startPose = new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90));
+        var goToClimbStartPose = new DriveToFieldPose(drivetrain,startPose, joystick);
+        var goToClimbEndPose = new DriveToFieldPose(drivetrain,new Pose2d(8.9, 5.026, Rotation2d.fromDegrees(-90)), joystick);
+
+        joystick.y().whileTrue(new ConditionalCommand(goToClimbStartPose, goToClimbEndPose, ()-> (m_drivetrain.getState().Pose == startPose)));                 
         
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
