@@ -28,10 +28,10 @@ public class DriveToFieldPose extends Command {
     private SwerveRequest.ApplyFieldSpeeds m_drive;
     private CommandXboxController m_controller;
 
-    public DriveToFieldPose(CommandSwerveDrivetrain drivetrain, Pose2d goalPose, CommandXboxController controller,double kP) {
+    public DriveToFieldPose(CommandSwerveDrivetrain drivetrain, Pose2d goalPose, CommandXboxController controller,double maxV) {
         m_goalPose = goalPose;
         m_controller = controller;
-        m_translationController = new ProfiledPIDController(kP, 0.0, 0.0, new TrapezoidProfile.Constraints(3, 4));
+        m_translationController = new ProfiledPIDController(6, 0.0, 0.0, new TrapezoidProfile.Constraints(maxV, 4));
         m_thetaController = new ProfiledPIDController(
                 4.0, 0.0, 0.0, new TrapezoidProfile.Constraints(100 * Math.PI, 100 * Math.PI));
         m_drivetrain = drivetrain;
