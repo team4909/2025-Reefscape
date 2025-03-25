@@ -44,7 +44,7 @@ public class Elevator extends SubsystemBase {
 
   public Elevator(ElevatorIO io) {
     super("Elevator");
-    setDefaultCommand(goToL1());
+    setDefaultCommand(goToL1().repeatedly());
     m_io = io;
     SmartDashboard.putString("L4Wait", "Idle");
 
