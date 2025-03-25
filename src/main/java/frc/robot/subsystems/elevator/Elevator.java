@@ -16,10 +16,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Elevator extends SubsystemBase {
   private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private final NetworkTable elevatorTable = inst.getTable("Elevator");
-  private final DoublePublisher motorValPub = elevatorTable.getDoubleTopic("Motor Val").publish();
-  private final DoublePublisher motorVolPub = elevatorTable.getDoubleTopic("Motor Vol").publish();
-  private final DoublePublisher rotPub = elevatorTable.getDoubleTopic("Rotations").publish();
-  private final DoublePublisher setPub = elevatorTable.getDoubleTopic("Setpoint").publish();
 
   private ElevatorIOInputsAutoLogged m_inputs = new ElevatorIOInputsAutoLogged();
   private final ElevatorIO m_io;
@@ -44,10 +40,8 @@ public class Elevator extends SubsystemBase {
 
   public Elevator(ElevatorIO io) {
     super("Elevator");
-    setDefaultCommand(goToL1().repeatedly());
     m_io = io;
-    SmartDashboard.putString("L4Wait", "Idle");
-
+    setDefaultCommand(this.run(()-> m_io.gotosetpoint(L1Setpoint, ElevatorIOTalonFX.m_gearRatio)).withName("Elevator Default Command"));
   }
 
   // public Command moveUp() {
