@@ -41,7 +41,8 @@ public class Elevator extends SubsystemBase {
   public Elevator(ElevatorIO io) {
     super("Elevator");
     m_io = io;
-    setDefaultCommand(this.run(()-> m_io.gotosetpoint(L1Setpoint, ElevatorIOTalonFX.m_gearRatio)).withName("Elevator Default Command"));
+    // setDefaultCommand(this.run(()-> m_io.gotosetpoint(L1Setpoint, ElevatorIOTalonFX.m_gearRatio)).withName("Elevator Default Command"));
+    setDefaultCommand(goToL1());
   }
 
   // public Command moveUp() {
