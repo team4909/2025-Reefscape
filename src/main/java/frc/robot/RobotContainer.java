@@ -110,7 +110,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("L3 Wait", s_Elevator.L3_Wait());
         NamedCommands.registerCommand("L3 Algae", Commands.sequence(s_Elevator.goToL3A(), s_Algae.extend(), s_Algae.intake()));
         NamedCommands.registerCommand("L2 Algae", Commands.sequence(s_Elevator.goToL2A(), s_Algae.extend(), s_Algae.intake()).withTimeout(1));
-        NamedCommands.registerCommand("Algae Stow", Commands.sequence(s_Algae.down(), s_Elevator.goToL1()).withTimeout(.1));
+        NamedCommands.registerCommand("Algae Stow", Commands.sequence(s_Algae.home(), s_Elevator.goToL1()).withTimeout(.1));
         NamedCommands.registerCommand("Algae Shoot", s_Algae.shoot().withTimeout(1));
         NamedCommands.registerCommand("autoalign left", new ReefBranchAlign(drivetrain,
         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),
@@ -233,8 +233,8 @@ public class RobotContainer {
 
         // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
         //joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
-        joystick.povLeft().onTrue(Commands.sequence(s_Elevator.goToL2A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
-        joystick.povRight().onTrue(Commands.sequence(s_Elevator.goToL3A(), s_Algae.extend(), s_Algae.intake())).onFalse(Commands.sequence(s_Algae.down(), s_Elevator.goToL1()));
+        joystick.povLeft().whileTrue(Commands.parallel(s_Elevator.goToL2A().repeatedly(), s_Algae.extend(), s_Algae.intake())).onFalse((s_Algae.home()));
+        joystick.povRight().whileTrue(Commands.parallel(s_Elevator.goToL3A().repeatedly(), s_Algae.extend(), s_Algae.intake())).onFalse((s_Algae.home()));
         joystick.rightStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
        // joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
         zeroController.a().onTrue(s_Climber.reZero());

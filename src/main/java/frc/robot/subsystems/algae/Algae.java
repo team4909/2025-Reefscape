@@ -59,7 +59,7 @@ public class Algae extends SubsystemBase {
     return this.runOnce(() -> m_io.setPivotVoltage(-1)).withName("Move Down");
   }
 
-  public Command down() {
+  public Command home() {
     // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
     return this.runOnce(() -> {
       m_io.gotosetpoint(DownPosition, m_gearRatio);
