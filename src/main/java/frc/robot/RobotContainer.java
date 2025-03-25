@@ -291,7 +291,9 @@ public class RobotContainer {
         
 
         // joystick.y().whileTrue(new ConditionalCommand(goToClimbStartPose, goToClimbEndPose, ()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, startPose)));                 
-        joystick.y().whileTrue(new ConditionalCommand(goToClimbStartPose,new ConditionalCommand(goToClimbEndPose,goToClimbMidPose,()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, endPose)), ()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, startPose)));                 
+        joystick.y().whileTrue(new ConditionalCommand(goToClimbStartPose,
+                new ConditionalCommand(goToClimbEndPose, goToClimbMidPose,()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, endPose))
+                , ()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, startPose ) && !poseEqualsPoseWithDelta(drivetrain.getState().Pose, endPose )));                 
         
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
