@@ -283,7 +283,7 @@ public class RobotContainer {
         var goToClimbStartPose = new DriveToFieldPose(drivetrain,startPose, joystick,3);
 
         var endPose = new Pose2d(8.9, 5.026, Rotation2d.fromDegrees(-90));
-        var goToClimbEndPose = new DriveToFieldPose(drivetrain,endPose, joystick,1.5);
+        var goToClimbEndPose = new DriveToFieldPose(drivetrain,endPose, joystick,.5);
 
         var ClimbMidPose = new Pose2d(8.640, 5.026, Rotation2d.fromDegrees(-90));
         var goToClimbMidPose = new DriveToFieldPose(drivetrain,ClimbMidPose, joystick,3);
