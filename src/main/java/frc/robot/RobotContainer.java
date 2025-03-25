@@ -223,7 +223,7 @@ public class RobotContainer {
         joystick.a().whileTrue(s_Climber.lower()).onFalse(s_Climber.stop());
         joystick.leftStick().onTrue(s_Climber.winchedPosition());
 
-        joystick.b().onTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
+        //joystick.b().onTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
         joystick.leftBumper().onTrue(s_Elevator.goToL2()).onFalse(s_Elevator.goToL1());
         joystick.rightBumper().onTrue(s_Elevator.goToL3()).onFalse(s_Elevator.goToL1());
         joystick.leftTrigger().onTrue(s_Elevator.goToL4()).onFalse(s_Elevator.goToL1());
