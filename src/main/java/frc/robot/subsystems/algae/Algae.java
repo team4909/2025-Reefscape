@@ -23,7 +23,8 @@ public class Algae extends SubsystemBase {
   private final AlgaeIO m_io;
   private final AlgaeIOInputsAutoLogged m_inputs = new AlgaeIOInputsAutoLogged();
   private final double DownPosition = 0;
-  private final double ExtendedPosition = 12;// 32.5
+  private final double ExtendedPosition = 9;
+  ;// 32.5
   private Timer m_StallTimer;
   // inch to rotations of the motor
   final double m_gearRatio = 1d;
