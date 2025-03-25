@@ -233,7 +233,7 @@ public class RobotContainer {
 
         // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
         //joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
-        joystick.povLeft().whileTrue(Commands.sequence(s_Elevator.goToL2A_wait().repeatedly(),Commands.sequence(s_Algae.extend(), s_Algae.intake()))).onFalse((s_Algae.home()));
+        joystick.povLeft().whileTrue(Commands.sequence(s_Elevator.goToL2A_wait(), s_Elevator.goToL2A().repeatedly(), s_Algae.extend(), s_Algae.intake())).onFalse((s_Algae.home()));
         joystick.povRight().whileTrue(Commands.sequence(s_Elevator.goToL3A_wait().repeatedly(),Commands.sequence(s_Algae.extend(), s_Algae.intake()))).onFalse((s_Algae.home()));
         joystick.rightStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
        // joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
@@ -278,7 +278,7 @@ public class RobotContainer {
 
         joystick.povDown().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
                 new Transform2d(Units.inchesToMeters(-33.5/2+0.75), Units.inchesToMeters(9)
-                , new Rotation2d()), joystick))).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0)));
+                , new Rotation2d(-90)), joystick))).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0)));
 
         // joystick.y().whileTrue(new DriveToFieldPose(drivetrain,
         //         new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90)), joystick));
