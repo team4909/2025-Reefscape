@@ -139,7 +139,7 @@ public class Elevator extends SubsystemBase {
   public Command goToL2A_wait() {
     // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
     return this.run(() -> {
-      m_io.gotosetpoint(L2Setpoint, ElevatorIOTalonFX.m_gearRatio);
+      m_io.gotosetpoint(L2ASetpoint, ElevatorIOTalonFX.m_gearRatio);
     }).withName("L2AWait").until(() -> {
       return Math.abs(L2ASetpoint - m_inputs.heightInch) < 0.1;
     });
@@ -148,7 +148,7 @@ public class Elevator extends SubsystemBase {
   public Command goToL3A_wait() {
     // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
     return this.run(() -> {
-      m_io.gotosetpoint(L3Setpoint, ElevatorIOTalonFX.m_gearRatio);
+      m_io.gotosetpoint(L3ASetpoint, ElevatorIOTalonFX.m_gearRatio);
     }).withName("L3AWait").until(() -> {
       return Math.abs(L3ASetpoint - m_inputs.heightInch) < 0.1;
     });
