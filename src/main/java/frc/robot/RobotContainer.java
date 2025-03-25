@@ -228,7 +228,7 @@ public class RobotContainer {
         joystick.rightBumper().onTrue(s_Elevator.goToL3()).onFalse(s_Elevator.goToL1());
         joystick.leftTrigger().onTrue(s_Elevator.goToL4()).onFalse(s_Elevator.goToL1());
         joystick.povUp().onTrue(s_Climber.climbPosition());
-        joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
+        //joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
         zeroController.x().onTrue(s_Elevator.reZero());
 
         // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
@@ -275,6 +275,9 @@ public class RobotContainer {
 
         joystick.x().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
                 new Transform2d(Units.inchesToMeters(-33.5/2+0.75), Units.inchesToMeters(13.5+2.25), new Rotation2d()), joystick),s_Shooter.shoot())).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0)).andThen(s_Shooter.stop()));
+
+        joystick.povDown().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
+                new Transform2d(Units.inchesToMeters(-33.5/2+0.75), Units.inchesToMeters(0), new Rotation2d()), joystick),s_Shooter.shoot())).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0)).andThen(s_Shooter.stop()));
 
         // joystick.y().whileTrue(new DriveToFieldPose(drivetrain,
         //         new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90)), joystick));
