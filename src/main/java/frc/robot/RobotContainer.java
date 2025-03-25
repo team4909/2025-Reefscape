@@ -281,11 +281,17 @@ public class RobotContainer {
 
         var startPose = new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90));
         var goToClimbStartPose = new DriveToFieldPose(drivetrain,startPose, joystick);
-        var goToClimbEndPose = new DriveToFieldPose(drivetrain,new Pose2d(8.9, 5.026, Rotation2d.fromDegrees(-90)), joystick);
+
+        var endPose = new Pose2d(8.9, 5.026, Rotation2d.fromDegrees(-90));
+        var goToClimbEndPose = new DriveToFieldPose(drivetrain,endPose, joystick);
+
+        var ClimbMidPose = new Pose2d(8.640, 5.026, Rotation2d.fromDegrees(-90));
+        var goToClimbMidPose = new DriveToFieldPose(drivetrain,ClimbMidPose, joystick);
 
         
 
-        joystick.y().whileTrue(new ConditionalCommand(goToClimbStartPose, goToClimbEndPose, ()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, startPose)));                 
+        // joystick.y().whileTrue(new ConditionalCommand(goToClimbStartPose, goToClimbEndPose, ()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, startPose)));                 
+        joystick.y().whileTrue(new ConditionalCommand(goToClimbStartPose,new ConditionalCommand(goToClimbEndPose,goToClimbMidPose,()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, endPose)), ()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, startPose)));                 
         
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
