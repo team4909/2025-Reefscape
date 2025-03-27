@@ -295,7 +295,7 @@ public class RobotContainer {
         
 
         // joystick.y().whileTrue(new ConditionalCommand(goToClimbStartPose, goToClimbEndPose, ()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, startPose)));                 
-        joystick.y().whileTrue(new AutoClimbCommand(joystick, drivetrain));                 
+        joystick.y().whileTrue(new AutoClimbCommand(joystick,drivetrain));                 
         
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
@@ -322,10 +322,10 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
-    public boolean poseEqualsPoseWithDelta(Pose2d a, Pose2d b) {
-        return a.getTranslation().getDistance(b.getTranslation()) < Units.inchesToMeters(2)
-                && (a.getRotation().getDegrees() - b.getRotation().getDegrees() < 5);
-    }
+//     public boolean poseEqualsPoseWithDelta(Pose2d a, Pose2d b) {
+//         return a.getTranslation().getDistance(b.getTranslation()) < Units.inchesToMeters(2)
+//                 && (a.getRotation().getDegrees() - b.getRotation().getDegrees() < 5);
+//     }
 
     public Command getAutonomousCommand() {
         // return new PathPlannerAuto("cut");

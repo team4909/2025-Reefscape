@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -50,7 +51,9 @@ public class AutoClimbCommand extends Command {
     return redPose;
   }
 
-  public Command firstCommand;
+  public Command driveCommand;
+
+
   private CommandXboxController m_js;
   private CommandSwerveDrivetrain m_drivetrain;
 
@@ -58,6 +61,11 @@ public class AutoClimbCommand extends Command {
     m_js = js;
     m_drivetrain = drivetrain;
   }
+
+  public boolean poseEqualsPoseWithDelta(Pose2d a, Pose2d b) {
+        return a.getTranslation().getDistance(b.getTranslation()) < Units.inchesToMeters(2)
+                && (a.getRotation().getDegrees() - b.getRotation().getDegrees() < 5);
+    }
 
 
   // Called when the command is initially scheduled.
@@ -67,34 +75,50 @@ public class AutoClimbCommand extends Command {
     System.out.println("isBlue " + isBlueAlliance());
 
     Pose2d startPose;
+    Pose2d farPose;
+    Pose2d climbPose;
     if (isBlueAlliance()) {
-      // System.out.println("blueStartPose " + blueStartPose);
       startPose = blueStartPose;
+      farPose = blueFarPose;
+      climbPose = blueClimbPose;
     } else {
-      // System.out.println("redStartPose " + rotatePoseAboutFieldCenter(blueStartPose));
       startPose = rotatePoseAboutFieldCenter(blueStartPose);
+      farPose = rotatePoseAboutFieldCenter(blueFarPose);
+      climbPose = rotatePoseAboutFieldCenter(blueClimbPose);
     }
 
-    firstCommand = new DriveToFieldPose(m_drivetrain, startPose, m_js, 3);
+    Command startPoseCommand = new DriveToFieldPose(m_drivetrain, startPose, m_js, 3);
+    Command farPoseCommand = new DriveToFieldPose(m_drivetrain, farPose, m_js, .5);
+    Command climbPoseCommand = new DriveToFieldPose(m_drivetrain, climbPose, m_js, 3);
+
+    if (!poseEqualsPoseWithDelta(m_drivetrain.getState().Pose, startPose ) && !poseEqualsPoseWithDelta(m_drivetrain.getState().Pose, climbPose )) {
+      driveCommand = startPoseCommand;
+    } else if(!poseEqualsPoseWithDelta(m_drivetrain.getState().Pose, startPose)) {
+      driveCommand = farPoseCommand;
+    } else {
+      driveCommand = climbPoseCommand;
+    }
+
+
     // new ConditionalCommand(goToClimbStartPose,
     // new ConditionalCommand(goToClimbEndPose, goToClimbMidPose,()->
     // !poseEqualsPoseWithDelta(drivetrain.getState().Pose, endPose))
     // , ()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, startPose ) &&
-    // !poseEqualsPoseWithDelta(drivetrain.getState().Pose, endPose ))
-    firstCommand.initialize();
+    //  ))
+    startPoseCommand.initialize();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    firstCommand.execute();
+    startPoseCommand.execute();
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    firstCommand.end(interrupted);
+    startPoseCommand.end(interrupted);
   }
 
   // Returns true when the command should end.
