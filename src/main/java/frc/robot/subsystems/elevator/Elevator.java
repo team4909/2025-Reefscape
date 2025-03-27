@@ -24,6 +24,7 @@ public class Elevator extends SubsystemBase {
   private final double L2Setpoint = 36;
   private final double L3Setpoint = 52;
   private final double L4Setpoint = 77;
+  private final double L4AutoSetpoint = 77.4;
 
   private final double L2ASetpoint = 48.5+3+1;
   private final double L3ASetpoint = 66.5+1.5;
@@ -89,7 +90,7 @@ public class Elevator extends SubsystemBase {
     // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
     return this.run(() -> {
       SmartDashboard.putString("L4Wait", "Start");
-      m_io.gotosetpointWithSlot(L4Setpoint, ElevatorIOTalonFX.m_gearRatio,2);
+      m_io.gotosetpointWithSlot(L4AutoSetpoint, ElevatorIOTalonFX.m_gearRatio,2);
     }).withName("L4").until(() -> {
       // SmartDashboard.putNumber("Elevator/l4wait", Math.abs(L4Setpoint - m_inputs.elevatorHeightInch) );
       // SmartDashboard.putNumber("Elevator/actual", m_inputs.elevatorHeightInch);
