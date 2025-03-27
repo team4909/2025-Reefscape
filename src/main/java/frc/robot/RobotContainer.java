@@ -186,24 +186,7 @@ public class RobotContainer {
         //     s_Shooter.setDefaultRunToCurrentSpike();
         // }
     }
-    public boolean isBlueAlliance() {
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Blue;
-        }
-        return false;
-    }
-
-    public static Pose2d fieldCenter = new Pose2d(VisionConstants.aprilTagLayout.getFieldLength()/2, VisionConstants.aprilTagLayout.getFieldWidth()/2, Rotation2d.fromDegrees(0));
-    public static Pose2d rotatePoseAboutFieldCenter(Pose2d pose) {
-        Translation2d relativeTranslation = pose.getTranslation().minus(fieldCenter.getTranslation());
-        Rotation2d relativeRotation = pose.getRotation().minus(fieldCenter.getRotation());
-
-        Translation2d rotatedTranslation = relativeTranslation.rotateBy(fieldCenter.getRotation());
-        Rotation2d rotatedRotation = relativeRotation.rotateBy(fieldCenter.getRotation());
-
-        return new Pose2d(rotatedTranslation.plus(fieldCenter.getTranslation()), rotatedRotation.plus(fieldCenter.getRotation()));
-    }
+    
 
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
@@ -307,24 +290,12 @@ public class RobotContainer {
         //         new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90)), joystick));
 
         
-        var blueStartPose = new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90));
-        var startPose = !isBlueAlliance() ? blueStartPose
-        : rotatePoseAboutFieldCenter(blueStartPose);
         
-        var goToClimbStartPose = new DriveToFieldPose(drivetrain,startPose, joystick, 3);
-
-        var endPose = new Pose2d(8.9, 5.026, Rotation2d.fromDegrees(-90));
-        var goToClimbEndPose = new DriveToFieldPose(drivetrain,endPose, joystick, .5);
-
-        var ClimbMidPose = new Pose2d(8.2,5.026, Rotation2d.fromDegrees(-90));
-        var goToClimbMidPose = new DriveToFieldPose(drivetrain,ClimbMidPose, joystick, 3);
 
         
 
         // joystick.y().whileTrue(new ConditionalCommand(goToClimbStartPose, goToClimbEndPose, ()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, startPose)));                 
-        joystick.y().whileTrue(new ConditionalCommand(goToClimbStartPose,
-                new ConditionalCommand(goToClimbEndPose, goToClimbMidPose,()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, endPose))
-                , ()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, startPose ) && !poseEqualsPoseWithDelta(drivetrain.getState().Pose, endPose )));                 
+        joystick.y().whileTrue(new AutoClimbCommand());                 
         
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
