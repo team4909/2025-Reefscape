@@ -40,14 +40,25 @@ public class AutoClimbCommand extends Command {
       VisionConstants.aprilTagLayout.getFieldWidth() / 2, Rotation2d.fromDegrees(0));
 
   public static Pose2d rotatePoseAboutFieldCenter(Pose2d pose) {
-    Translation2d relativeTranslation = pose.getTranslation().minus(fieldCenter.getTranslation());
-    Rotation2d relativeRotation = pose.getRotation().minus(fieldCenter.getRotation());
 
-    Translation2d rotatedTranslation = relativeTranslation.rotateBy(fieldCenter.getRotation());
-    Rotation2d rotatedRotation = relativeRotation.rotateBy(fieldCenter.getRotation());
+    var fieldCentricBluePose = pose.relativeTo(fieldCenter);
+    var fieldCentriclRedPose = fieldCentricBluePose.rotateBy(Rotation2d.fromDegrees(180));
+    var redPose = fieldCentriclRedPose.relativeTo(new Pose2d(-VisionConstants.aprilTagLayout.getFieldLength() / 2,
+        -VisionConstants.aprilTagLayout.getFieldWidth() / 2, Rotation2d.fromDegrees(0)));
+    return redPose;
 
-    return new Pose2d(rotatedTranslation.plus(fieldCenter.getTranslation()),
-        rotatedRotation.plus(fieldCenter.getRotation()));
+    // Translation2d relativeTranslation =
+    // pose.getTranslation().minus(fieldCenter.getTranslation());
+    // Rotation2d relativeRotation =
+    // pose.getRotation().minus(fieldCenter.getRotation());
+
+    // Translation2d rotatedTranslation =
+    // relativeTranslation.rotateBy(fieldCenter.getRotation());
+    // Rotation2d rotatedRotation =
+    // relativeRotation.rotateBy(fieldCenter.getRotation());
+
+    // return new Pose2d(rotatedTranslation.plus(fieldCenter.getTranslation()),
+    // rotatedRotation.plus(fieldCenter.getRotation()));
   }
 
   public AutoClimbCommand() {
@@ -58,12 +69,12 @@ public class AutoClimbCommand extends Command {
   @Override
   public void initialize() {
 
-    System.out.println("isBlue "+ isBlueAlliance());
+    System.out.println("isBlue " + isBlueAlliance());
 
     if (isBlueAlliance()) {
-    System.out.println("blueStartPose "+ blueStartPose);
+      System.out.println("blueStartPose " + blueStartPose);
     } else {
-      System.out.println("redStartPose "+rotatePoseAboutFieldCenter(blueStartPose));
+      System.out.println("redStartPose " + rotatePoseAboutFieldCenter(blueStartPose));
     }
 
     // new ConditionalCommand(goToClimbStartPose,
