@@ -9,7 +9,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Vision.VisionConstants;
+import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.DriveToFieldPose;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -46,24 +48,17 @@ public class AutoClimbCommand extends Command {
     var redPose = fieldCentriclRedPose.relativeTo(new Pose2d(-VisionConstants.aprilTagLayout.getFieldLength() / 2,
         -VisionConstants.aprilTagLayout.getFieldWidth() / 2, Rotation2d.fromDegrees(0)));
     return redPose;
-
-    // Translation2d relativeTranslation =
-    // pose.getTranslation().minus(fieldCenter.getTranslation());
-    // Rotation2d relativeRotation =
-    // pose.getRotation().minus(fieldCenter.getRotation());
-
-    // Translation2d rotatedTranslation =
-    // relativeTranslation.rotateBy(fieldCenter.getRotation());
-    // Rotation2d rotatedRotation =
-    // relativeRotation.rotateBy(fieldCenter.getRotation());
-
-    // return new Pose2d(rotatedTranslation.plus(fieldCenter.getTranslation()),
-    // rotatedRotation.plus(fieldCenter.getRotation()));
   }
 
-  public AutoClimbCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public Command firstCommand;
+  private CommandXboxController m_js;
+  private CommandSwerveDrivetrain m_drivetrain;
+
+  public AutoClimbCommand(CommandXboxController js, CommandSwerveDrivetrain drivetrain) {
+    m_js = js;
+    m_drivetrain = drivetrain;
   }
+
 
   // Called when the command is initially scheduled.
   @Override
@@ -71,28 +66,35 @@ public class AutoClimbCommand extends Command {
 
     System.out.println("isBlue " + isBlueAlliance());
 
+    Pose2d startPose;
     if (isBlueAlliance()) {
-      System.out.println("blueStartPose " + blueStartPose);
+      // System.out.println("blueStartPose " + blueStartPose);
+      startPose = blueStartPose;
     } else {
-      System.out.println("redStartPose " + rotatePoseAboutFieldCenter(blueStartPose));
+      // System.out.println("redStartPose " + rotatePoseAboutFieldCenter(blueStartPose));
+      startPose = rotatePoseAboutFieldCenter(blueStartPose);
     }
 
+    firstCommand = new DriveToFieldPose(m_drivetrain, startPose, m_js, 3);
     // new ConditionalCommand(goToClimbStartPose,
     // new ConditionalCommand(goToClimbEndPose, goToClimbMidPose,()->
     // !poseEqualsPoseWithDelta(drivetrain.getState().Pose, endPose))
     // , ()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, startPose ) &&
     // !poseEqualsPoseWithDelta(drivetrain.getState().Pose, endPose ))
+    firstCommand.initialize();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    firstCommand.execute();
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    firstCommand.end(interrupted);
   }
 
   // Returns true when the command should end.
