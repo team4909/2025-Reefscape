@@ -86,7 +86,7 @@ public class RobotContainer {
     private final SendableChooser<Command> m_chooser;
     private final Shooter s_Shooter;
     private final Elevator s_Elevator;
-  private final Climber s_Climber;
+    private final Climber s_Climber;
     private final Vision m_vision;
     private final Algae s_Algae;
     public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
@@ -295,7 +295,7 @@ public class RobotContainer {
         
 
         // joystick.y().whileTrue(new ConditionalCommand(goToClimbStartPose, goToClimbEndPose, ()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, startPose)));                 
-        joystick.y().whileTrue(new AutoClimbCommand());                 
+        joystick.y().whileTrue(new AutoClimbCommand(joystick, drivetrain));                 
         
         // joystick.x().whileTrue(new DriveToPose( new Pose2d(
         // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
