@@ -306,9 +306,9 @@ public class RobotContainer {
         //         new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90)), joystick));
 
         
-
-        var startPose = !isBlueAlliance() ? new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90))
-        : rotatePoseAboutFieldCenter(startPose, new Pose2d(VisionConstants.aprilTagLayout.getFieldLength()/2, VisionConstants.aprilTagLayout.getFieldWidth()/2, null));
+        var blueStartPose = new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90));
+        var startPose = !isBlueAlliance() ? blueStartPose
+        : rotatePoseAboutFieldCenter(blueStartPose, new Pose2d(VisionConstants.aprilTagLayout.getFieldLength()/2, VisionConstants.aprilTagLayout.getFieldWidth()/2, null));
         
         var goToClimbStartPose = new DriveToFieldPose(drivetrain,startPose, joystick, 3);
 
