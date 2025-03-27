@@ -23,6 +23,12 @@
                       "data": {
                         "waitTime": 1.8
                       }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "L4 Wait"
+                      }
                     }
                   ]
                 }
