@@ -42,6 +42,11 @@ deploy {
     }
 }
 
+test {
+    useJUnitPlatform()
+    systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
+}
+
 project.compileJava.dependsOn(createVersionFile)
 gversion {
   srcDir       = "src/main/java/"

@@ -29,6 +29,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Unit;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -46,6 +47,7 @@ import frc.robot.subsystems.drivetrain.DriveToPose;
 import frc.robot.subsystems.drivetrain.ReefBranchAlign;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Vision.Vision;
+import frc.robot.subsystems.Vision.VisionConstants;
 import frc.robot.subsystems.Vision.VisionIOPhotonVision;
 import frc.robot.subsystems.algae.Algae;
 import frc.robot.subsystems.algae.AlgaeIOTalonFX;
@@ -172,6 +174,7 @@ public class RobotContainer {
             System.out.println("Unknown Robot");
             throw new RuntimeException("Unknown Robot Serial Number");
         }
+
     }
 
     public void periodic() {
@@ -182,6 +185,23 @@ public class RobotContainer {
         // if (s_Elevator.isAtL1()) {
         //     s_Shooter.setDefaultRunToCurrentSpike();
         // }
+    }
+    public boolean isBlueAlliance() {
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+            return alliance.get() == DriverStation.Alliance.Blue;
+        }
+        return false;
+    }
+
+    public static Pose2d rotatePoseAboutFieldCenter(Pose2d pose, Pose2d fieldCenter) {
+        Translation2d relativeTranslation = pose.getTranslation().minus(fieldCenter.getTranslation());
+        Rotation2d relativeRotation = pose.getRotation().minus(fieldCenter.getRotation());
+
+        Translation2d rotatedTranslation = relativeTranslation.rotateBy(fieldCenter.getRotation());
+        Rotation2d rotatedRotation = relativeRotation.rotateBy(fieldCenter.getRotation());
+
+        return new Pose2d(rotatedTranslation.plus(fieldCenter.getTranslation()), rotatedRotation.plus(fieldCenter.getRotation()));
     }
 
     private void configureBindings() {
@@ -285,15 +305,19 @@ public class RobotContainer {
         // joystick.y().whileTrue(new DriveToFieldPose(drivetrain,
         //         new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90)), joystick));
 
+        
+
         var startPose = new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90));
-        var goToClimbStartPose = new DriveToFieldPose(drivetrain,startPose, joystick,3);
+        if (!isBlueAlliance()) {
+                startPose = rotatePoseAboutFieldCenter(startPose, new Pose2d(VisionConstants.aprilTagLayout.getFieldLength()/2, VisionConstants.aprilTagLayout.getFieldWidth()/2, null));
+        }
+        var goToClimbStartPose = new DriveToFieldPose(drivetrain,startPose, joystick, 3);
 
         var endPose = new Pose2d(8.9, 5.026, Rotation2d.fromDegrees(-90));
-        var goToClimbEndPose = new DriveToFieldPose(drivetrain,endPose, joystick,
-        .5);
+        var goToClimbEndPose = new DriveToFieldPose(drivetrain,endPose, joystick, .5);
 
         var ClimbMidPose = new Pose2d(8.2,5.026, Rotation2d.fromDegrees(-90));
-        var goToClimbMidPose = new DriveToFieldPose(drivetrain,ClimbMidPose, joystick,3);
+        var goToClimbMidPose = new DriveToFieldPose(drivetrain,ClimbMidPose, joystick, 3);
 
         
 

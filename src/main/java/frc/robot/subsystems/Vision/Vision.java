@@ -58,6 +58,8 @@ public class Vision extends SubsystemBase {
               "Vision camera " + Integer.toString(i) + " is disconnected.", AlertType.kWarning);
     }
 
+    
+
     // List<Pose2d> alignPositions = FieldConstants.Reef.AlignPositions;
     // for(int i = 0; i<alignPositions.size(); i++){
     //   Logger.recordOutput("AlignPoses", alignPositions.get(i));
