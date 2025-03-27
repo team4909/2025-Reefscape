@@ -89,7 +89,7 @@ public class AutoClimbCommand extends Command {
 
     Command startPoseCommand = new DriveToFieldPose(m_drivetrain, startPose, m_js, 3);
     Command farPoseCommand = new DriveToFieldPose(m_drivetrain, farPose, m_js, .5);
-    Command climbPoseCommand = new DriveToFieldPose(m_drivetrain, climbPose, m_js, 3);
+    Command climbPoseCommand = new DriveToFieldPose(m_drivetrain, climbPose, m_js, 1.5);
 
     if (!poseEqualsPoseWithDelta(m_drivetrain.getState().Pose, startPose ) && !poseEqualsPoseWithDelta(m_drivetrain.getState().Pose, climbPose )) {
       driveCommand = startPoseCommand;
