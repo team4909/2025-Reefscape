@@ -90,12 +90,12 @@ public class Elevator extends SubsystemBase {
     // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
     return this.run(() -> {
       SmartDashboard.putString("L4Wait", "Start");
-      m_io.gotosetpointWithSlot(L4AutoSetpoint, ElevatorIOTalonFX.m_gearRatio,2);
+      m_io.gotosetpointWithSlot(L4Setpoint, ElevatorIOTalonFX.m_gearRatio,2);
     }).withName("L4").until(() -> {
       // SmartDashboard.putNumber("Elevator/l4wait", Math.abs(L4Setpoint - m_inputs.elevatorHeightInch) );
       // SmartDashboard.putNumber("Elevator/actual", m_inputs.elevatorHeightInch);
       // SmartDashboard.putNumber("Elevator/target", L4Setpoint);
-      return Math.abs(L4Setpoint - m_inputs.heightInch) <= 0.3;
+      return Math.abs(L4Setpoint - m_inputs.heightInch) <= 0.1;
     }).andThen(()-> SmartDashboard.putString("L4Wait", "End"));
   }
 
