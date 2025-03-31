@@ -38,7 +38,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -240,6 +242,10 @@ public class RobotContainer {
         joystick.povLeft().whileTrue(Commands.sequence(s_Elevator.goToL2A_wait(), Commands.parallel(s_Elevator.goToL2A().repeatedly(), Commands.sequence(s_Algae.extend(), s_Algae.intake())))).onFalse((s_Algae.home()));
         joystick.povRight().whileTrue(Commands.sequence(s_Elevator.goToL3A_wait(), Commands.parallel(s_Elevator.goToL3A().repeatedly(), Commands.sequence(s_Algae.extend(), s_Algae.intake())))).onFalse((s_Algae.home()));
         joystick.rightStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
+        joystick.povDown().whileTrue(new ParallelCommandGroup(s_Elevator.goToL1Intake(), s_Algae.shoot())).onFalse(s_Algae.stopShooter());
+        joystick.back().whileTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
+
+
        // joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
         zeroController.a().onTrue(s_Climber.reZero());
         // joystick
@@ -282,9 +288,9 @@ public class RobotContainer {
                  new Rotation2d()), joystick),s_Shooter.shoot())).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0))
                  .andThen(s_Shooter.stop()));
 
-        joystick.povDown().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
-                new Transform2d(Units.inchesToMeters(-33.5/1.5), Units.inchesToMeters(0)
-                , new Rotation2d(1.5700)), joystick))).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0)));
+        // joystick.povDown().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
+        //         new Transform2d(Units.inchesToMeters(-33.5/1.5), Units.inchesToMeters(0)
+        //         , new Rotation2d(1.5700)), joystick))).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0)));
 
         // joystick.y().whileTrue(new DriveToFieldPose(drivetrain,
         //         new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90)), joystick));
