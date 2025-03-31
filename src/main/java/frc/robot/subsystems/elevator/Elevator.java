@@ -24,7 +24,7 @@ public class Elevator extends SubsystemBase {
   private final double L2Setpoint = 36;
   private final double L3Setpoint = 52;
   private final double L4Setpoint = 77;
-  
+
   private final double L1Intake = 48.5+3+1;
   private final double L1Shoot = 48.5+3+1;
 
@@ -90,13 +90,13 @@ public class Elevator extends SubsystemBase {
   }
 
   public Command goToL1Intake() {
-    return this.runOnce(() -> {
+    return this.run(() -> {
       m_io.gotosetpoint(L1Intake, ElevatorIOTalonFX.m_gearRatio);
     }).withName("L1Intake");
   }
 
   public Command goToL1Shoot() {
-    return this.runOnce(() -> {
+    return this.run(() -> {
       m_io.gotosetpoint(L1Shoot, ElevatorIOTalonFX.m_gearRatio);
     }).withName("L1Shoot");
   }
