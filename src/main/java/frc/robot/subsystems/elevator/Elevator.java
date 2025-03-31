@@ -90,13 +90,13 @@ public class Elevator extends SubsystemBase {
   }
 
   public Command goToL1Intake() {
-    return this.run(() -> {
+    return this.runOnce(() -> {
       m_io.gotosetpoint(L1Intake, ElevatorIOTalonFX.m_gearRatio);
     }).withName("L1Intake");
   }
 
   public Command goToL1Shoot() {
-    return this.run(() -> {
+    return this.runOnce(() -> {
       m_io.gotosetpoint(L1Shoot, ElevatorIOTalonFX.m_gearRatio);
     }).withName("L1Shoot");
   }
