@@ -80,7 +80,7 @@ public class Algae extends SubsystemBase {
 
   public Command intakeL1(){
     return this.runOnce(()->{
-      m_io.gotosetpoint(5, m_gearRatio);
+      m_io.gotosetpoint(3, m_gearRatio);
     }).withName("IntakeL1");
   }
 
