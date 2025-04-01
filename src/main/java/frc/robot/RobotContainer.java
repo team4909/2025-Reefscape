@@ -227,7 +227,8 @@ public class RobotContainer {
 
 
         joystick.a().whileTrue(s_Climber.lower()).onFalse(s_Climber.stop());
-        joystick.leftStick().onTrue(s_Climber.winchedPosition());
+        
+
 
         //joystick.b().onTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
         joystick.leftBumper().whileTrue(s_Elevator.goToL2().repeatedly());//.onFalse(s_Elevator.goToL1());
@@ -242,8 +243,8 @@ public class RobotContainer {
         joystick.povLeft().whileTrue(Commands.sequence(s_Elevator.goToL2A_wait(), Commands.parallel(s_Elevator.goToL2A().repeatedly(), Commands.sequence(s_Algae.extend(), s_Algae.intake())))).onFalse((s_Algae.home()));
         joystick.povRight().whileTrue(Commands.sequence(s_Elevator.goToL3A_wait(), Commands.parallel(s_Elevator.goToL3A().repeatedly(), Commands.sequence(s_Algae.extend(), s_Algae.intake())))).onFalse((s_Algae.home()));
         joystick.rightStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
-        joystick.povDown().whileTrue(s_Elevator.goToL1Intake().repeatedly().alongWith(s_Algae.extend().andThen(s_Algae.shoot()))).onFalse(s_Algae.holdCoral().alongWith(s_Elevator.goToL2().repeatedly()));
-        joystick.back().whileTrue(s_Algae.intake().andThen(s_Elevator.goToL2().repeatedly())).onFalse(s_Algae.home().andThen(s_Algae.stopShooter().andThen(new WaitCommand(5).alongWith(s_Elevator.goToL2().repeatedly()))).andThen(s_Elevator.goToL1().repeatedly()));
+        joystick.back().whileTrue(s_Elevator.goToL1Intake().repeatedly().alongWith(s_Algae.extend().andThen(s_Algae.shoot()))).onFalse(s_Algae.holdCoral().alongWith(s_Elevator.goToL2().repeatedly()));
+        joystick.leftStick().whileTrue(s_Algae.intake().andThen(s_Elevator.goToL2().repeatedly())).onFalse(s_Algae.home().andThen(s_Algae.stopShooter().andThen(new WaitCommand(5).alongWith(s_Elevator.goToL2().repeatedly()))).andThen(s_Elevator.goToL1().repeatedly()));
 
 
        // joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
