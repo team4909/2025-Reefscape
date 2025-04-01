@@ -56,6 +56,10 @@ public class Algae extends SubsystemBase {
     return this.runOnce(() -> m_io.setPivotVoltage(0)).withName("Stop");
   }
 
+  public Command holdCoral() {
+    return this.run(() -> m_io.setShootVoltage(-4));
+  }
+
   public Command moveDown() {
     return this.runOnce(() -> m_io.setPivotVoltage(-1)).withName("Move Down");
   }
