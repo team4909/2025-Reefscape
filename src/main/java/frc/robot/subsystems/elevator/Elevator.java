@@ -26,7 +26,7 @@ public class Elevator extends SubsystemBase {
   private final double L4Setpoint = 77;
 
   private final double L1Intake = 42;
-  private final double L1Shoot = 48.5+3+1;
+  private final double L1Shoot = 40;
 
 
   private final double L2ASetpoint = 48.5+3+1;
