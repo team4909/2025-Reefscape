@@ -244,7 +244,7 @@ public class RobotContainer {
         joystick.povRight().whileTrue(Commands.sequence(s_Elevator.goToL3A_wait(), Commands.parallel(s_Elevator.goToL3A().repeatedly(), Commands.sequence(s_Algae.extend(), s_Algae.intake())))).onFalse((s_Algae.home()));
         joystick.rightStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
         joystick.back().whileTrue(s_Elevator.goToL1Intake().repeatedly().alongWith(s_Algae.intakeL1().andThen(s_Algae.shoot()))).onFalse(s_Algae.holdCoral().alongWith(s_Elevator.goToL1Shoot().repeatedly()));
-        joystick.leftStick().whileTrue(s_Algae.stopShooter().andThen(s_Elevator.goToL1Shoot().repeatedly())).onFalse(s_Algae.home().andThen(s_Algae.stopShooter().andThen(new WaitCommand(5).alongWith(s_Elevator.goToL1()))));
+        joystick.leftStick().whileTrue(s_Algae.intake().andThen(s_Elevator.goToL1Shoot().repeatedly())).onFalse(s_Algae.home().andThen(s_Algae.stopShooter().andThen(new WaitCommand(5).alongWith(s_Elevator.goToL1()))));
 
        // joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
         zeroController.a().onTrue(s_Climber.reZero());
