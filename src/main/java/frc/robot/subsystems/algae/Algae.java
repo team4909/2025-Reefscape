@@ -88,6 +88,12 @@ public class Algae extends SubsystemBase {
     }).withName("IntakeL1");
   }
 
+  public Command shootL1low(){
+    return this.runOnce(()->{
+      m_io.gotosetpoint(4, m_gearRatio);
+    }).withName("IntakeL1");
+  }
+
   public Command reZero() {
     return this.runOnce(() -> {
       m_io.setPosition(DownPosition * m_gearRatio);
