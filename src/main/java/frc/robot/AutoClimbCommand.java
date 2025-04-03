@@ -18,7 +18,7 @@ import frc.robot.subsystems.drivetrain.DriveToFieldPose;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class AutoClimbCommand extends Command {
 
-  private Pose2d blueStartPose = new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90));
+  private Pose2d blueStartPose = new Pose2d(7.495, 5.326, Rotation2d.fromDegrees(-90));
   private Pose2d blueFarPose = new Pose2d(8.9, 5.026, Rotation2d.fromDegrees(-90));
   private Pose2d blueClimbPose = new Pose2d(8.2, 5.026, Rotation2d.fromDegrees(-90));
 

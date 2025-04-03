@@ -120,9 +120,9 @@ public class RobotContainer {
         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),
         () -> -joystick.getLeftY()));
 
-        NamedCommands.registerCommand("autoalign right", new ReefBranchAlign(drivetrain,
-        new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),
-        () -> -joystick.getLeftY()));
+        NamedCommands.registerCommand("autoalign right", Commands.parallel(
+        new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-33.5/2+0.75), Units.inchesToMeters(0.5+2.25), new Rotation2d()), joystick), 
+        s_Shooter.shoot()));
 
         m_chooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", m_chooser);
