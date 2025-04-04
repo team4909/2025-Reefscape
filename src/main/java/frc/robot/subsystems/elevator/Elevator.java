@@ -21,8 +21,8 @@ public class Elevator extends SubsystemBase {
   private final ElevatorIO m_io;
   // GSD setpoints
   private final double L1Setpoint = 29; //29.48;
-  private final double L2Setpoint = 36;
-  private final double L3Setpoint = 52;
+  private final double L2Setpoint = 36.2;
+  private final double L3Setpoint = 52.2;
   private final double L4Setpoint = 77;
   private final double DCMPL4Setpoint = 76;
 
