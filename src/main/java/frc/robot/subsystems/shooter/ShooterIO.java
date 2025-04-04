@@ -14,4 +14,6 @@ public interface ShooterIO {
   public default void setSpeed(double speed) {}
 
   public default void setBrakeMode(boolean enableBrakeMode) {}
+
+  public abstract void updateInputs(ShooterIOInputsAutoLogged m_inputs);
 }
