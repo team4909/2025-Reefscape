@@ -278,7 +278,7 @@ public class RobotContainer {
         //         ))).onFalse(s_Shooter.stop());
 
         joystick.b().whileTrue(Commands.parallel(
-                new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-33.5/2+0.75-4), Units.inchesToMeters(0.5+2.25), new Rotation2d()), joystick), 
+                new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-33.5/2+0.75), Units.inchesToMeters(0.5+2.25+4), new Rotation2d()), joystick), 
                 s_Shooter.shoot()))
                 .onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0)).andThen(s_Shooter.stop()));
 
