@@ -81,7 +81,7 @@ public class DriveToFieldPose extends Command {
 
         double distanceToGoalPose = currentPose.getTranslation().getDistance(m_goalPose.getTranslation());
 
-        if (distanceToGoalPose < Units.inchesToMeters(1)) {
+        if (distanceToGoalPose < Units.inchesToMeters(2)) {
             m_controller.setRumble(RumbleType.kBothRumble, 1);
         }
 
