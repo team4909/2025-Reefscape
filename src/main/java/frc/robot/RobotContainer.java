@@ -148,7 +148,7 @@ public class RobotContainer {
                             new Rotation3d(
                                     Units.degreesToRadians(0.0),
                                     Units.degreesToRadians(-25.414),
-                                    Units.degreesToRadians(-50)))));
+                                    Units.degreesToRadians(-50+1)))));
         } 
         else if (HALUtil.getSerialNumber().equals(TunerConstants.RobotV2)) {
             m_vision = new Vision(drivetrain::addVisionMeasurement,
