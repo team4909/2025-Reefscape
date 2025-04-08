@@ -116,6 +116,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("L2 Algae", Commands.sequence(s_Elevator.goToL2A_wait(), Commands.parallel(s_Elevator.goToL2A().repeatedly(), Commands.sequence(s_Algae.extend(), s_Algae.intake()))).withTimeout(1));
         NamedCommands.registerCommand("Algae Stow", Commands.sequence(s_Algae.home(), s_Elevator.goToL1()).withTimeout(.1));
         NamedCommands.registerCommand("Algae Shoot", s_Algae.shoot().withTimeout(1));
+        NamedCommands.registerCommand("Algae Stop", s_Algae.stopShooter().withTimeout(0.1));
         NamedCommands.registerCommand("autoalign left", new ReefBranchAlign(drivetrain,
         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),
         () -> -joystick.getLeftY()));
