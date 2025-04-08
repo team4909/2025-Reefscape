@@ -3,25 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.602996575342465,
+        "x": 6.456167763157894,
         "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.656378424657535,
-        "y": 4.030051369863014
+        "x": 5.949903517616355,
+        "y": 3.9960980739805776
+      },
+      "isLocked": false,
+      "linkedName": "far algae pull back"
+    },
+    {
+      "anchor": {
+        "x": 6.037836841044576,
+        "y": 3.9989994135388756
+      },
+      "prevControl": {
+        "x": 5.787972811870634,
+        "y": 3.9907552080002353
+      },
+      "nextControl": {
+        "x": 6.287700870218518,
+        "y": 4.007243619077515
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.785,
+        "x": 5.773026315789473,
         "y": 4.0
       },
       "prevControl": {
-        "x": 7.45285102739726,
-        "y": 3.9874357876712327
+        "x": 6.074596698853391,
+        "y": 4.001233695456424
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +49,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.5,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -41,14 +57,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": 180.0
+    "velocity": 0,
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "taxi and L4 far paths",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -90.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
