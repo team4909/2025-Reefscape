@@ -115,6 +115,24 @@
           "data": {
             "pathName": "far algae pick up"
           }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "far algae shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Algae Shoot"
+          }
         }
       ]
     }
