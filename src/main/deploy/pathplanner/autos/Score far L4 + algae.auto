@@ -131,6 +131,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Algae Stow"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Algae Shoot"
           }
         }
