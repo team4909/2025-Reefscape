@@ -125,13 +125,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "far algae shoot"
+            "pathName": "far algae stow"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Algae Stow"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "far algae shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Algae Shoot"
           }
         }
       ]
