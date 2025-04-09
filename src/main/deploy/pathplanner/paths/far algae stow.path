@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.299177595582656,
-        "y": 4.113305657359174
+        "x": 6.074249999999999,
+        "y": 3.9762499999999994
       },
       "isLocked": false,
       "linkedName": "far algae pick up"
@@ -20,15 +20,20 @@
         "y": 4.0
       },
       "prevControl": {
-        "x": 6.0763202418102065,
-        "y": 4.110922181479636
+        "x": 6.168208927439771,
+        "y": 3.9473909956644335
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "far algae stow"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.37925311203319695,
+      "rotationDegrees": -90.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -36,13 +41,13 @@
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0,
+    "maxAngularAcceleration": 320.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -0.5003406140599106
+    "rotation": 1.4451205084387118
   },
   "reversed": false,
   "folder": null,
@@ -50,5 +55,5 @@
     "velocity": 0,
     "rotation": -90.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
