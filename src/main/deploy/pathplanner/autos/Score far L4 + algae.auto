@@ -123,9 +123,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "sequential",
           "data": {
-            "pathName": "far algae stow"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Algae Hold"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "far algae stow"
+                }
+              }
+            ]
           }
         },
         {
