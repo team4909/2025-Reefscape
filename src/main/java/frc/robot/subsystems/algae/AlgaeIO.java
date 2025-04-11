@@ -21,6 +21,8 @@ public interface AlgaeIO {
 
     public default void gotosetpoint(double setpoint, double gearRatio) {}
 
+    public default void gotosetpointslow(double setpoint, double gearRatio, double voltage) {}
+
     public default void setPosition(double position) {}
 
 	public void updateInputs(AlgaeIOInputs m_inputs);
