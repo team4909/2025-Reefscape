@@ -79,7 +79,7 @@ public class Algae extends SubsystemBase {
   public Command groundIntakeHome() {
     // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
     return this.runOnce(() -> {
-      m_io.gotosetpointslow(DownPosition, m_gearRatio, -1d);
+      m_io.gotosetpointslow(DownPosition, m_gearRatio, -0.1);
     }).withName("Down");
   }
 
