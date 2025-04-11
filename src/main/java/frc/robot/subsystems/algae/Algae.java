@@ -24,6 +24,7 @@ public class Algae extends SubsystemBase {
   private final AlgaeIOInputsAutoLogged m_inputs = new AlgaeIOInputsAutoLogged();
   private final double DownPosition = 0;
   private final double ExtendedPosition = 9;
+  private final double GroundIntake = 15;
   ;// 32.5
   private Timer m_StallTimer;
   // inch to rotations of the motor
@@ -80,6 +81,12 @@ public class Algae extends SubsystemBase {
     return this.runOnce(() -> {
       m_io.gotosetpoint(ExtendedPosition, m_gearRatio);
     }).withName("Extend");
+  }
+
+  public Command groundIntake() {
+    return this.runOnce(() -> {
+      m_io.gotosetpoint(GroundIntake, m_gearRatio);
+    }).withName("Ground Intake");
   }
 
   public Command intakeL1(){
