@@ -33,7 +33,7 @@ public class Elevator extends SubsystemBase {
   private final double L2ASetpoint = 48.5+3+1;
   private final double L3ASetpoint = 66.5+1.5;
 
-  private final double GroundIntakeSetpoint = 33.2;
+  private final double GroundIntakeSetpoint = 34.2;
 
   CANBus canBus = new CANBus("CANivore2");
 
