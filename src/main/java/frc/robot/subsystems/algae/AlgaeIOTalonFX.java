@@ -71,8 +71,9 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
         double rotations = setpoint * gearRatio;
         m_rotations = rotations;
         final VoltageOut request = new VoltageOut(0);
-        m_pivotMotor.setControl(m_request.withPosition(rotations));
         m_pivotMotor.setControl(request.withOutput(voltage));
+        m_pivotMotor.setControl(m_request.withPosition(rotations));
+        
     }
 
     public void setPosition(double position) {
