@@ -33,6 +33,8 @@ public class Elevator extends SubsystemBase {
   private final double L2ASetpoint = 48.5+3+1;
   private final double L3ASetpoint = 66.5+1.5;
 
+  private final double GroundIntakeSetpoint = 33.2;
+
   CANBus canBus = new CANBus("CANivore2");
 
   // private final double L1Setpoint = 29;
@@ -143,6 +145,26 @@ public class Elevator extends SubsystemBase {
     }).withName("L3Wait").until(() -> {
       return Math.abs(L3Setpoint - m_inputs.heightInch) < 0.1;
     }).andThen(()-> SmartDashboard.putString("L3Wait", "End"));
+  }
+
+  public Command GroundIntake() {
+    // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
+    return this.runOnce(() -> {
+      m_io.gotosetpoint(GroundIntakeSetpoint, ElevatorIOTalonFX.m_gearRatio);
+    }).withName("GroundIntake");
+  }
+
+  public Command GroundIntake_Wait() {
+    // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
+    return this.run(() -> {
+      SmartDashboard.putString("GroundIntake", "Start");
+      m_io.gotosetpoint(GroundIntakeSetpoint, ElevatorIOTalonFX.m_gearRatio);
+    }).withName("GroundIntake").until(() -> {
+      // SmartDashboard.putNumber("Elevator/l4wait", Math.abs(L4Setpoint - m_inputs.elevatorHeightInch) );
+      // SmartDashboard.putNumber("Elevator/actual", m_inputs.elevatorHeightInch);
+      // SmartDashboard.putNumber("Elevator/target", L4Setpoint);
+      return Math.abs(GroundIntakeSetpoint - m_inputs.heightInch) < 0.1;
+    }).andThen(()-> SmartDashboard.putString("GroundIntake", "End"));
   }
 
 
