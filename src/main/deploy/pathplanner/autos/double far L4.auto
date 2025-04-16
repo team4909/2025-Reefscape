@@ -74,13 +74,19 @@
           }
         },
         {
-          "type": "race",
+          "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
                   "pathName": "dash to S"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L1"
                 }
               }
             ]
