@@ -99,9 +99,35 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "S to L4 far"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "S to L4 far"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "feed"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "stop shooter"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
