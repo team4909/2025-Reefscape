@@ -188,6 +188,13 @@ public class RobotContainer {
         //     s_Shooter.setDefaultRunToCurrentSpike();
         // }
     }
+
+    public void stopDrive() {
+        drivetrain.applyRequest(() -> drive
+                .withVelocityX(-joystick.getLeftX() * SlowSpeed)
+                .withVelocityY(-joystick.getLeftY() * SlowSpeed)
+                .withRotationalRate(-joystick.getRightX() * SlowAngularRate));
+    }
     
 
     private void configureBindings() {
@@ -282,9 +289,11 @@ public class RobotContainer {
 
         // positive moves right for second param of translation
         joystick.b().whileTrue(Commands.parallel(
-                new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-33.5/2+0.25), Units.inchesToMeters(0.5+2.25-.5), new Rotation2d()), joystick), 
-                s_Shooter.shoot()))
-                .onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0)).andThen(s_Shooter.stop()));
+                        new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-33.5/2+0.25), Units.inchesToMeters(0.5+2.25-.5), new Rotation2d()), joystick), 
+                        s_Shooter.shoot()
+                ))
+                .onFalse(new InstantCommand(()-> {stopDrive(); joystick.setRumble(RumbleType.kBothRumble, 0);})
+                        .andThen(s_Shooter.stop()));
 
         joystick.x().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
                 new Transform2d(Units.inchesToMeters(-33.5/2+0.25), Units.inchesToMeters(13.5+2.25),
