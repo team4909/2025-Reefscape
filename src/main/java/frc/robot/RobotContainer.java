@@ -244,7 +244,7 @@ public class RobotContainer {
                 s_Shooter.shoot(), 
                 s_Shooter.slowShoot(), 
                 () -> s_Elevator.isAtL4()
-        )).onFalse(Commands.parallel(Commands.sequence(new WaitCommand(.25), driveWithJoystick()), s_Shooter.stop()));
+        )).onFalse(Commands.parallel(Commands.sequence(new WaitCommand(.25), ), s_Shooter.stop()));
     
 
         // joystick.y().whileTrue(s_Shooter.slowShoot()).onFalse(s_Shooter.stop());
@@ -307,7 +307,7 @@ public class RobotContainer {
         // auto align right
         // positive moves right for second param of translation
         joystick.b().whileTrue(Commands.parallel(
-                        new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-33.5/2+0.25), Units.inchesToMeters(0.5+2.25-.5), new Rotation2d()), joystick), 
+                        new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-33.5/2+0.25), Units.inchesToMeters(0.5+2.25), new Rotation2d()), joystick), 
                         s_Shooter.shoot()
                 ))
                 .onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0))
