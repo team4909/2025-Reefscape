@@ -190,10 +190,11 @@ public class RobotContainer {
     }
 
     public void stopDrive() {
+        // drivetrain.setControl(new );
         drivetrain.applyRequest(() -> drive
-                .withVelocityX(-joystick.getLeftX() * SlowSpeed)
-                .withVelocityY(-joystick.getLeftY() * SlowSpeed)
-                .withRotationalRate(-joystick.getRightX() * SlowAngularRate));
+                .withVelocityX(-joystick.getLeftX() * 0)
+                .withVelocityY(-joystick.getLeftY() * 0)
+                .withRotationalRate(-joystick.getRightX() * 0));
     }
     
 
