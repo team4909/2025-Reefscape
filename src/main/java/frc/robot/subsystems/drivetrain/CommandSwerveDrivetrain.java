@@ -1,35 +1,32 @@
 package frc.robot.subsystems.drivetrain;
 
-import static edu.wpi.first.units.Units.*;
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Volts;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Supplier;
+
+import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
-import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.pathplanner.lib.util.GeometryUtil;
-
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -38,17 +35,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.FieldConstants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Supplier;
-
-import javax.sound.sampled.SourceDataLine;
-
-import org.littletonrobotics.junction.Logger;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
@@ -440,6 +427,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                                 m_hasAppliedOperatorPerspective = true;
                             });
         }
+        var currentCmd = this.getCurrentCommand();
+        Logger.recordOutput("Drivetrain/command", currentCmd != null ? currentCmd.getName() : "null");
     }
 
     private void startSimThread() {

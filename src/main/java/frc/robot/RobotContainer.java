@@ -99,8 +99,8 @@ public class RobotContainer {
         s_Shooter = new Shooter(new ShooterIOTalonFX());
         s_Elevator = new Elevator(new ElevatorIOTalonFX());
         s_Algae = new Algae(new AlgaeIOTalonFX());
-    s_Climber = new Climber(new ClimberIOTalonFX());
-    
+        s_Climber = new Climber(new ClimberIOTalonFX());
+
         // Auto Named Commands
         NamedCommands.registerCommand("score", s_Shooter.shoot().withTimeout(.5));
         NamedCommands.registerCommand("feed", s_Shooter.shoot().withTimeout(1.5));
