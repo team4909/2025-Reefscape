@@ -199,6 +199,19 @@ public class RobotContainer {
         //         .withVelocityY(-joystick.getLeftY() * 0)
         //         .withRotationalRate(-joystick.getRightX() * 0));
     }
+
+    private Command driveWithJoystick() {
+        return drivetrain.applyRequest(
+                () -> drive
+                        .withVelocityX(
+                                -joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                        .withVelocityY(
+                                -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                        .withRotationalRate(
+                                -joystick.getRightX()
+                                        * MaxAngularRate) // Drive counterclockwise with negative X (left)
+        );
+    }
     
 
     private void configureBindings() {
@@ -231,7 +244,7 @@ public class RobotContainer {
                 s_Shooter.shoot(), 
                 s_Shooter.slowShoot(), 
                 () -> s_Elevator.isAtL4()
-        )).onFalse(s_Shooter.stop().andThen(new InstantCommand(() -> stopDrive(), drivetrain)));
+        )).onFalse(Commands.parallel(driveWithJoystick(), s_Shooter.stop())));
     
 
         // joystick.y().whileTrue(s_Shooter.slowShoot()).onFalse(s_Shooter.stop());
