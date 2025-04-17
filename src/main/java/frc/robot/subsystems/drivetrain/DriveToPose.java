@@ -161,8 +161,10 @@ public class DriveToPose extends Command {
                     roboSpeed.omegaRadiansPerSecond);
     }
 
-    // @Override
-    // public void end(boolean interrupted) {
-    //     joystick.setRumble(RumbleType.kBothRumble, 0)
-    // }
+    @Override
+    public void end(boolean interrupted) {
+        System.out.println("Interrupted end" + interrupted);
+        m_drivetrain.setControl(m_drive.withSpeeds(new ChassisSpeeds(0,0,0)));
+        // joystick.setRumble(RumbleType.kBothRumble, 0)
+    }
 }

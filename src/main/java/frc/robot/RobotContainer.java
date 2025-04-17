@@ -190,6 +190,7 @@ public class RobotContainer {
     }
 
     public void stopDrive() {
+        drivetrain.setControl(brake);
         drivetrain.applyRequest(() -> drive
                 .withVelocityX(-joystick.getLeftX() * SlowSpeed)
                 .withVelocityY(-joystick.getLeftY() * SlowSpeed)
@@ -253,7 +254,7 @@ public class RobotContainer {
         joystick.rightStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
         //joystick.back().whileTrue(s_Elevator.goToL1Intake().repeatedly().alongWith(s_Algae.intakeL1().andThen(s_Algae.shoot()))).onFalse(s_Algae.holdCoral().alongWith(s_Elevator.goToL1Shoot().repeatedly()));
         joystick.leftStick().whileTrue(s_Algae.shootL1low().andThen(s_Algae.slowShoot().andThen(s_Elevator.goToL1Shoot().repeatedly()))).onFalse(s_Algae.home().andThen(s_Algae.stopShooter().andThen(new WaitCommand(5).alongWith(s_Elevator.goToL1()))));
-        joystick.back().whileTrue(s_Elevator.goToDCMPL4().repeatedly());
+        //joystick.back().whileTrue(s_Elevator.goToDCMPL4().repeatedly());
        // joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
         zeroController.a().onTrue(s_Climber.reZero());
         // joystick
@@ -294,6 +295,7 @@ public class RobotContainer {
                 ))
                 .onFalse(new InstantCommand(()-> {stopDrive(); joystick.setRumble(RumbleType.kBothRumble, 0);})
                         .andThen(s_Shooter.stop()));
+        joystick.back().onTrue(new InstantCommand(()-> stopDrive(), drivetrain));
 
         joystick.x().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
                 new Transform2d(Units.inchesToMeters(-33.5/2+0.25), Units.inchesToMeters(13.5+2.25),
