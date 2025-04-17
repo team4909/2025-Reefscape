@@ -37,11 +37,11 @@ public class DriveToPose extends Command {
   Transform2d m_shift;
 
 
-  public DriveToPose(CommandSwerveDrivetrain drivetrain, Transform2d shift, CommandXboxController controller) {
+  public DriveToPose(CommandSwerveDrivetrain drivetrain, Transform2d shift, CommandXboxController controller, double kpTranslation) {
     m_shift = shift;
     m_controller = controller;
     m_translationController =
-        new ProfiledPIDController(8.0, 0.0, 0.0, new TrapezoidProfile.Constraints(3, 4));
+        new ProfiledPIDController(kpTranslation, 0.0, 0.0, new TrapezoidProfile.Constraints(3, 4));
     m_thetaController =
         new ProfiledPIDController(
             4.0, 0.0, 0.0, new TrapezoidProfile.Constraints(100 * Math.PI, 100 * Math.PI));
