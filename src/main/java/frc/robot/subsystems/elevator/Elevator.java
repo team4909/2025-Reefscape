@@ -38,7 +38,6 @@ public class Elevator extends SubsystemBase {
   private final double L2Setpoint = 36;
   private final double L3Setpoint = 52;
   private final double L4Setpoint = 77;
-  private final double L4AutoSetpoint = 77.4;
 
   private final double L2ASetpoint = 48.5+3+1;
   private final double L3ASetpoint = 66.5+1.5;
