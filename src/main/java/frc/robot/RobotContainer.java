@@ -26,6 +26,7 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Unit;
@@ -190,11 +191,13 @@ public class RobotContainer {
     }
 
     public void stopDrive() {
+        SwerveRequest.ApplyFieldSpeeds m_drive = new SwerveRequest.ApplyFieldSpeeds();
+        drivetrain.setControl(m_drive.withSpeeds(new ChassisSpeeds(0,0,0)));
         // drivetrain.setControl(new );
-        drivetrain.applyRequest(() -> drive
-                .withVelocityX(-joystick.getLeftX() * 0)
-                .withVelocityY(-joystick.getLeftY() * 0)
-                .withRotationalRate(-joystick.getRightX() * 0));
+        // drivetrain.applyRequest(() -> drive
+        //         .withVelocityX(-joystick.getLeftX() * 0)
+        //         .withVelocityY(-joystick.getLeftY() * 0)
+        //         .withRotationalRate(-joystick.getRightX() * 0));
     }
     
 
