@@ -190,7 +190,6 @@ public class RobotContainer {
     }
 
     public void stopDrive() {
-        drivetrain.setControl(brake);
         drivetrain.applyRequest(() -> drive
                 .withVelocityX(-joystick.getLeftX() * SlowSpeed)
                 .withVelocityY(-joystick.getLeftY() * SlowSpeed)
