@@ -41,7 +41,7 @@ public class DriveToPose extends Command {
     m_shift = shift;
     m_controller = controller;
     m_translationController =
-        new ProfiledPIDController(6.0, 0.0, 0.0, new TrapezoidProfile.Constraints(3, 4));
+        new ProfiledPIDController(8.0, 0.0, 0.0, new TrapezoidProfile.Constraints(3, 4));
     m_thetaController =
         new ProfiledPIDController(
             4.0, 0.0, 0.0, new TrapezoidProfile.Constraints(100 * Math.PI, 100 * Math.PI));
