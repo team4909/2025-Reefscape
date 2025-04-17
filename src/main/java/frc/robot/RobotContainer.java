@@ -231,7 +231,7 @@ public class RobotContainer {
                 s_Shooter.shoot(), 
                 s_Shooter.slowShoot(), 
                 () -> s_Elevator.isAtL4()
-        )).onFalse(s_Shooter.stop());
+        )).onFalse(s_Shooter.stop().andThen(new InstantCommand(() -> stopDrive(), drivetrain)));
     
 
         // joystick.y().whileTrue(s_Shooter.slowShoot()).onFalse(s_Shooter.stop());
@@ -291,19 +291,23 @@ public class RobotContainer {
         //         ))).onFalse(s_Shooter.stop());
 
 
+        // auto align right
         // positive moves right for second param of translation
         joystick.b().whileTrue(Commands.parallel(
                         new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-33.5/2+0.25), Units.inchesToMeters(0.5+2.25-.5), new Rotation2d()), joystick), 
                         s_Shooter.shoot()
                 ))
-                .onFalse(new InstantCommand(()-> {stopDrive(); joystick.setRumble(RumbleType.kBothRumble, 0);})
-                        .andThen(s_Shooter.stop()));
+                .onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0))
+                 .andThen(s_Shooter.stop().andThen(new RunCommand(() -> stopDrive()))));
+
+        // stop the robot override
         joystick.button(7).whileTrue(new RunCommand(()-> {System.out.println("STOP");stopDrive(); }, drivetrain));
 
+        // auto align left
         joystick.x().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
                 new Transform2d(Units.inchesToMeters(-33.5/2+0.25), Units.inchesToMeters(13.5+2.25),
                  new Rotation2d()), joystick),s_Shooter.shoot())).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0))
-                 .andThen(s_Shooter.stop()));
+                 .andThen(s_Shooter.stop().andThen(new RunCommand(() -> stopDrive()))));
 
         // joystick.povDown().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
         //         new Transform2d(Units.inchesToMeters(-33.5/1.5), Units.inchesToMeters(0)
