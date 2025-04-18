@@ -122,6 +122,9 @@ public class DriveToPose extends Command {
                     new Translation2d(m_translationController.getSetpoint().position, 0.0),
                     new Rotation2d()))
             .getTranslation();
+    var diff = m_goalPose.getTranslation().minus(currentPose.getTranslation());
+    Logger.recordOutput("drivetopose/xerr", Units.metersToInches(diff.getX()));
+    Logger.recordOutput("drivetopose/yerr", Units.metersToInches(diff.getY()));
 
     double thetaVelocity =
         m_thetaController.getSetpoint().velocity * ffScaler
