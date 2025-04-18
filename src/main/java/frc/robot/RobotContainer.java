@@ -240,11 +240,11 @@ public class RobotContainer {
                         .withRotationalRate(
                                 -joystick.getRightX() * SlowAngularRate)));
         
-        joystick.rightTrigger().whileTrue(new ConditionalCommand(
+        joystick.rightTrigger().onTrue(new ConditionalCommand(
                 s_Shooter.shoot(), 
                 s_Shooter.slowShoot(), 
                 () -> s_Elevator.isAtL4()
-        )).onFalse(Commands.parallel(Commands.sequence(new WaitCommand(.5), driveWithJoystick()), s_Shooter.stop()));
+        )).onFalse(Commands.sequence(new WaitCommand(.5), Commands.parallel(driveWithJoystick(), s_Shooter.stop())));
     
 
         // joystick.y().whileTrue(s_Shooter.slowShoot()).onFalse(s_Shooter.stop());
