@@ -215,16 +215,7 @@ public class RobotContainer {
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
-                drivetrain.applyRequest(
-                        () -> drive
-                                .withVelocityX(
-                                        -joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                                .withVelocityY(
-                                        -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                                .withRotationalRate(
-                                        -joystick.getRightX()
-                                                * MaxAngularRate) // Drive counterclockwise with negative X (left)
-                ));
+                driveWithJoystick());
 
         //joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         joystick.rightStick().whileTrue(
@@ -268,9 +259,10 @@ public class RobotContainer {
         zeroController.b().onTrue(s_Algae.reZero());
 
 
-        joystick.rightTrigger().onTrue(
-                s_Shooter.shoot()
-        );
+        // shooter.shoot reneables the drivetrain BB
+        // joystick.rightTrigger().onTrue(
+        //         s_Shooter.shoot()
+        // );
         // .onFalse(Commands.sequence(
         //         new WaitCommand(.5), 
         //         Commands.parallel(
@@ -280,11 +272,11 @@ public class RobotContainer {
         //         )
         // );
 
-        // joystick.rightTrigger().onTrue(new ConditionalCommand(
-        //         s_Shooter.shoot(), 
-        //         s_Shooter.slowShoot(), 
-        //         () -> s_Elevator.isAtL4()
-        // )).onFalse(Commands.sequence(new WaitCommand(.5), Commands.parallel(driveWithJoystick(), s_Shooter.stop())));
+        joystick.rightTrigger().onTrue(new ConditionalCommand(
+                s_Shooter.shoot(), 
+                s_Shooter.slowShoot(), 
+                () -> s_Elevator.isAtL4()
+        )).onFalse(Commands.sequence(new WaitCommand(.5), Commands.parallel(driveWithJoystick(), s_Shooter.stop())));
 
 
 

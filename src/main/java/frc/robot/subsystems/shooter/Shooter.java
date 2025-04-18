@@ -47,15 +47,15 @@ public class Shooter extends SubsystemBase {
     }
   }
 
-  public Command setDefaultDoNotRun() {
-    return this.run(() -> this.setDefaultCommand(this.stop()));
-  }
+  // public Command setDefaultDoNotRun() {
+  //   return this.run(() -> this.setDefaultCommand(this.stop()));
+  // }
 
-  public Command setDefaultRunToCurrentSpike() {
-    return this.run(() -> this.setDefaultCommand(this.runToCurrentSpike())); //@todo
-  }
+  // public Command setDefaultRunToCurrentSpike() {
+  //   return this.run(() -> this.setDefaultCommand(this.runToCurrentSpike())); //@todo
+  // }
 
-  public Command runToCurrentSpike() {
-    return this.run(() -> m_io.setSpeed(0.2)).until(() -> m_inputs.statorCurrent > 15).andThen(this.stop()).withName("RunToCurrentSpike");
-  }
+  // public Command runToCurrentSpike() {
+  //   return this.run(() -> m_io.setSpeed(0.2)).until(() -> m_inputs.statorCurrent > 15).andThen(this.stop()).withName("RunToCurrentSpike");
+  // }
 }
