@@ -193,6 +193,7 @@ public class RobotContainer {
     public void stopDrive() {
         SwerveRequest.ApplyFieldSpeeds m_drive = new SwerveRequest.ApplyFieldSpeeds();
         drivetrain.setControl(m_drive.withSpeeds(new ChassisSpeeds(0,0,0)));
+        System.out.println("STOP DRIVE");
         // drivetrain.setControl(new );
         // drivetrain.applyRequest(() -> drive
         //         .withVelocityX(-joystick.getLeftX() * 0)
@@ -288,20 +289,6 @@ public class RobotContainer {
         //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5), new Rotation2d())));
         zeroController.b().onTrue(s_Algae.reZero());
 
-        // joystick.b().whileTrue(Commands.sequence(
-        //         s_Shooter.setDefaultDoNotRun(), 
-        //         Commands.parallel(
-        //                 new ReefBranchAlign(drivetrain, new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),() -> -joystick.getLeftY()),
-        //                 s_Shooter.shootTrough()
-        //                 )
-        //         )).onFalse(s_Shooter.stop());
-
-        // joystick.x().whileTrue(Commands.sequence(
-        //         s_Shooter.setDefaultDoNotRun(), 
-        //         Commands.parallel(      
-        //                 new ReefBranchAlign(drivetrain, new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),() -> -joystick.getLeftY()),
-        //                 s_Shooter.shootTrough()
-        //         ))).onFalse(s_Shooter.stop());
 
 
         // auto align right
@@ -322,14 +309,7 @@ public class RobotContainer {
                 new Rotation2d()), joystick, 6),s_Shooter.shoot())).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0))
                 .andThen(Commands.parallel(s_Shooter.stop(), new RunCommand(() -> stopDrive(), drivetrain))));
 
-        // joystick.povDown().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
-        //         new Transform2d(Units.inchesToMeters(-33.5/1.5), Units.inchesToMeters(0)
-        //         , new Rotation2d(1.5700)), joystick))).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0)));
-
-        // joystick.y().whileTrue(new DriveToFieldPose(drivetrain,
-        //         new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90)), joystick));
-
-        
+     
         
 
         
