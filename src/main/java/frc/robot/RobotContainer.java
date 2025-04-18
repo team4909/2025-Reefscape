@@ -194,11 +194,6 @@ public class RobotContainer {
         SwerveRequest.ApplyFieldSpeeds m_drive = new SwerveRequest.ApplyFieldSpeeds();
         drivetrain.setControl(m_drive.withSpeeds(new ChassisSpeeds(0,0,0)));
         System.out.println("STOP DRIVE");
-        // drivetrain.setControl(new );
-        // drivetrain.applyRequest(() -> drive
-        //         .withVelocityX(-joystick.getLeftX() * 0)
-        //         .withVelocityY(-joystick.getLeftY() * 0)
-        //         .withRotationalRate(-joystick.getRightX() * 0));
     }
 
     private Command driveWithJoystick() {
@@ -298,7 +293,7 @@ public class RobotContainer {
                         s_Shooter.shoot()
                 ))
                 .onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0))
-                .andThen(Commands.parallel(s_Shooter.stop(), new RunCommand(() -> stopDrive(), drivetrain))));
+                .andThen(Commands.parallel(s_Shooter.stop(), new RunCommand(() -> stopDrive(), drivetrain).repeatedly())));
 
         // stop the robot override
         joystick.button(7).whileTrue(new RunCommand(()-> {System.out.println("STOP");stopDrive(); }, drivetrain));
@@ -307,7 +302,7 @@ public class RobotContainer {
         joystick.x().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
                 new Transform2d(Units.inchesToMeters(-33.5/2+0.75), Units.inchesToMeters(13.5+2.25),
                 new Rotation2d()), joystick, 6),s_Shooter.shoot())).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0))
-                .andThen(Commands.parallel(s_Shooter.stop(), new RunCommand(() -> stopDrive(), drivetrain))));
+                .andThen(Commands.parallel(s_Shooter.stop(), new RunCommand(() -> stopDrive(), drivetrain).repeatedly())));
 
      
         
