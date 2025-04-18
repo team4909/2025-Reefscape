@@ -236,11 +236,7 @@ public class RobotContainer {
                         .withRotationalRate(
                                 -joystick.getRightX() * SlowAngularRate)));
         
-        joystick.rightTrigger().onTrue(new ConditionalCommand(
-                s_Shooter.shoot(), 
-                s_Shooter.slowShoot(), 
-                () -> s_Elevator.isAtL4()
-        )).onFalse(Commands.sequence(new WaitCommand(.5), Commands.parallel(driveWithJoystick(), s_Shooter.stop())));
+        
     
 
         // joystick.y().whileTrue(s_Shooter.slowShoot()).onFalse(s_Shooter.stop());
@@ -269,20 +265,25 @@ public class RobotContainer {
         //joystick.back().whileTrue(s_Elevator.goToDCMPL4().repeatedly());
        // joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
         zeroController.a().onTrue(s_Climber.reZero());
-        // joystick
-
-        // .b()
-        // .whileTrue(
-        // drivetrain.applyRequest(
-        // () ->
-        // point.withModuleDirection(
-        // new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
-
-        // joystick.b().whileTrue(new DriveToPose(drivetrain,
-        //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5), new Rotation2d())));
-        // joystick.x().whileTrue(new DriveToPose(drivetrain,
-        //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5), new Rotation2d())));
         zeroController.b().onTrue(s_Algae.reZero());
+
+
+        joystick.rightTrigger().onTrue(
+                s_Shooter.shoot()
+        ).onFalse(Commands.sequence(
+                new WaitCommand(.5), 
+                Commands.parallel(
+                                        driveWithJoystick(),
+                                        s_Shooter.stop()
+                                )
+                )
+        );
+
+        // joystick.rightTrigger().onTrue(new ConditionalCommand(
+        //         s_Shooter.shoot(), 
+        //         s_Shooter.slowShoot(), 
+        //         () -> s_Elevator.isAtL4()
+        // )).onFalse(Commands.sequence(new WaitCommand(.5), Commands.parallel(driveWithJoystick(), s_Shooter.stop())));
 
 
 
@@ -304,43 +305,17 @@ public class RobotContainer {
                 new Rotation2d()), joystick, 6),s_Shooter.shoot())).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0))
                 .andThen(Commands.parallel(s_Shooter.stop(), new RunCommand(() -> stopDrive(), drivetrain).repeatedly())));
 
-     
-        
-
-        
-
-        // joystick.y().whileTrue(new ConditionalCommand(goToClimbStartPose, goToClimbEndPose, ()-> !poseEqualsPoseWithDelta(drivetrain.getState().Pose, startPose)));                 
+            
         joystick.y().whileTrue(new AutoClimbCommand(joystick,drivetrain));                 
         
-        // joystick.x().whileTrue(new DriveToPose( new Pose2d(
-        // Units.inchesToMeters(144.003)-Units.inchesToMeters(13),
-        // Units.inchesToMeters(158.500),
-        // Rotation2d.fromDegrees(0)), drivetrain));
-
-        // joystick.x().whileTrue(s_Shooter.shootL2()).onFalse(s_Shooter.stop());
-        // joystick.y().whileTrue(s_Shooter.intake()).onFalse(s_Shooter.stop());
-        // joystick.a().whileTrue(s_Shooter.shootTrough()).onFalse(s_Shooter.stop());
-
-        // joystick.povUp().whileTrue(s_Elevator.moveUp()).onFalse(s_Elevator.stop());
-        // joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
-
-        // Run SysId routines when holding back/start and X/Y.
-        // Note that each routine should be run exactly once in a single log.
-        // joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        // joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        // joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-
+        
         // reset the field-centric heading on left bumper press
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
-//     public boolean poseEqualsPoseWithDelta(Pose2d a, Pose2d b) {
-//         return a.getTranslation().getDistance(b.getTranslation()) < Units.inchesToMeters(2)
-//                 && (a.getRotation().getDegrees() - b.getRotation().getDegrees() < 5);
-//     }
+
 
     public Command getAutonomousCommand() {
         // return new PathPlannerAuto("cut");
