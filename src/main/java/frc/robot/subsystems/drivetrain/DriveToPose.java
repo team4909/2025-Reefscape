@@ -100,7 +100,7 @@ public class DriveToPose extends Command {
         }
 
     double ffScaler = MathUtil.clamp((distanceToGoalPose - 0.2) / (0.8 - 0.2), 0.0, 1.0);
-    Logger.recordOutput("drivetopose", m_translationController.getPositionError());
+    Logger.recordOutput("drivetopose", Units.metersToInches(m_translationController.getPositionError()));
 
     m_translationController.reset(
         m_lastSetpointTranslation.getDistance(m_goalPose.getTranslation()),
