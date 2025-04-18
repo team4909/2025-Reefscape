@@ -269,7 +269,7 @@ public class RobotContainer {
 
 
         joystick.rightTrigger().onTrue(
-                new WaitCommand(1)
+                s_Shooter.shoot()
         );
         // .onFalse(Commands.sequence(
         //         new WaitCommand(.5), 
