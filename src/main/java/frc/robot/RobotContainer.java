@@ -269,15 +269,16 @@ public class RobotContainer {
 
 
         joystick.rightTrigger().onTrue(
-                s_Shooter.shoot()
-        ).onFalse(Commands.sequence(
-                new WaitCommand(.5), 
-                Commands.parallel(
-                                        driveWithJoystick(),
-                                        s_Shooter.stop()
-                                )
-                )
+                new WaitCommand(1)
         );
+        // .onFalse(Commands.sequence(
+        //         new WaitCommand(.5), 
+        //         Commands.parallel(
+        //                                 driveWithJoystick(),
+        //                                 s_Shooter.stop()
+        //                         )
+        //         )
+        // );
 
         // joystick.rightTrigger().onTrue(new ConditionalCommand(
         //         s_Shooter.shoot(), 
