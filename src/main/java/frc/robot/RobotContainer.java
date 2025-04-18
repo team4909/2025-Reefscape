@@ -307,7 +307,7 @@ public class RobotContainer {
         // auto align right
         // positive moves right for second param of translation
         joystick.b().whileTrue(Commands.parallel(
-                        new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-33.5/2-1.5), Units.inchesToMeters(0.5+2.25+.25), Rotation2d.fromDegrees(0)), joystick, 8), 
+                        new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-33.5/2-1.5), Units.inchesToMeters(0.5+2.25+.25), Rotation2d.fromDegrees(-5)), joystick, 8), 
                         s_Shooter.shoot()
                 ))
                 .onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0))
