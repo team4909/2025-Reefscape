@@ -5,8 +5,6 @@ import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import frc.robot.subsystems.elevator.ElevatorIOInputsAutoLogged;
-
 public class ShooterIOTalonFX implements ShooterIO {
 
   private final TalonFX m_shootermotor;

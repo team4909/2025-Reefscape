@@ -4,60 +4,43 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.*;
-
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.fasterxml.jackson.databind.util.Named;
+import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.hal.HALUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.Unit;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.subsystems.drivetrain.DriveToPose;
-import frc.robot.subsystems.drivetrain.ReefBranchAlign;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Climber.Climber;
+import frc.robot.subsystems.Climber.ClimberIOTalonFX;
 import frc.robot.subsystems.Vision.Vision;
-import frc.robot.subsystems.Vision.VisionConstants;
 import frc.robot.subsystems.Vision.VisionIOPhotonVision;
 import frc.robot.subsystems.algae.Algae;
 import frc.robot.subsystems.algae.AlgaeIOTalonFX;
-import frc.robot.subsystems.Climber.Climber;
-import frc.robot.subsystems.Climber.ClimberIOTalonFX;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
-import frc.robot.subsystems.drivetrain.DriveToFieldPose;
+import frc.robot.subsystems.drivetrain.DriveToPose;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
@@ -181,23 +164,11 @@ public class RobotContainer {
     }
 
     public void periodic() {
-        // System.out.println("Elevator Command"+s_Elevator.getCurrentCommand());
-
-
-        // check if elevator is at L1, if so run the command that looks for current spike running intake
-        // if (s_Elevator.isAtL1()) {
-        //     s_Shooter.setDefaultRunToCurrentSpike();
-        // }
     }
 
     public void stopDrive() {
         SwerveRequest.ApplyFieldSpeeds m_drive = new SwerveRequest.ApplyFieldSpeeds();
         drivetrain.setControl(m_drive.withSpeeds(new ChassisSpeeds(0,0,0)));
-        // drivetrain.setControl(new );
-        // drivetrain.applyRequest(() -> drive
-        //         .withVelocityX(-joystick.getLeftX() * 0)
-        //         .withVelocityY(-joystick.getLeftY() * 0)
-        //         .withRotationalRate(-joystick.getRightX() * 0));
     }
 
     private Command driveWithJoystick() {
@@ -217,20 +188,8 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        drivetrain.setDefaultCommand(
-                // Drivetrain will execute this command periodically
-                drivetrain.applyRequest(
-                        () -> drive
-                                .withVelocityX(
-                                        -joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                                .withVelocityY(
-                                        -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                                .withRotationalRate(
-                                        -joystick.getRightX()
-                                                * MaxAngularRate) // Drive counterclockwise with negative X (left)
-                ));
+        drivetrain.setDefaultCommand(driveWithJoystick());
 
-        //joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         joystick.rightStick().whileTrue(
                 drivetrain.applyRequest(() -> drive
                         .withVelocityX(
@@ -239,20 +198,10 @@ public class RobotContainer {
                                 -joystick.getLeftY() * SlowSpeed)
                         .withRotationalRate(
                                 -joystick.getRightX() * SlowAngularRate)));
-        
-        joystick.rightTrigger().whileTrue(new ConditionalCommand(
-                s_Shooter.shoot(), 
-                s_Shooter.slowShoot(), 
-                () -> s_Elevator.isAtL4()
-        )).onFalse(Commands.parallel(driveWithJoystick(), s_Shooter.stop()));
-    
 
-        // joystick.y().whileTrue(s_Shooter.slowShoot()).onFalse(s_Shooter.stop());
 
 
         joystick.a().whileTrue(s_Climber.lower()).onFalse(s_Climber.stop());
-        
-
 
         //joystick.b().onTrue(s_Elevator.goToL1()).onFalse(s_Elevator.stop());
         joystick.leftBumper().whileTrue(s_Elevator.goToL2().repeatedly());//.onFalse(s_Elevator.goToL1());
@@ -263,46 +212,16 @@ public class RobotContainer {
         //joystick.povDown().whileTrue(s_Elevator.moveDown()).onFalse(s_Elevator.stop());
         zeroController.x().onTrue(s_Elevator.reZero());
 
-        // joystick.x().onTrue(s_Elevator.goToL3A()).onFalse(s_Elevator.goToL1());
-        //joystick.a().onTrue(s_Elevator.goToL2A()).onFalse(s_Elevator.goToL1());
         joystick.povLeft().whileTrue(Commands.sequence(s_Elevator.goToL2A_wait(), Commands.parallel(s_Elevator.goToL2A().repeatedly(), Commands.sequence(s_Algae.extend(), s_Algae.intake())))).onFalse((s_Algae.home()));
         joystick.povRight().whileTrue(Commands.sequence(s_Elevator.goToL3A_wait(), Commands.parallel(s_Elevator.goToL3A().repeatedly(), Commands.sequence(s_Algae.extend(), s_Algae.intake())))).onFalse((s_Algae.home()));
         joystick.rightStick().onTrue(s_Algae.shoot()).onFalse(s_Algae.stopShooter());
         //joystick.back().whileTrue(s_Elevator.goToL1Intake().repeatedly().alongWith(s_Algae.intakeL1().andThen(s_Algae.shoot()))).onFalse(s_Algae.holdCoral().alongWith(s_Elevator.goToL1Shoot().repeatedly()));
         joystick.leftStick().whileTrue(s_Algae.shootL1low().andThen(s_Algae.slowShoot().andThen(s_Elevator.goToL1Shoot().repeatedly()))).onFalse(s_Algae.home().andThen(s_Algae.stopShooter().andThen(new WaitCommand(5).alongWith(s_Elevator.goToL1()))));
-        //joystick.back().whileTrue(s_Elevator.goToDCMPL4().repeatedly());
-       // joystick.leftStick().onTrue(s_Algae.intake()).onFalse(s_Algae.stopShooter());
+
         zeroController.a().onTrue(s_Climber.reZero());
-        // joystick
 
-        // .b()
-        // .whileTrue(
-        // drivetrain.applyRequest(
-        // () ->
-        // point.withModuleDirection(
-        // new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-        // joystick.b().whileTrue(new DriveToPose(drivetrain,
-        //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5), new Rotation2d())));
-        // joystick.x().whileTrue(new DriveToPose(drivetrain,
-        //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5), new Rotation2d())));
         zeroController.b().onTrue(s_Algae.reZero());
-
-        // joystick.b().whileTrue(Commands.sequence(
-        //         s_Shooter.setDefaultDoNotRun(), 
-        //         Commands.parallel(
-        //                 new ReefBranchAlign(drivetrain, new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),() -> -joystick.getLeftY()),
-        //                 s_Shooter.shootTrough()
-        //                 )
-        //         )).onFalse(s_Shooter.stop());
-
-        // joystick.x().whileTrue(Commands.sequence(
-        //         s_Shooter.setDefaultDoNotRun(), 
-        //         Commands.parallel(      
-        //                 new ReefBranchAlign(drivetrain, new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(13.5+2.25), new Rotation2d()),() -> -joystick.getLeftY()),
-        //                 s_Shooter.shootTrough()
-        //         ))).onFalse(s_Shooter.stop());
-
 
         // auto align right
         // positive moves right for second param of translation
@@ -322,12 +241,16 @@ public class RobotContainer {
                 new Rotation2d()), joystick),s_Shooter.shoot())).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0))
                 .andThen(Commands.parallel(s_Shooter.stop(), new RunCommand(() -> stopDrive(), drivetrain))));
 
-        // joystick.povDown().whileTrue(Commands.parallel(new DriveToPose(drivetrain,
-        //         new Transform2d(Units.inchesToMeters(-33.5/1.5), Units.inchesToMeters(0)
-        //         , new Rotation2d(1.5700)), joystick))).onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0)));
+       
+        joystick.rightTrigger()
+                .whileTrue(s_Shooter.shoot());
+                //.onFalse(Commands.sequence(new WaitCommand(2), Commands.parallel(driveWithJoystick(), s_Shooter.stop())));
 
-        // joystick.y().whileTrue(new DriveToFieldPose(drivetrain,
-        //         new Pose2d(7.495, 5.026, Rotation2d.fromDegrees(-90)), joystick));
+        // joystick.rightTrigger().whileTrue(new ConditionalCommand(
+        //         s_Shooter.shoot(), 
+        //         s_Shooter.slowShoot(), 
+        //         () -> s_Elevator.isAtL4()
+        // )).onFalse(Commands.sequence(new WaitCommand(2), Commands.parallel(driveWithJoystick(), s_Shooter.stop())));
 
         
         
