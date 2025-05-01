@@ -476,4 +476,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
         super.resetPose(pose);
     }
+
+    @Override
+    public void simulationPeriodic() {
+        /* Assume 20ms update rate, get battery voltage from WPILib */
+        updateSimState(0.020, RobotController.getBatteryVoltage());
+    }
 }
