@@ -80,7 +80,7 @@ public class RobotContainer {
 	private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 	private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
-	private final Telemetry logger = new Telemetry(MaxSpeed);
+	private final DrivetrainTelemetry drivetrainTelemetry = new DrivetrainTelemetry();
 
 	private final CommandXboxController joystick = new CommandXboxController(0);
 	private final CommandXboxController zeroController = new CommandXboxController(1);
@@ -415,7 +415,7 @@ public class RobotContainer {
 		// reset the field-centric heading on left bumper press
 		joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-		drivetrain.registerTelemetry(logger::telemeterize);
+		drivetrain.registerTelemetry(drivetrainTelemetry::telemeterize);
 	}
 
 	// public boolean poseEqualsPoseWithDelta(Pose2d a, Pose2d b) {
