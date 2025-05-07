@@ -9,6 +9,8 @@ import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -232,21 +234,21 @@ public class TunerConstants {
 		Angle kBackRightEncoderOffset;
 
 		if (HALUtil.getSerialNumber().equals(RobotV3)) {
-			System.out.println("Robot 1");
+			Logger.recordOutput("robot", "1");
 			kFrontLeftEncoderOffset = kFrontLeftEncoderOffsetRobot1;
 			kFrontRightEncoderOffset = kFrontRightEncoderOffsetRobot1;
 			kBackLeftEncoderOffset = kBackLeftEncoderOffsetRobot1;
 			kBackRightEncoderOffset = kBackRightEncoderOffsetRobot1;
 
 		} else if (HALUtil.getSerialNumber().equals(RobotV2)) {
-			System.out.println("Robot 2");
+			Logger.recordOutput("robot", "2");
 			kBackLeftEncoderOffset = kBackLeftEncoderOffsetRobot2;
 			kBackRightEncoderOffset = kBackRightEncoderOffsetRobot2;
 			kFrontLeftEncoderOffset = kFrontLeftEncoderOffsetRobot2;
 			kFrontRightEncoderOffset = kFrontRightEncoderOffsetRobot2;
 
 		} else if (HALUtil.getSerialNumber().equals("")) {
-			System.out.println("SIM Robot");
+			Logger.recordOutput("robot", "sim");
 			kFrontLeftEncoderOffset = kFrontLeftEncoderOffsetRobot1;
 			kFrontRightEncoderOffset = kFrontRightEncoderOffsetRobot1;
 			kBackLeftEncoderOffset = kBackLeftEncoderOffsetRobot1;
@@ -278,8 +280,6 @@ public class TunerConstants {
 						kBackRightSteerMotorId, kBackRightDriveMotorId, kBackRightEncoderId, kBackRightEncoderOffset,
 						kBackRightXPos, kBackRightYPos, kInvertRightSide, kBackRightSteerMotorInverted,
 						kBackRightEncoderInverted);
-
-		System.out.println(HALUtil.getSerialNumber());
 
 		return new CommandSwerveDrivetrain(
 				DrivetrainConstants, FrontLeft, FrontRight, BackLeft, BackRight);

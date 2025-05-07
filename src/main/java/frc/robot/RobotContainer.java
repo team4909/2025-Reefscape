@@ -80,7 +80,6 @@ public class RobotContainer {
 		NamedCommands.registerCommand("L3", s_Elevator.goToL3());
 		NamedCommands.registerCommand("L2", s_Elevator.goToL2());
 		NamedCommands.registerCommand("L1", s_Elevator.goToL1());
-		NamedCommands.registerCommand("test", s_Elevator.testPrint());
 		NamedCommands.registerCommand("L4 Wait", s_Elevator.L4_Wait());
 		NamedCommands.registerCommand("L2 Wait", s_Elevator.L2_Wait());
 		NamedCommands.registerCommand("L3 Wait", s_Elevator.L3_Wait());
@@ -299,7 +298,7 @@ public class RobotContainer {
 
 		// stop the robot override
 		driveController.button(7).whileTrue(new RunCommand(() -> {
-			System.out.println("STOP");
+
 			stopDrive();
 		}, s_drivetrain));
 

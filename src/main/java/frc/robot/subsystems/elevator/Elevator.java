@@ -175,12 +175,6 @@ public class Elevator extends SubsystemBase {
 		}).withName("ReZero");
 	}
 
-	public Command testPrint() {
-		return this.runOnce(() -> {
-			System.out.println("Test");
-		}).withName("Test");
-	}
-
 	@Override
 	public void periodic() {
 		super.periodic();

@@ -59,9 +59,6 @@ public class AutoClimbCommand extends Command {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-
-		System.out.println("isBlue " + isBlueAlliance());
-
 		Pose2d startPose;
 		Pose2d farPose;
 		Pose2d climbPose;
