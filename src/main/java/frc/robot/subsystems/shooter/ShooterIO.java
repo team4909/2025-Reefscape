@@ -4,16 +4,18 @@ import org.littletonrobotics.junction.AutoLog;
 
 public interface ShooterIO {
 
-  @AutoLog
-  public static class ShooterIOInputs {
-    public double speed = 0.0;
-    public double statorCurrent = 0.0;
-    public double supplyCurrent = 0.0;
-  }
+	@AutoLog
+	public static class ShooterIOInputs {
+		public double speed = 0.0;
+		public double statorCurrent = 0.0;
+		public double supplyCurrent = 0.0;
+	}
 
-  public default void setSpeed(double speed) {}
+	public default void setSpeed(double speed) {
+	}
 
-  public default void setBrakeMode(boolean enableBrakeMode) {}
+	public default void setBrakeMode(boolean enableBrakeMode) {
+	}
 
-  public abstract void updateInputs(ShooterIOInputsAutoLogged m_inputs);
+	public abstract void updateInputs(ShooterIOInputsAutoLogged m_inputs);
 }

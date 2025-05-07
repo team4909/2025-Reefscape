@@ -1,5 +1,7 @@
 package frc.robot.subsystems.elevator;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
@@ -12,155 +14,141 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO{
-    
-    
+public class ElevatorIOTalonFX extends SubsystemBase implements ElevatorIO {
 
-    private final TalonFX m_front_follow;
-    private final TalonFX m_back;
-    private double m_rotations;
-    final PositionVoltage m_request;
-    //final VelocityVoltage m_request = new VelocityVoltage(0).withSlot(0);
-    //private final PositionVoltage m_request;
+	private final TalonFX m_front_follow;
+	private final TalonFX m_back;
+	private double m_rotations;
+	final PositionVoltage m_request;
 
-    public static final double m_gearRatio = 0.5 * (1d / (1.75100 * Math.PI)) * ( 2d / 3d ) * 12;
+	public static final double m_gearRatio = 0.5 * (1d / (1.75100 * Math.PI)) * (2d / 3d) * 12;
 
-    public ElevatorIOTalonFX() {
-        
-        
+	public ElevatorIOTalonFX() {
+		m_front_follow = new TalonFX(21, "CANivore2");
+		m_back = new TalonFX(22, "CANivore2");
 
-        m_front_follow = new TalonFX(21, "CANivore2");
-        m_back = new TalonFX(22, "CANivore2");
-        
-        m_request = new PositionVoltage(0).withSlot(0);
+		m_request = new PositionVoltage(0).withSlot(0);
 
-        final TalonFXConfiguration elevatorMotorConfig = new TalonFXConfiguration();
-        final MotorOutputConfigs rightOutputConfigs = new MotorOutputConfigs();
-        final MotorOutputConfigs leftOutputConfigs = new MotorOutputConfigs();
+		final TalonFXConfiguration elevatorMotorConfig = new TalonFXConfiguration();
+		final MotorOutputConfigs rightOutputConfigs = new MotorOutputConfigs();
+		final MotorOutputConfigs leftOutputConfigs = new MotorOutputConfigs();
 
-        rightOutputConfigs.Inverted = InvertedValue.Clockwise_Positive;
-        rightOutputConfigs.NeutralMode = NeutralModeValue.Brake;
-        leftOutputConfigs.NeutralMode = NeutralModeValue.Brake;
+		rightOutputConfigs.Inverted = InvertedValue.Clockwise_Positive;
+		rightOutputConfigs.NeutralMode = NeutralModeValue.Brake;
+		leftOutputConfigs.NeutralMode = NeutralModeValue.Brake;
 
-        elevatorMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
-        elevatorMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
-        // in init function, set slot 0 gains
+		elevatorMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
+		elevatorMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+		// in init function, set slot 0 gains
 
-        //teleop up gains
-        elevatorMotorConfig.Slot0.kP = 3.5; //3
-        elevatorMotorConfig.Slot0.kI = 0; // no output for integrated error
-        elevatorMotorConfig.Slot0.kD = 0.2;//.2 
-        elevatorMotorConfig.Slot0.kS = 0; 
-        elevatorMotorConfig.Slot0.kV = 0; 
-        elevatorMotorConfig.Slot0.kA = 0;
-        elevatorMotorConfig.Slot0.kG = .5; //.5
+		// teleop up gains
+		elevatorMotorConfig.Slot0.kP = 3.5; // 3
+		elevatorMotorConfig.Slot0.kI = 0; // no output for integrated error
+		elevatorMotorConfig.Slot0.kD = 0.2;// .2
+		elevatorMotorConfig.Slot0.kS = 0;
+		elevatorMotorConfig.Slot0.kV = 0;
+		elevatorMotorConfig.Slot0.kA = 0;
+		elevatorMotorConfig.Slot0.kG = .5; // .5
 
-        // use these constants when going down
-        elevatorMotorConfig.Slot1.kP = 2.5; //3
-        elevatorMotorConfig.Slot1.kI = 0; // no output for integrated error
-        elevatorMotorConfig.Slot1.kD = .3; 
-        elevatorMotorConfig.Slot1.kS = 0;
-        elevatorMotorConfig.Slot1.kV = 0; 
-        elevatorMotorConfig.Slot1.kA = 0;
-        elevatorMotorConfig.Slot1.kG = 0;
+		// use these constants when going down
+		elevatorMotorConfig.Slot1.kP = 2.5; // 3
+		elevatorMotorConfig.Slot1.kI = 0; // no output for integrated error
+		elevatorMotorConfig.Slot1.kD = .3;
+		elevatorMotorConfig.Slot1.kS = 0;
+		elevatorMotorConfig.Slot1.kV = 0;
+		elevatorMotorConfig.Slot1.kA = 0;
+		elevatorMotorConfig.Slot1.kG = 0;
 
-        // auto up gains
-        elevatorMotorConfig.Slot2.kP = 3; //3
-        elevatorMotorConfig.Slot2.kI = 0; // no output for integrated error
-        elevatorMotorConfig.Slot2.kD = 0.1;
-        elevatorMotorConfig.Slot2.kS = 0; 
-        elevatorMotorConfig.Slot2.kV = 0; 
-        elevatorMotorConfig.Slot2.kA = 0;
-        elevatorMotorConfig.Slot2.kG = .5; //.5
-     
-        m_rotations = 29 * m_gearRatio;
-        m_back.setPosition(m_rotations);
-        
-        m_front_follow.getConfigurator().apply(elevatorMotorConfig);
-        m_back.getConfigurator().apply(elevatorMotorConfig);
+		// auto up gains
+		elevatorMotorConfig.Slot2.kP = 3; // 3
+		elevatorMotorConfig.Slot2.kI = 0; // no output for integrated error
+		elevatorMotorConfig.Slot2.kD = 0.1;
+		elevatorMotorConfig.Slot2.kS = 0;
+		elevatorMotorConfig.Slot2.kV = 0;
+		elevatorMotorConfig.Slot2.kA = 0;
+		elevatorMotorConfig.Slot2.kG = .5; // .5
 
-        m_back.getConfigurator().apply(rightOutputConfigs);
-        m_front_follow.getConfigurator().apply(leftOutputConfigs);
+		m_rotations = 29 * m_gearRatio;
+		m_back.setPosition(m_rotations);
 
-        m_front_follow.setControl(new Follower(m_back.getDeviceID(), true));
-    }
+		m_front_follow.getConfigurator().apply(elevatorMotorConfig);
+		m_back.getConfigurator().apply(elevatorMotorConfig);
 
-    public void setVoltage(double voltage) {
-        // return this.runOnce(()->{
-            final VoltageOut request = new VoltageOut(0);
+		m_back.getConfigurator().apply(rightOutputConfigs);
+		m_front_follow.getConfigurator().apply(leftOutputConfigs);
 
-            m_back.setControl(request.withOutput(voltage));
-        // });
-        System.out.println("volts:" + m_back.getMotorVoltage());
-    }
-    
-    public void setBrakeMode(boolean enableBrakeMode) {
-        final NeutralModeValue neutralModeValue =
-            enableBrakeMode ? NeutralModeValue.Brake : NeutralModeValue.Coast;
-        m_front_follow.setNeutralMode(neutralModeValue);
-        m_back.setNeutralMode(neutralModeValue);
-    }
-    @Override
-    public void gotosetpoint(double setpoint, double gearRatio) {
-        double targetRot = setpoint * gearRatio;
-        double currentRot = m_rotations;
+		m_front_follow.setControl(new Follower(m_back.getDeviceID(), true));
+	}
 
-        int slot = 0;
-        if (targetRot < currentRot) {
-            slot = 1;
-        }
+	public void setVoltage(double voltage) {
+		final VoltageOut request = new VoltageOut(0);
+		m_back.setControl(request.withOutput(voltage));
+	}
 
-        m_rotations = targetRot;
-        // System.out.println("rotations:" + targetRot);
-        SmartDashboard.putNumber("elevator/slot", slot);
+	public void setBrakeMode(boolean enableBrakeMode) {
+		final NeutralModeValue neutralModeValue = enableBrakeMode ? NeutralModeValue.Brake : NeutralModeValue.Coast;
+		m_front_follow.setNeutralMode(neutralModeValue);
+		m_back.setNeutralMode(neutralModeValue);
+	}
 
-        m_back.setControl(m_request.withPosition(targetRot).withSlot(slot));
-    }
+	@Override
+	public void gotosetpoint(double setpoint, double gearRatio) {
+		double targetRot = setpoint * gearRatio;
+		double currentRot = m_rotations;
 
-    @Override
-    public void gotosetpointWithSlot(double setpoint, double gearRatio, int slot) {
-        double targetRot = setpoint * gearRatio;
+		int slot = 0;
+		if (targetRot < currentRot) {
+			slot = 1;
+		}
 
-        m_rotations = targetRot;
-        // System.out.println("rotations:" + targetRot);
-        SmartDashboard.putNumber("elevator/slot", slot);
+		m_rotations = targetRot;
+		Logger.recordOutput("elevator/slot", slot);
 
-        m_back.setControl(m_request.withPosition(targetRot).withSlot(slot));
-    }
+		m_back.setControl(m_request.withPosition(targetRot).withSlot(slot));
+	}
 
+	@Override
+	public void gotosetpointWithSlot(double setpoint, double gearRatio, int slot) {
+		double targetRot = setpoint * gearRatio;
 
-    public double getVelocity(){
-        return m_back.getVelocity().getValueAsDouble();
-    }
-    public double getVoltage(){
-        return m_back.getMotorVoltage().getValueAsDouble();
-    }
-    @Override
-    public double getPosition() {
-        return m_back.getPosition().getValueAsDouble();
-    }
+		m_rotations = targetRot;
+		Logger.recordOutput("elevator/slot", slot);
 
+		m_back.setControl(m_request.withPosition(targetRot).withSlot(slot));
+	}
 
-    public double getSetpoint(){
-        return m_rotations;
-    }
+	public double getVelocity() {
+		return m_back.getVelocity().getValueAsDouble();
+	}
 
-    public void setPosition(double position){
-        m_back.setPosition(position);
-    }
+	public double getVoltage() {
+		return m_back.getMotorVoltage().getValueAsDouble();
+	}
 
-    public void updateInputs(ElevatorIOInputsAutoLogged m_inputs) {
-        double motorRPS = m_back.getVelocity().getValueAsDouble();
-        m_inputs.elevatorRPM = motorRPS*60;
-        m_inputs.heightInch = m_back.getPosition().getValueAsDouble() / m_gearRatio;
-        m_inputs.setpointInch = m_rotations / m_gearRatio;
+	@Override
+	public double getPosition() {
+		return m_back.getPosition().getValueAsDouble();
+	}
 
-        var sig = m_back.getStatorCurrent();
+	public double getSetpoint() {
+		return m_rotations;
+	}
 
-        m_inputs.backStatorCurrent = sig.getValueAsDouble();
-        m_inputs.backStatus = sig.getStatus();
-        m_inputs.frontStatorCurrent = m_front_follow.getStatorCurrent().getValueAsDouble();
-    }
+	public void setPosition(double position) {
+		m_back.setPosition(position);
+	}
 
- 
+	public void updateInputs(ElevatorIOInputsAutoLogged m_inputs) {
+		double motorRPS = m_back.getVelocity().getValueAsDouble();
+		m_inputs.elevatorRPM = motorRPS * 60;
+		m_inputs.heightInch = m_back.getPosition().getValueAsDouble() / m_gearRatio;
+		m_inputs.setpointInch = m_rotations / m_gearRatio;
+
+		var sig = m_back.getStatorCurrent();
+
+		m_inputs.backStatorCurrent = sig.getValueAsDouble();
+		m_inputs.backStatus = sig.getStatus();
+		m_inputs.frontStatorCurrent = m_front_follow.getStatorCurrent().getValueAsDouble();
+	}
+
 }

@@ -1,8 +1,5 @@
 package frc.robot.subsystems.algae;
 
-import edu.wpi.first.networktables.DoublePublisher;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,7 +14,7 @@ public class Algae extends SubsystemBase {
 	private final double ExtendedPosition = 9;
 	private final double GroundIntake = 17;
 
-	private Timer m_StallTimer;
+	private Timer m_StallTimer = new Timer();
 	// inch to rotations of the motor
 	final double m_gearRatio = 1d;
 
