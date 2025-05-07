@@ -38,7 +38,7 @@ public class Algae extends SubsystemBase {
   }
 
   public Command intake() {
-    return this.runOnce(() -> m_io.setShootVoltage(20)).withName("Intake");
+    return this.runOnce(() -> m_io.setShootVoltage(5)).withName("Intake");
   }
 
   public Command slowShoot() {
@@ -62,7 +62,7 @@ public class Algae extends SubsystemBase {
   }
 
   public Command holdCoral() {
-    return this.run(() -> m_io.setShootVoltage(-10));
+    return this.run(() -> m_io.setShootVoltage(-5));
   }
 
   public Command moveDown() {
