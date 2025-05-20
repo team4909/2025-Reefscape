@@ -26,6 +26,7 @@ public class Algae extends SubsystemBase {
   private final AlgaeIOInputsAutoLogged m_inputs = new AlgaeIOInputsAutoLogged();
   private final double DownPosition = 0;
   private final double ExtendedPosition = -4;
+  private final double AlmostExtendedPosition = -2.3;
   private final double GroundIntake = 17;
   ;// 32.5
   private Timer m_StallTimer;
@@ -89,6 +90,13 @@ public class Algae extends SubsystemBase {
     // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
     return this.runOnce(() -> {
       m_io.gotosetpoint(ExtendedPosition, m_gearRatio);
+    }).withName("Extend");
+  }
+
+  public Command almostextend() {
+    // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
+    return this.runOnce(() -> {
+      m_io.gotosetpoint(AlmostExtendedPosition, m_gearRatio);
     }).withName("Extend");
   }
 
