@@ -1,5 +1,7 @@
 package frc.robot.subsystems.algae;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.networktables.DoublePublisher;
@@ -116,8 +118,10 @@ public class Algae extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // super.periodic();
-    // m_io.updateInputs(m_inputs);
+
+    super.periodic();
+    m_io.updateInputs(m_inputs);
+    Logger.processInputs(getName(), m_inputs);
 
     motorValPub.set(m_inputs.shootVelocity);
     motorVolPub.set(m_inputs.shooterVoltage);

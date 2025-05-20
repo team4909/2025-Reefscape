@@ -25,7 +25,7 @@ public interface AlgaeIO {
 
     public default void setPosition(double position) {}
 
-	public void updateInputs(AlgaeIOInputs m_inputs);
+	public abstract void updateInputs(AlgaeIOInputsAutoLogged m_inputs);
 
 	public void holdShooterPos();
 }

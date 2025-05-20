@@ -80,12 +80,12 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
         m_pivotMotor.setPosition(position);
     }
 
-    public void updateInputs(AlgaeIOInputs inputs) {
-        inputs.shooterVoltage = m_shootMotor.getMotorVoltage().getValueAsDouble();
-        inputs.shooterCurrent = m_shootMotor.getSupplyCurrent().getValueAsDouble();
-        inputs.shootVelocity = m_shootMotor.getVelocity().getValueAsDouble();
-        inputs.wristPosition = m_pivotMotor.getPosition().getValueAsDouble();
-        inputs.wristSetpoint = m_rotations;
+    public void updateInputs(AlgaeIOInputsAutoLogged m_inputs) {
+        m_inputs.shooterVoltage = m_shootMotor.getMotorVoltage().getValueAsDouble();
+        m_inputs.shooterCurrent = m_shootMotor.getSupplyCurrent().getValueAsDouble();
+        m_inputs.shootVelocity = m_shootMotor.getVelocity().getValueAsDouble();
+        m_inputs.wristPosition = m_pivotMotor.getPosition().getValueAsDouble();
+        m_inputs.wristSetpoint = m_rotations;
     }
 
     public void holdShooterPos() {
