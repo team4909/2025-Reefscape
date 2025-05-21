@@ -45,7 +45,7 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
         pivotMotorConfig.Slot0.kD = 0; // A velocity of 1 rps results in 0.1 V output
         pivotMotorConfig.Slot0.kG = 0;
 
-        shootMotorConfig.Slot1.kP = 0.5; // An error of 1 rotation results in 2.4 V output
+        shootMotorConfig.Slot1.kP = 1; // An error of 1 rotation results in 2.4 V output
         shootMotorConfig.Slot1.kI = 0; // no output for integrated error
         shootMotorConfig.Slot1.kD = 0.1; // A velocity of 1 rps results in 0.1 V output
         shootMotorConfig.Slot1.kG = 0;
@@ -55,9 +55,8 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
         m_pivotMotor.getConfigurator().apply(pivotMotorConfig);
     }
 
-    public void setShootVoltage(double voltage) {
-        final VoltageOut request = new VoltageOut(0);
-        m_shootMotor.setControl(request.withOutput(voltage));
+    public void setShootVelocity(double velocity) {
+        m_shootMotor.setControl(m_request.withVelocity(velocity));
     }
 
     @Override
