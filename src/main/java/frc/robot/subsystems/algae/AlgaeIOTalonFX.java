@@ -25,23 +25,34 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
 
         m_request = new PositionVoltage(0).withSlot(0);
 
-        final TalonFXConfiguration motorConfig = new TalonFXConfiguration();
+        final TalonFXConfiguration pivotMotorConfig = new TalonFXConfiguration();
+        final TalonFXConfiguration shootMotorConfig = new TalonFXConfiguration();
 
-        motorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        motorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
-        motorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+        pivotMotorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        pivotMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        pivotMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
+        pivotMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+
+        shootMotorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        shootMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        shootMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
+        shootMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         // in init function, set slot 0 gains
 
-        motorConfig.Slot0.kP = 0.5; // An error of 1 rotation results in 2.4 V output
-        motorConfig.Slot0.kI = 0; // no output for integrated error
-        motorConfig.Slot0.kD = 0; // A velocity of 1 rps results in 0.1 V output
-        motorConfig.Slot0.kG = 0;
+        pivotMotorConfig.Slot0.kP = 0.5; // An error of 1 rotation results in 2.4 V output
+        pivotMotorConfig.Slot0.kI = 0; // no output for integrated error
+        pivotMotorConfig.Slot0.kD = 0; // A velocity of 1 rps results in 0.1 V output
+        pivotMotorConfig.Slot0.kG = 0;
+
+        shootMotorConfig.Slot1.kP = 0.5; // An error of 1 rotation results in 2.4 V output
+        shootMotorConfig.Slot1.kI = 0; // no output for integrated error
+        shootMotorConfig.Slot1.kD = 0.1; // A velocity of 1 rps results in 0.1 V output
+        shootMotorConfig.Slot1.kG = 0;
 
         m_pivotMotor.setPosition(0);
-        m_shootMotor.getConfigurator().apply(motorConfig);
-        m_pivotMotor.getConfigurator().apply(motorConfig);
+        m_shootMotor.getConfigurator().apply(shootMotorConfig);
+        m_pivotMotor.getConfigurator().apply(pivotMotorConfig);
     }
 
     public void setShootVoltage(double voltage) {
@@ -49,6 +60,7 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
         m_shootMotor.setControl(request.withOutput(voltage));
     }
 
+    @Override
     public void setPivotVoltage(double voltage) {
         final VoltageOut request = new VoltageOut(0);
         m_pivotMotor.setControl(request.withOutput(voltage));
