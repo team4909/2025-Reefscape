@@ -51,7 +51,7 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
 
         shootMotorConfig.Slot1.kP = 1; // An error of 1 rotation results in 2.4 V output
         shootMotorConfig.Slot1.kI = 0; // no output for integrated error
-        shootMotorConfig.Slot1.kD = 0.1; // A velocity of 1 rps results in 0.1 V output
+        shootMotorConfig.Slot1.kD = 0; // A velocity of 1 rps results in 0.1 V output
         shootMotorConfig.Slot1.kG = 0;
 
         m_pivotMotor.setPosition(0);
