@@ -13,7 +13,7 @@ public interface AlgaeIO {
         public double wristSetpoint = 0;
     }
 
-    public default void setShootVoltage(double voltage) {}
+    public default void setShootVelocity(double velocity) {}
 
     public default void setPivotVoltage(double voltage) {}
     

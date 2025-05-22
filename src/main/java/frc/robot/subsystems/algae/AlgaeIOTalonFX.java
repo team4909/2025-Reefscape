@@ -2,6 +2,8 @@ package frc.robot.subsystems.algae;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -15,6 +17,7 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
     private final TalonFX m_pivotMotor;
     private double m_rotations;
     final PositionVoltage m_request;
+    final VelocityVoltage request;
     // final VelocityVoltage m_request = new VelocityVoltage(0).withSlot(0);
     // private final PositionVoltage m_request;
 
@@ -24,6 +27,7 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
         m_pivotMotor = new TalonFX(24);
 
         m_request = new PositionVoltage(0).withSlot(0);
+        request = new VelocityVoltage(0).withSlot(1);
 
         final TalonFXConfiguration pivotMotorConfig = new TalonFXConfiguration();
         final TalonFXConfiguration shootMotorConfig = new TalonFXConfiguration();
@@ -55,9 +59,8 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
         m_pivotMotor.getConfigurator().apply(pivotMotorConfig);
     }
 
-    public void setShootVoltage(double voltage) {
-        final VoltageOut request = new VoltageOut(0);
-        m_shootMotor.setControl(request.withOutput(voltage));
+    public void setShootVelocity(double velocity) {
+        m_shootMotor.setControl(request.withVelocity(velocity));
     }
 
     @Override

@@ -41,19 +41,19 @@ public class Algae extends SubsystemBase {
   }
 
   public Command intake() {
-    return this.runOnce(() -> m_io.setShootVoltage(-3)).withName("Intake");
+    return this.runOnce(() -> m_io.setShootVelocity(-3)).withName("Intake");
   }
 
   public Command slowShoot() {
-    return this.runOnce(() -> m_io.setShootVoltage(.5)).withName("Intake");
+    return this.runOnce(() -> m_io.setShootVelocity(.5)).withName("Intake");
   }
 
   public Command stopShooter() {
-    return this.runOnce(() -> m_io.setShootVoltage(0)).withName("Stop");
+    return this.runOnce(() -> m_io.setShootVelocity(0)).withName("Stop");
   }
 
   public Command shoot() {
-    return this.runOnce(() -> m_io.setShootVoltage(10)).withName("Shoot");
+    return this.runOnce(() -> m_io.setShootVelocity(10)).withName("Shoot");
   }
 
   public Command moveUp() {
@@ -65,7 +65,7 @@ public class Algae extends SubsystemBase {
   }
 
   public Command holdCoral() {
-    return this.run(() -> m_io.setShootVoltage(-5));
+    return this.run(() -> m_io.setShootVelocity(-5));
   }
 
   public Command moveDown() {
