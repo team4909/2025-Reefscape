@@ -55,8 +55,9 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
         m_pivotMotor.getConfigurator().apply(pivotMotorConfig);
     }
 
-    public void setShootVelocity(double velocity) {
-        m_shootMotor.setControl(m_request.withVelocity(velocity));
+    public void setShootVoltage(double voltage) {
+        final VoltageOut request = new VoltageOut(0);
+        m_shootMotor.setControl(request.withOutput(voltage));
     }
 
     @Override
