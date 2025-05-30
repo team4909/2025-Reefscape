@@ -33,7 +33,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public Command intake() {
-    return this.run(() -> m_io.setSpeed(1)).withName("Intake");
+    return this.run(() -> m_io.setSpeed(0.8)).withName("Intake");
   }
 
   @Override
