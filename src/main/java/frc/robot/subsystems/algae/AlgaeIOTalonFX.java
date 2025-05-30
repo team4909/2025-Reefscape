@@ -39,7 +39,7 @@ public class AlgaeIOTalonFX extends SubsystemBase implements AlgaeIO {
 
         shootMotorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         shootMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        shootMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
+        shootMotorConfig.CurrentLimits.SupplyCurrentLimit = 60.0;
         shootMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         // in init function, set slot 0 gains
