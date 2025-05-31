@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "farLeft-right"
+                  "pathName": "farLeft-right Red"
                 }
               },
               {
@@ -106,7 +106,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "S-closeLeft-right"
+                  "pathName": "S-closeLeft-right Red"
                 }
               },
               {
@@ -193,7 +193,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "test slide"
+                  "pathName": "test slide Red"
                 }
               },
               {
