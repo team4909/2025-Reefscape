@@ -64,7 +64,7 @@ import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 
 public class RobotContainer {
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * .89; // kSpeedAt12Volts desired top speed
     private double SlowSpeed = TunerConstants.kSlowSpeed.in(MetersPerSecond);
     private double MaxAngularRate = RotationsPerSecond.of(0.75)
             .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
