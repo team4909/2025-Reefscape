@@ -95,7 +95,7 @@ public class TunerConstants {
 
     // Theoretical free speed (m/s) at 12 V applied output;
     // This needs to be tuned to your individual robot
-    public static final LinearVelocity kSpeedAt12Volts = MetersPerSecond.of(4.6369); //∞
+    public static final LinearVelocity kSpeedAt12Volts = MetersPerSecond.of(4.1); //∞
     public static final LinearVelocity kSlowSpeed = MetersPerSecond.of(3);
 
     // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
