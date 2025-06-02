@@ -25,7 +25,7 @@ public class Algae extends SubsystemBase {
   private final AlgaeIO m_io;
   private final AlgaeIOInputsAutoLogged m_inputs = new AlgaeIOInputsAutoLogged();
   private final double DownPosition = 0;
-  private final double ExtendedPosition = -4;
+  private final double ExtendedPosition = -3;
   private final double AlmostExtendedPosition = -2.3;
   private final double GroundIntake = 17;
   ;// 32.5
