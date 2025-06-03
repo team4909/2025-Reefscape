@@ -218,7 +218,7 @@ public class RobotContainer {
                                         * MaxAngularRate) // Drive counterclockwise with negative X (left)
         );
     }
-    double limit = 1.1;
+    double limit = 0.75;
     private SlewRateLimiter limitx = new SlewRateLimiter(limit);
     private SlewRateLimiter limity = new SlewRateLimiter(limit);
 
