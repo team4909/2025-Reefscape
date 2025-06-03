@@ -206,7 +206,7 @@ public class RobotContainer {
         return drivetrain.applyRequest(
                 () -> drive
                         .withVelocityX(
-                                limit.calculate(-joystick.getLeftY() * MaxSpeed)) // Drive forward with negative Y (forward)
+                                limit.calculate(-joystick.getLeftY()) * MaxSpeed) // Drive forward with negative Y (forward)
                         .withVelocityY(
                                 -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                         .withRotationalRate(
