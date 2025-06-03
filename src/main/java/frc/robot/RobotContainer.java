@@ -229,8 +229,13 @@ public class RobotContainer {
                 
                 drivetrain.applyRequest(
                         () -> {
-                                var xLimited = limitx.calculate(-joystick.getLeftY());
-                                var yLimited = limity.calculate(-joystick.getLeftX());
+                                var yRaw = -joystick.getLeftY();
+                                var xRaw = -joystick.getLeftX();
+
+                                Logger.recordOutput("xRaw", yRaw);
+                                Logger.recordOutput("yRaw", xRaw);
+                                var xLimited = limitx.calculate(yRaw);
+                                var yLimited = limity.calculate(xRaw);
 
                                 Logger.recordOutput("xLimited", xLimited);
                                 Logger.recordOutput("yLimited", yLimited);
