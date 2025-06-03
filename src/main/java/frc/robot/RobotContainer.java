@@ -201,18 +201,21 @@ public class RobotContainer {
         //         .withVelocityY(-joystick.getLeftY() * 0)
         //         .withRotationalRate(-joystick.getRightX() * 0));
     }
-    private SlewRateLimiter limit = new SlewRateLimiter(.5);
+    private SlewRateLimiter limitx = new SlewRateLimiter(.5);
+    private SlewRateLimiter limity = new SlewRateLimiter(.5);
 
     private Command driveWithJoystick() {
-        var xLimited = limit.calculate(-joystick.getLeftY());
+        var xLimited = limitx.calculate(-joystick.getLeftY());
+        var yLimited = limity.calculate(-joystick.getLeftX());
 
         Logger.recordOutput("xLimited", xLimited);
+        Logger.recordOutput("yLimited", yLimited);
         return drivetrain.applyRequest(
                 () -> drive
                         .withVelocityX(
                                 xLimited * MaxSpeed) // Drive forward with negative Y (forward)
                         .withVelocityY(
-                                -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                                yLimited * MaxSpeed) // Drive left with negative X (left)
                         .withRotationalRate(
                                 -joystick.getRightX()
                                         * MaxAngularRate) // Drive counterclockwise with negative X (left)
