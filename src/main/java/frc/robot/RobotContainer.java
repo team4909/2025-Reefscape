@@ -201,42 +201,46 @@ public class RobotContainer {
         //         .withVelocityY(-joystick.getLeftY() * 0)
         //         .withRotationalRate(-joystick.getRightX() * 0));
     }
-    private SlewRateLimiter limitx = new SlewRateLimiter(.5);
-    private SlewRateLimiter limity = new SlewRateLimiter(.5);
+    
 
     private Command driveWithJoystick() {
-        var xLimited = limitx.calculate(-joystick.getLeftY());
-        var yLimited = limity.calculate(-joystick.getLeftX());
-
-        Logger.recordOutput("xLimited", xLimited);
-        Logger.recordOutput("yLimited", yLimited);
+        
         return drivetrain.applyRequest(
                 () -> drive
                         .withVelocityX(
-                                xLimited * MaxSpeed) // Drive forward with negative Y (forward)
+                                -joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                         .withVelocityY(
-                                yLimited * MaxSpeed) // Drive left with negative X (left)
+                                -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                         .withRotationalRate(
                                 -joystick.getRightX()
                                         * MaxAngularRate) // Drive counterclockwise with negative X (left)
         );
     }
-    
+    private SlewRateLimiter limitx = new SlewRateLimiter(.5);
+    private SlewRateLimiter limity = new SlewRateLimiter(.5);
 
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
+                
                 drivetrain.applyRequest(
-                        () -> drive
+                        () -> {
+                                var xLimited = limitx.calculate(-joystick.getLeftY());
+                                var yLimited = limity.calculate(-joystick.getLeftX());
+
+                                Logger.recordOutput("xLimited", xLimited);
+                                Logger.recordOutput("yLimited", yLimited);
+                                return drive
                                 .withVelocityX(
-                                        -joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                                        xLimited * MaxSpeed) // Drive forward with negative Y (forward)
                                 .withVelocityY(
-                                        -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                                        yLimited * MaxSpeed) // Drive left with negative X (left)
                                 .withRotationalRate(
                                         -joystick.getRightX()
-                                                * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                                                * MaxAngularRate); // Drive counterclockwise with negative X (left)
+                                                }
                 ));
 
         //joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
