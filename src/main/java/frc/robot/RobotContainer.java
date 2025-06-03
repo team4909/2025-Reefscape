@@ -18,6 +18,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.hal.HALUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -199,12 +200,13 @@ public class RobotContainer {
         //         .withVelocityY(-joystick.getLeftY() * 0)
         //         .withRotationalRate(-joystick.getRightX() * 0));
     }
+    private SlewRateLimiter limit = new SlewRateLimiter(1, 1, 0);
 
     private Command driveWithJoystick() {
         return drivetrain.applyRequest(
                 () -> drive
                         .withVelocityX(
-                                -joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                                limit.calculate(-joystick.getLeftY() * MaxSpeed)) // Drive forward with negative Y (forward)
                         .withVelocityY(
                                 -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                         .withRotationalRate(
