@@ -201,7 +201,7 @@ public class RobotContainer {
         //         .withVelocityY(-joystick.getLeftY() * 0)
         //         .withRotationalRate(-joystick.getRightX() * 0));
     }
-    private SlewRateLimiter limit = new SlewRateLimiter(1, 1, 0);
+    private SlewRateLimiter limit = new SlewRateLimiter(.5);
 
     private Command driveWithJoystick() {
         var xLimited = limit.calculate(-joystick.getLeftY());
