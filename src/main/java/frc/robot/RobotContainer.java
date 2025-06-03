@@ -180,7 +180,7 @@ public class RobotContainer {
             throw new RuntimeException("Unknown Robot Serial Number");
         }
 
-        var limit = 0.5;
+
 
     }
 
@@ -218,7 +218,7 @@ public class RobotContainer {
                                         * MaxAngularRate) // Drive counterclockwise with negative X (left)
         );
     }
-    double limit = 0.75;
+    double limit = 0.99;
     private SlewRateLimiter limitx = new SlewRateLimiter(limit);
     private SlewRateLimiter limity = new SlewRateLimiter(limit);
 
