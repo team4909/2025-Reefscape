@@ -6,6 +6,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
@@ -203,10 +204,13 @@ public class RobotContainer {
     private SlewRateLimiter limit = new SlewRateLimiter(1, 1, 0);
 
     private Command driveWithJoystick() {
+        var xLimited = limit.calculate(-joystick.getLeftY());
+
+        Logger.recordOutput("xLimited", xLimited);
         return drivetrain.applyRequest(
                 () -> drive
                         .withVelocityX(
-                                limit.calculate(-joystick.getLeftY()) * MaxSpeed) // Drive forward with negative Y (forward)
+                                xLimited * MaxSpeed) // Drive forward with negative Y (forward)
                         .withVelocityY(
                                 -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                         .withRotationalRate(
