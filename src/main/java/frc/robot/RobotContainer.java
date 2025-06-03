@@ -64,7 +64,6 @@ import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
-
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * .7; // kSpeedAt12Volts desired top speed
     private double SlowSpeed = TunerConstants.kSlowSpeed.in(MetersPerSecond);
@@ -218,7 +217,7 @@ public class RobotContainer {
                                         * MaxAngularRate) // Drive counterclockwise with negative X (left)
         );
     }
-    double limit = 1.01;
+    double limit = 2;
     private SlewRateLimiter limitx = new SlewRateLimiter(limit);
     private SlewRateLimiter limity = new SlewRateLimiter(limit);
 
