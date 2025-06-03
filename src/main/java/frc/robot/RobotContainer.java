@@ -180,6 +180,8 @@ public class RobotContainer {
             throw new RuntimeException("Unknown Robot Serial Number");
         }
 
+        var limit = 0.5;
+
     }
 
     public void periodic() {
@@ -216,8 +218,9 @@ public class RobotContainer {
                                         * MaxAngularRate) // Drive counterclockwise with negative X (left)
         );
     }
-    private SlewRateLimiter limitx = new SlewRateLimiter(.5);
-    private SlewRateLimiter limity = new SlewRateLimiter(.5);
+    double limit = 1.1;
+    private SlewRateLimiter limitx = new SlewRateLimiter(limit);
+    private SlewRateLimiter limity = new SlewRateLimiter(limit);
 
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
