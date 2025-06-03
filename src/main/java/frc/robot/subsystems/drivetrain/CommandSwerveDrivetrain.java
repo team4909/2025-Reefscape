@@ -440,8 +440,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                                 m_hasAppliedOperatorPerspective = true;
                             });
         }
-
-        if (Gyro.getInstance().isTipping()){
     }
 
     private void startSimThread() {
