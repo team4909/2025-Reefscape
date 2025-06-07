@@ -307,13 +307,16 @@ public class RobotContainer {
 
         // auto align right
         // positive moves right for second param of translation
-        joystick.b().whileTrue(Commands.parallel(
-                        new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-33.5/2-1.5), Units.inchesToMeters(0.5+2.25+.25 + .5), Rotation2d.fromDegrees(-1)), joystick, 8), 
-                        s_Shooter.shoot()
-                ))
-                .onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0))
-                .andThen(Commands.parallel(s_Shooter.stop(), new RunCommand(() -> stopDrive(), drivetrain))));
+        // joystick.b().whileTrue(Commands.parallel(
+        //                 new DriveToPose(drivetrain, new Transform2d(Units.inchesToMeters(-33.5/2-1.5), Units.inchesToMeters(0.5+2.25+.25), Rotation2d.fromDegrees(-1)), joystick, 8), 
+        //                 s_Shooter.shoot()
+        //         ))
+        //         .onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0))
+        //         .andThen(Commands.parallel(s_Shooter.stop(), new RunCommand(() -> stopDrive(), drivetrain))));
 
+        joystick.b().whileTrue(Commands.parallel(new ReefBranchAlign(drivetrain,
+                new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),
+                () -> -joystick.getLeftY()), s_Shooter.slowShoot())).onFalse(s_Shooter.stop());
         // stop the robot override
         joystick.button(7).whileTrue(new RunCommand(()-> {System.out.println("STOP");stopDrive(); }, drivetrain));
 
