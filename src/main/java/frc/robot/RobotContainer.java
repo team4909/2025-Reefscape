@@ -314,18 +314,18 @@ public class RobotContainer {
         //         .onFalse(new InstantCommand(()->joystick.setRumble(RumbleType.kBothRumble, 0))
         //         .andThen(Commands.parallel(s_Shooter.stop(), new RunCommand(() -> stopDrive(), drivetrain))));
 
-        // joystick.b().whileTrue(Commands.parallel(new ReefBranchAlign(drivetrain,
-        //         new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),
-        //         () -> -joystick.getLeftY()), s_Shooter.slowShoot())).onFalse(s_Shooter.stop());
+        joystick.b().whileTrue(Commands.parallel(new ReefBranchAlign(drivetrain,
+                new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),
+                () -> -joystick.getLeftY()), s_Shooter.slowShoot())).onFalse(s_Shooter.stop());
 
         
-        joystick.b().whileTrue(Commands.sequence(
-                s_Shooter.setDefaultDoNotRun(), 
-                Commands.parallel(
-                        new ReefBranchAlign(drivetrain, new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),() -> -joystick.getLeftY()),
-                        s_Shooter.slowShoot()
-                        )
-                )).onFalse(s_Shooter.stop());
+        // joystick.b().whileTrue(Commands.sequence(
+        //         s_Shooter.setDefaultDoNotRun(), 
+        //         Commands.parallel(
+        //                 new ReefBranchAlign(drivetrain, new Transform2d(Units.inchesToMeters(-4.5), Units.inchesToMeters(0.5+2.25), new Rotation2d()),() -> -joystick.getLeftY()),
+        //                 s_Shooter.slowShoot()
+        //                 )
+        //         )).onFalse(s_Shooter.stop());
         // stop the robot override
         joystick.button(7).whileTrue(new RunCommand(()-> {System.out.println("STOP");stopDrive(); }, drivetrain));
 
