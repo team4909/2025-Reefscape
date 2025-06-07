@@ -17,7 +17,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "autoalign right"
+                  "name": "autoalign left"
                 }
               },
               {
@@ -149,7 +149,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "autoalign right"
+                  "name": "autoalign left"
                 }
               },
               {
