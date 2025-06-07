@@ -23,7 +23,9 @@ public class Algae extends SubsystemBase {
   private final AlgaeIO m_io;
   private final AlgaeIOInputsAutoLogged m_inputs = new AlgaeIOInputsAutoLogged();
   private final double DownPosition = 0;
-  private final double ExtendedPosition = 9;
+  private final double ExtendedPosition = -3;
+  private final double AlmostExtendedPosition = -2.3;
+
   ;// 32.5
   private Timer m_StallTimer;
   // inch to rotations of the motor
@@ -37,15 +39,18 @@ public class Algae extends SubsystemBase {
   }
 
   public Command intake() {
-    return this.runOnce(() -> m_io.setShootVoltage(20)).withName("Intake");
+    return this.runOnce(() -> m_io.setShootVoltage(-5)).withName("Intake");
   }
 
+  public Command slowShoot() {
+    return this.runOnce(() -> m_io.setShootVoltage(.5)).withName("Intake");
+  }
   public Command stopShooter() {
     return this.runOnce(() -> m_io.setShootVoltage(0)).withName("Stop");
   }
 
   public Command shoot() {
-    return this.runOnce(() -> m_io.setShootVoltage(-10)).withName("Shoot");
+    return this.runOnce(() -> m_io.setShootVoltage(10)).withName("Shoot");
   }
 
   public Command moveUp() {
@@ -56,6 +61,9 @@ public class Algae extends SubsystemBase {
     return this.runOnce(() -> m_io.setPivotVoltage(0)).withName("Stop");
   }
 
+  public Command holdCoral() {
+    return this.run(() -> m_io.setShootVoltage(-5));
+  }
   public Command moveDown() {
     return this.runOnce(() -> m_io.setPivotVoltage(-1)).withName("Move Down");
   }
@@ -74,6 +82,12 @@ public class Algae extends SubsystemBase {
     }).withName("Extend");
   }
 
+  public Command almostextend() {
+    // return this.run(() -> m_io.gotosetpoint(L1Setpoint,m_gearRatio));
+    return this.runOnce(() -> {
+      m_io.gotosetpoint(AlmostExtendedPosition, m_gearRatio);
+    }).withName("Extend");
+  }
   public Command reZero() {
     return this.runOnce(() -> {
       m_io.setPosition(DownPosition * m_gearRatio);
